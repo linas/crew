@@ -6,10 +6,15 @@
 
 Pre-requisites
 --------------
-To use this code, must have potassco installed (or any other answer-set
-programming system, although only potassco has been tested.)
+To use this code, must have clingo, from the potassco project, installed.
+In principle, any other answer-set programming system should work,
+although only clingo has been tested.
 
 See:  http://potassco.sourceforge.net/
 
+
+Running
+-------
+clingo  equip.asp
 
 
