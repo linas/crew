@@ -1,8 +1,8 @@
 %
-% crew equipment scheduling
+% regatta team equipment scheduling
 %
 % The problem of scheduling equipment for a regatta is a constraint
-% problem -- ttwo crews canot use the same boat at the same time,
+% problem -- two crews cannot use the same boat at the same time,
 % and, indeed, there must be enough time between crews to rig the boat,
 % launch it, warmp up, race, and return to the dock, before the next
 % crew can use it.  Because this is a classic constraint problem,
@@ -22,19 +22,21 @@ racenum(NUM) :- NUM=201..229.
 center(4).
 
 % List boat classes.  Can add new boat classes here, if needed.
-boat(BOAT) :- quad(BOAT).
+boat(BOAT) :- heavy_quad(BOAT).
+boat(BOAT) :- midweight_quad(BOAT).
 boat(BOAT) :- lightweight_quad(BOAT).
 boat(BOAT) :- double(BOAT).
 boat(BOAT) :- single(BOAT).
 
 % Describe the boats, according to boat class.
-quad(orange).
-quad(black).
-quad(red).
-lightweight_quad(green).
+heavy_quad(orange).
+heavy_quad(black).
+midweight_quad(green).
+lightweight_quad(red).
 
 % Generic boat classes.
-any_quad(BOAT) :- quad(BOAT).
+any_quad(BOAT) :- heavy_quad(BOAT).
+any_quad(BOAT) :- midweight_quad(BOAT).
 any_quad(BOAT) :- lightweight_quad(BOAT).
 
 double(barks).
@@ -53,13 +55,13 @@ crew(matt).
 
 % List boat requests.
 % advanced crew wants one quad, any quad, for race 201
-1{ request(201, advanced, BOAT) : quad(BOAT) }1.
+1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
 % matt must have his black boat for this race.
 request(201, matt, black).
 
 % intermediate crew wants one quad, any quad, for race 201
-1{ request(202, intermediate, BOAT) : quad(BOAT) }1.
+1{ request(202, intermediate, BOAT) : any_quad(BOAT) }1.
 
 % Juniors want 2 quads for race 206
 2{ request(206, juniors, BOAT) : any_quad(BOAT) }2.
@@ -68,33 +70,33 @@ request(201, matt, black).
 %%% ========================================================== %%%
 %% The actual scheduling algorithm. Short and simple, huh?
 
-% A boat is available if its not inuse.
-available(RACE, BOAT) :- boat(BOAT), racenum(RACE), 
-                         not inuse(RACE, BOAT).
+% A boat is available if its not in use by any crew.
+available(RACE, BOAT) :- boat(BOAT), racenum(RACE), crew(CREW),
+                         not inuse(RACE, CREW, BOAT).
 
-% Reserve the boat if it is available.
+% Reserve the boat if it is requested and available.
 reserve(RACE, CREW, BOAT) :- request(RACE, CREW, BOAT), 
-                     available(RACE, BOAT).
+                             available(RACE, BOAT).
 
-% A boat will be in use if its reserved, and for the next CENTER races.
-inuse(ONWATER, BOAT) :- reserve(RACE, CREW, BOAT), 
-                        crew(CREW),
-                        boat(BOAT),
-                        racenum(RACE),
-                        ONWATER = RACE + N,
-                        N = 1..CENTER,
-                        center(CENTER).
+% A boat will be in use for the next CENTER races if it is reserved.
+inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
+                              crew(CREW),
+                              boat(BOAT),
+                              racenum(RACE),
+                              ONWATER = RACE + N,
+                              N = 1..CENTER,
+                              center(CENTER).
 
 % Cannot reserve a boat that is in use.
-:- reserve(RACE, CREW, BOAT), inuse(RACE, BOAT). 
+:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT). 
 
 % Cannot request a boat if its in use.
-:- request(RACE, CREW, BOAT), inuse(RACE, BOAT), racenum(RACE), boat(BOAT).
+% This rule isn't needed right now, comment it out. 
+% :- request(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT).
 
-% Two different crews cannot use the same boat in the same race
-XXXX borken....
-req(RACE, BOAT) :- request(RACE, CREW, BOAT).
-:- req(RACE, BOAT), inuse(RACE, BOAT), racenum(RACE), boat(BOAT).
+% Two different crews cannot reserve same boat.
+:- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
+   CREW != OTHER_CREW.
 
 
 #hide.
