@@ -1,0 +1,15 @@
+
+                   Regatta Equipment Scheduling
+                   ----------------------------
+                   Version 0.01 -- Linas Vepstas
+
+
+Pre-requisites
+--------------
+To use this code, must have potassco installed (or any other answer-set
+programming system, although only potassco has been tested.)
+
+See:  http://potassco.sourceforge.net/
+
+
+
