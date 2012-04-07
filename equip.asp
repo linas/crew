@@ -15,4 +15,10 @@
 % The GNU GPLv3 applies.
 %
 
-boats :- quads, doubles, eights.
+boats(quads; doubles; eights).
+race(201).
+
+equip(RACENUM, BOAT) :- boats(BOAT), race(RACENUM).
+
+#hide.
+#show equip/2.
