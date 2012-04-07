@@ -27,30 +27,37 @@ boat(BOAT) :- quad(BOAT).
 % boat(BOAT) :- doubles(BOAT).
 % boat(BOAT) :- singles(BOAT).
 
-1{ needed_for_race(201, BOAT) : quad(BOAT) }1.
-1{ needed_for_race(202, BOAT) : quad(BOAT) }1.
-1{ needed_for_race(206, BOAT) : quad(BOAT) }1.
+% Generate possibilities
+1{ request(201, BOAT) : quad(BOAT) }1.
+1{ request(202, BOAT) : quad(BOAT) }1.
+1{ request(206, BOAT) : quad(BOAT) }1.
 
 racenum(NUM) :- NUM=201..229.
 
+% A boat is available if its not inuse.
 available(RACE, BOAT) :- boat(BOAT), racenum(RACE), 
                          not inuse(RACE, BOAT).
 
-reserve(RACE, BOAT) :- needed_for_race(RACE, BOAT), 
+% Reserve the boat if it is available.
+reserve(RACE, BOAT) :- request(RACE, BOAT), 
                      available(RACE, BOAT).
 
-inuse(RACE, BOAT) :- reserve(ONWATER, BOAT), boat(BOAT), 
-                     racenum(RACE), ONWATER=RACE-1.
+% A boat will be in use if its reserved, and for the next CENTER races.
+inuse(ONWATER, BOAT) :- reserve(RACE, BOAT), 
+                        boat(BOAT),
+                        racenum(RACE),
+                        ONWATER = RACE + N,
+                        N = 1..CENTER,
+                        center(CENTER).
 
+% Cannot reserve a boat that is in use.
+:- reserve(RACE, BOAT), inuse(RACE, BOAT). 
 
-unavailable(RACE, BOAT) :- reserve(RACE, BOAT), inuse(RACE, BOAT). 
-
-:- unavailable(RACE, BOAT).
-
-:- needed_for_race(RACE,BOAT), racenum(RACE), boat(BOAT), inuse(RACE, BOAT).
+% Cannot request a boat if its in use.
+:- request(RACE,BOAT), inuse(RACE, BOAT), racenum(RACE), boat(BOAT).
 
 #hide.
 #show reserve/2.
-#show needed_for_race/2.
-#show inuse/2.
+% #show request/2.
+% #show inuse/2.
 % #show available/2.
