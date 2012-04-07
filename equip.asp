@@ -18,24 +18,30 @@
 % min number of racees betwen equipment reuse.
 center(4).
 
-quads(orange; black).
-doubles(barks; gluten).
-singles(director; cantu).
+quad(orange).
+% quad(black).
+% doubles(barks; gluten).
+% singles(director; cantu).
 
-boats(BOAT) :- quads(BOAT).
-boats(BOAT) :- doubles(BOAT).
-boats(BOAT) :- singles(BOAT).
+boat(BOAT) :- quad(BOAT).
+% boat(BOAT) :- doubles(BOAT).
+% boat(BOAT) :- singles(BOAT).
 
-race(201, BOAT) :- quads(BOAT).
-race(202, BOAT) :- quads(BOAT).
-race(206, BOAT) :- quads(BOAT).
+race(201, BOAT) :- quad(BOAT).
+race(202, BOAT) :- quad(BOAT).
+race(206, BOAT) :- quad(BOAT).
 
 racenum(NUM) :- NUM=201..229.
 
-inuse(RACE, BOAT) :- equip(ONWAT, BOAT), boats(BOAT), racenum(RACE), ONWAT=RACE-1.
+inuse(RACE, BOAT) :- equip(ONWATER, BOAT), boat(BOAT), 
+                     racenum(RACE), ONWATER=RACE-1.
 
-equip(RACENUM, BOAT) :- boats(BOAT), race(RACENUM, BOAT).
-:- equip(RACE, BOAT), inuse(RACE, BOAT). 
+equip(RACENUM, BOAT) :- boat(BOAT), race(RACENUM, BOAT).
+unavailable(RACE, BOAT) :- equip(RACE, BOAT), inuse(RACE, BOAT). 
+
+:- unavailable(RACE, BOAT).
 
 #hide.
 #show equip/2.
+#show inuse/2.
+#show unavailable/2.
