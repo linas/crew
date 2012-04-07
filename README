@@ -15,6 +15,14 @@ See:  http://potassco.sourceforge.net/
 
 Running
 -------
-clingo  equip.asp
+Edit equip.asp
+Describe boat classes, boats, race centers.
+
+To list one possiblity, (if any):
+    clingo  equip.asp
+
+To list multiple possibilities (4, in this example):
+    clingo 4 equip.asp
+
 
 
