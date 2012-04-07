@@ -19,7 +19,7 @@
 center(4).
 
 quad(orange).
-% quad(black).
+quad(black).
 % doubles(barks; gluten).
 % singles(director; cantu).
 
@@ -27,21 +27,30 @@ boat(BOAT) :- quad(BOAT).
 % boat(BOAT) :- doubles(BOAT).
 % boat(BOAT) :- singles(BOAT).
 
-race(201, BOAT) :- quad(BOAT).
-race(202, BOAT) :- quad(BOAT).
-race(206, BOAT) :- quad(BOAT).
+1{ needed_for_race(201, BOAT) : quad(BOAT) }1.
+1{ needed_for_race(202, BOAT) : quad(BOAT) }1.
+1{ needed_for_race(206, BOAT) : quad(BOAT) }1.
 
 racenum(NUM) :- NUM=201..229.
 
-inuse(RACE, BOAT) :- equip(ONWATER, BOAT), boat(BOAT), 
+available(RACE, BOAT) :- boat(BOAT), racenum(RACE), 
+                         not inuse(RACE, BOAT).
+
+reserve(RACE, BOAT) :- needed_for_race(RACE, BOAT), 
+                     available(RACE, BOAT).
+
+inuse(RACE, BOAT) :- reserve(ONWATER, BOAT), boat(BOAT), 
                      racenum(RACE), ONWATER=RACE-1.
 
-equip(RACENUM, BOAT) :- boat(BOAT), race(RACENUM, BOAT).
-unavailable(RACE, BOAT) :- equip(RACE, BOAT), inuse(RACE, BOAT). 
+
+unavailable(RACE, BOAT) :- reserve(RACE, BOAT), inuse(RACE, BOAT). 
 
 :- unavailable(RACE, BOAT).
 
+:- needed_for_race(RACE,BOAT), racenum(RACE), boat(BOAT), inuse(RACE, BOAT).
+
 #hide.
-#show equip/2.
+#show reserve/2.
+#show needed_for_race/2.
 #show inuse/2.
-#show unavailable/2.
+% #show available/2.
