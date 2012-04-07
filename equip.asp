@@ -15,6 +15,9 @@
 % The GNU GPLv3 applies.
 %
 
+% List the races
+racenum(NUM) :- NUM=201..229.
+
 % Specify minimum number of races between equipment reuse.
 center(4).
 
@@ -30,19 +33,40 @@ quad(black).
 quad(red).
 lightweight_quad(green).
 
+% Generic boat classes.
+any_quad(BOAT) :- quad(BOAT).
+any_quad(BOAT) :- lightweight_quad(BOAT).
+
 double(barks).
 double(gluten).
 single(director).
 single(cantu).
 
+% Describe crew types.
 crew(juniors).
+crew(advanced).
+crew(intermediate).
+crew(matt).
 
-% Generate possibilities
-1{ request(201, CREW, BOAT) : quad(BOAT): crew(CREW) }1.
-1{ request(202, CREW, BOAT) : quad(BOAT): crew(CREW) }1.
-1{ request(206, CREW, BOAT) : quad(BOAT): crew(CREW) }1.
+% Restrictions. Juniors are never allowed to take out the black quad.
+:- request(RACE, juniors, black), racenum(RACE).
 
-racenum(NUM) :- NUM=201..229.
+% List boat requests.
+% advanced crew wants one quad, any quad, for race 201
+1{ request(201, advanced, BOAT) : quad(BOAT) }1.
+
+% matt must have his black boat for this race.
+request(201, matt, black).
+
+% intermediate crew wants one quad, any quad, for race 201
+1{ request(202, intermediate, BOAT) : quad(BOAT) }1.
+
+% Juniors want 2 quads for race 206
+2{ request(206, juniors, BOAT) : any_quad(BOAT) }2.
+
+
+%%% ========================================================== %%%
+%% The actual scheduling algorithm. Short and simple, huh?
 
 % A boat is available if its not inuse.
 available(RACE, BOAT) :- boat(BOAT), racenum(RACE), 
@@ -66,6 +90,12 @@ inuse(ONWATER, BOAT) :- reserve(RACE, CREW, BOAT),
 
 % Cannot request a boat if its in use.
 :- request(RACE, CREW, BOAT), inuse(RACE, BOAT), racenum(RACE), boat(BOAT).
+
+% Two different crews cannot use the same boat in the same race
+XXXX borken....
+req(RACE, BOAT) :- request(RACE, CREW, BOAT).
+:- req(RACE, BOAT), inuse(RACE, BOAT), racenum(RACE), boat(BOAT).
+
 
 #hide.
 #show reserve/3.
