@@ -15,10 +15,27 @@
 % The GNU GPLv3 applies.
 %
 
-boats(quads; doubles; eights).
-race(201).
+% min number of racees betwen equipment reuse.
+center(4).
 
-equip(RACENUM, BOAT) :- boats(BOAT), race(RACENUM).
+quads(orange; black).
+doubles(barks; gluten).
+singles(director; cantu).
+
+boats(BOAT) :- quads(BOAT).
+boats(BOAT) :- doubles(BOAT).
+boats(BOAT) :- singles(BOAT).
+
+race(201, BOAT) :- quads(BOAT).
+race(202, BOAT) :- quads(BOAT).
+race(206, BOAT) :- quads(BOAT).
+
+racenum(NUM) :- NUM=201..229.
+
+inuse(RACE, BOAT) :- equip(ONWAT, BOAT), boats(BOAT), racenum(RACE), ONWAT=RACE-1.
+
+equip(RACENUM, BOAT) :- boats(BOAT), race(RACENUM, BOAT).
+:- equip(RACE, BOAT), inuse(RACE, BOAT). 
 
 #hide.
 #show equip/2.
