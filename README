@@ -12,17 +12,49 @@ although only clingo has been tested.
 
 See:  http://potassco.sourceforge.net/
 
+Testing the Example
+-------------------
+Validate your clingo installation by running the following at the
+command line:
+
+   clingo example.asp
+
+The output should resemble the following:
+   Answer: 1
+   reserve(206,juniors,orange) reserve(206,juniors,green)
+   reserve(202,intermediate,red) reserve(201,advanced,orange)
+   reserve(201,matt,black) 
+   SATISFIABLE
+
+   Models      : 1+    
+
+The above states that the juniors get two quads for race 206: the
+heavyweight orange, and the midweight green.  The advanced crew 
+got orange for race 201, this will have to be hot-seated.  Matt
+gets the black quad for race 201.  And so on.
+
 
 Running
 -------
-Edit equip.asp
-Describe boat classes, boats, race centers.
+ * Make a copy of example.asp, giving it some other name, say, for
+   example, 'head2012.asp'
 
-To list one possiblity, (if any):
-    clingo  equip.asp
+ * Edit head2012.asp
+   Describe boat classes, boats, crews, equipment requests.
 
-To list multiple possibilities (4, in this example):
-    clingo 4 equip.asp
+ * Run the software.  To list one possible set of boat assignments
+   (if any):
+
+       clingo  head2102.asp
+
+   If its not possible to satisfy all the requests, the program will
+   print UNSATISFIABLE.
+
+   To list multiple different boat assignments (4, in this example,
+   assuming that there are any at all), enter this:
+
+       clingo 4 head2012.asp
 
 
+That's all for now, folks!
 

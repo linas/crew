@@ -69,6 +69,10 @@ request(201, matt, black).
 
 %%% ========================================================== %%%
 %% The actual scheduling algorithm. Short and simple, huh?
+%% DO NOT MODIFY ANYTHING BELOW THIS LINE!
+%% (unless you really, really know what you're doing, and
+%% you probably don't.  Just write me with questions, requests.
+%%% ========================================================== %%%
 
 % A boat is available if its not in use by any crew.
 available(RACE, BOAT) :- boat(BOAT), racenum(RACE), crew(CREW),
