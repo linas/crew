@@ -16,32 +16,50 @@
 % The GNU GPLv3 applies.
 %
 
-% List boat classes.  Can add new boat classes here, if needed.
+% -- List of boat classes.  Can add new boat classes here, if desired.
 boat(BOAT) :- eight(BOAT).
 boat(BOAT) :- fourplus(BOAT).
 boat(BOAT) :- fourminus(BOAT).
+
 boat(BOAT) :- heavy_quad(BOAT).
 boat(BOAT) :- midheavy_quad(BOAT).
 boat(BOAT) :- midweight_quad(BOAT).
 boat(BOAT) :- midlight_quad(BOAT).
 boat(BOAT) :- lightweight_quad(BOAT).
+
 boat(BOAT) :- heavy_double(BOAT).
 boat(BOAT) :- midweight_double(BOAT).
 boat(BOAT) :- lightweight_double(BOAT).
-boat(BOAT) :- single(BOAT).
+boat(BOAT) :- pair(BOAT).
+
+boat(BOAT) :- heavy_single(BOAT).
+boat(BOAT) :- midweight_single(BOAT).
+boat(BOAT) :- lightweight_single(BOAT).
+boat(BOAT) :- flyweight_single(BOAT).
+boat(BOAT) :- adaptive_single(BOAT).
+
+% --- Generic boat classes.
+hv_or_mid_quad(BOAT) :- heavy_quad(BOAT).
+hv_or_mid_quad(BOAT) :- midheavy_quad(BOAT).
+hv_or_mid_quad(BOAT) :- midweight_quad(BOAT).
+lt_or_mid_quad(BOAT) :- midweight_quad(BOAT).
+lt_or_mid_quad(BOAT) :- midlight_quad(BOAT).
+lt_or_mid_quad(BOAT) :- lightweight_quad(BOAT).
+any_quad(BOAT) :- lightweight_quad(BOAT).
+
 
 % --- Describe the boats, according to boat class.
 % Kaitlin is a heavy 8, Sophie a mid-weight.
 eight(kaitlin).
 eight(sophie).
 
-% Judies a midweight, Berverly a heavy
+% Judie is a midweight, Berverly a heavy
 % Marty's 4- is a midweight
 fourplus(judie).
 fourplus(beverly).
-fourminus(martys).
+fourminus(martys_4minus).
 
-% quads
+% Quads
 heavy_quad(orange).
 heavy_quad(black).
 midheavy_quad(parents).
@@ -53,7 +71,7 @@ midlight_quad(green).
 midlight_quad(blue).
 lightweight_quad(red).
 
-% doubles
+% Doubles
 heavy_double(maas).
 heavy_double(kaschper).
 heavy_double(barksdale).
@@ -62,44 +80,53 @@ midweight_double(swinford).
 midweight_double(bass).
 lightweight_double(thrash).
 
+% Pairs -- 41 is heavyweight, 30 is midweight.
+pair(41).
+pair(30).
 
-% Generic boat classes.
-any_quad(BOAT) :- heavy_quad(BOAT).
-any_quad(BOAT) :- midweight_quad(BOAT).
-any_quad(BOAT) :- lightweight_quad(BOAT).
+% Singles. 
+heavy_single(dunya).  % Actually its a superheavy.
+heavy_single(knifty).
+heavy_single(director).
+heavy_single(cantu).
+midweight_single(somers).
+midweight_single(marty_n_saloni).
+midweight_single(blair).
+lightweight_single(pete).
+lightweight_single(veronica).
+lightweight_single(unnamed).
+flyweight_single(fly).
+adaptive_single(intrepid).
 
-double(barks).
-double(gluten).
-single(director).
-single(cantu).
-
-% List the races
-racenum(NUM) :- NUM=201..229.
-
-% Specify minimum number of races between equipment reuse.
-center(4).
-
-% Describe crew types.
+% --- Describe crew types.
 crew(juniors).
 crew(advanced).
 crew(intermediate).
 crew(matt).
 
-% Restrictions. Juniors are never allowed to take out the black quad.
+% --- List the races
+racenum(NUM) :- NUM=101..140.   % Saturday.
+racenum(NUM) :- NUM=201..229.   % Sunday.
+
+% --- Specify minimum number of races between equipment reuse.
+center(4).
+
+% --- Restrictions.
+% Juniors are never allowed to take out the black quad.
 :- request(RACE, juniors, black), racenum(RACE).
 
-% List boat requests.
-% advanced crew wants one quad, any quad, for race 201
+% --- List boat requests.
+% Advanced crew wants one quad, any quad, for race 201
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
-% matt must have his black boat for this race.
+% Matt must have his black boat for this race.
 request(201, matt, black).
 
-% intermediate crew wants one quad, any quad, for race 201
-1{ request(202, intermediate, BOAT) : any_quad(BOAT) }1.
+% Intermediate crew wants one quad, mid or heavyweight quad, for race 201
+1{ request(202, intermediate, BOAT) : hv_or_mid_quad(BOAT) }1.
 
-% Juniors want 2 quads for race 206
-2{ request(206, juniors, BOAT) : any_quad(BOAT) }2.
+% Juniors want 2 mid or lightweigth quads for race 206
+2{ request(206, juniors, BOAT) : lt_or_mid_quad(BOAT) }2.
 
 
 %%% ========================================================== %%%

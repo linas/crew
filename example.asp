@@ -15,52 +15,55 @@
 % The GNU GPLv3 applies.
 %
 
-% List the races
-racenum(NUM) :- NUM=201..229.
-
-% Specify minimum number of races between equipment reuse.
-center(4).
-
-% List boat classes.  Can add new boat classes here, if needed.
+% -- List of boat classes.  Can add new boat classes here, as desired.
 boat(BOAT) :- heavy_quad(BOAT).
 boat(BOAT) :- midweight_quad(BOAT).
 boat(BOAT) :- lightweight_quad(BOAT).
 boat(BOAT) :- double(BOAT).
 boat(BOAT) :- single(BOAT).
 
-% Describe the boats, according to boat class.
+% --- Generic boat classes. Can add new classes here, as desired.
+% For example, a "mid or heavy" class might be useful.
+any_quad(BOAT) :- heavy_quad(BOAT).
+any_quad(BOAT) :- midweight_quad(BOAT).
+any_quad(BOAT) :- lightweight_quad(BOAT).
+
+% --- Describe the boats, according to boat class.
 heavy_quad(orange).
 heavy_quad(black).
 midweight_quad(green).
 lightweight_quad(red).
-
-% Generic boat classes.
-any_quad(BOAT) :- heavy_quad(BOAT).
-any_quad(BOAT) :- midweight_quad(BOAT).
-any_quad(BOAT) :- lightweight_quad(BOAT).
 
 double(barks).
 double(gluten).
 single(director).
 single(cantu).
 
-% Describe crew types.
+% --- Describe crew types.
 crew(juniors).
 crew(advanced).
 crew(intermediate).
 crew(matt).
 
-% Restrictions. Juniors are never allowed to take out the black quad.
+% -- List the races
+racenum(NUM) :- NUM=101..140.   % Saturday.
+racenum(NUM) :- NUM=201..229.   % Sunday.
+
+% --- Specify minimum number of races between equipment reuse.
+center(4).
+
+% --- Restrictions.
+% Juniors are never allowed to take out the black quad.
 :- request(RACE, juniors, black), racenum(RACE).
 
 % List boat requests.
-% advanced crew wants one quad, any quad, for race 201
+% Advanced crew wants one quad, any quad, for race 201
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
-% matt must have his black boat for this race.
+% Matt must have his black boat for the same race.
 request(201, matt, black).
 
-% intermediate crew wants one quad, any quad, for race 201
+% Intermediate crew wants one quad, any quad, for race 201
 1{ request(202, intermediate, BOAT) : any_quad(BOAT) }1.
 
 % Juniors want 2 quads for race 206
