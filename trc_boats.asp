@@ -18,17 +18,50 @@
 
 % List boat classes.  Can add new boat classes here, if needed.
 boat(BOAT) :- eight(BOAT).
+boat(BOAT) :- fourplus(BOAT).
+boat(BOAT) :- fourminus(BOAT).
 boat(BOAT) :- heavy_quad(BOAT).
+boat(BOAT) :- midheavy_quad(BOAT).
 boat(BOAT) :- midweight_quad(BOAT).
+boat(BOAT) :- midlight_quad(BOAT).
 boat(BOAT) :- lightweight_quad(BOAT).
-boat(BOAT) :- double(BOAT).
+boat(BOAT) :- heavy_double(BOAT).
+boat(BOAT) :- midweight_double(BOAT).
+boat(BOAT) :- lightweight_double(BOAT).
 boat(BOAT) :- single(BOAT).
 
-% Describe the boats, according to boat class.
+% --- Describe the boats, according to boat class.
+% Kaitlin is a heavy 8, Sophie a mid-weight.
+eight(kaitlin).
+eight(sophie).
+
+% Judies a midweight, Berverly a heavy
+% Marty's 4- is a midweight
+fourplus(judie).
+fourplus(beverly).
+fourminus(martys).
+
+% quads
 heavy_quad(orange).
 heavy_quad(black).
-midweight_quad(green).
+midheavy_quad(parents).
+midheavy_quad(masters).
+midheavy_quad(mcdarmid).
+
+midweight_quad(yellow).
+midlight_quad(green).
+midlight_quad(blue).
 lightweight_quad(red).
+
+% doubles
+heavy_double(maas).
+heavy_double(kaschper).
+heavy_double(barksdale).
+
+midweight_double(swinford).
+midweight_double(bass).
+lightweight_double(thrash).
+
 
 % Generic boat classes.
 any_quad(BOAT) :- heavy_quad(BOAT).
