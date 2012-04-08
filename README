@@ -24,6 +24,7 @@ The output should resemble the following:
    reserve(206,juniors,orange) reserve(206,juniors,green)
    reserve(202,intermediate,red) reserve(201,advanced,orange)
    reserve(201,matt,black) 
+   hotseat(206,orange) hurry_back(201,advanced,orange)
    SATISFIABLE
 
    Models      : 1+    
@@ -32,6 +33,14 @@ The above states that the juniors get two quads for race 206: the
 heavyweight orange, and the midweight green.  The advanced crew 
 got orange for race 201, this will have to be hot-seated.  Matt
 gets the black quad for race 201.  And so on.
+
+It also says that the advanced crew in race 201 should hurry back
+to the dock, and that the orange quad will be hotseated for race 206.
+
+The line that says "Models      : 1+" says that there is more than
+one possible set of boat assignments.  Enter 'clingo 4 example.asp'
+to see four of them... but ther won't be four; the example only 
+has two possible assignments.
 
 
 Running

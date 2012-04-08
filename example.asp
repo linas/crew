@@ -102,9 +102,23 @@ inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 :- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
    CREW != OTHER_CREW.
 
+% ----------------------
+% Useful info.
+
+% True is boat will be hotseated at the dock.
+hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
+                       reserve(RACE-CENTER-1, OTHER_CREW, BOAT),
+                       center(CENTER).
+
+% True if crew should hurry back because boat is needed.
+hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
+                       reserve(RACE+CENTER+1, OTHER_CREW, BOAT),
+                       center(CENTER).
 
 #hide.
 #show reserve/3.
+#show hotseat/2.
+#show hurry_back/3.
 % #show request/2.
 % #show inuse/2.
 % #show available/2.
