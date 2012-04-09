@@ -1,6 +1,7 @@
 %
 % regatta team equipment scheduling
 % Texas Rowing Center Boats
+% Texas Rowing Championsips 2012
 %
 % The problem of scheduling equipment for a regatta is a constraint
 % problem -- two crews cannot use the same boat at the same time,
@@ -116,6 +117,55 @@ center(4).
 :- request(RACE, juniors, black), racenum(RACE).
 
 % --- List boat requests.
+%- Saturday, Apr 28
+%- 101	  	Womens Jr JV 4x
+%- 102	  	Womens Jr. Novice 2x
+%- 103	  	Mens Jr JV 4x
+%- 104	  	Mens Jr Novice 2x
+%- 105	  	Womens Jr Varsity 4x
+%- 106	  	Womens Jr JV 2x
+%- 107	  	Mens Jr Varsity 4x
+%- 108	  	Mens Jr JV 2x
+%- 109	  	Womens Jr Varsity 2x
+%- 110	  	Womens Jr Novice 4x
+%- 111	  	Mens Jr Varsity 2x
+%- 112	  	Mens Jr Novice 4x
+%- 113	  	Womens Jr 1x
+%- 114	  	Womens Jr Ltwt 2x
+%- 115	  	Mens Jr 1x
+%- 116	  	Mens Jr Ltwt 2x
+%- Sunday, Apr 29
+%- 201	  	Womens Masters 2-
+%- 202	  	Mens Masters 4+
+%- 203	  	Mens Masters 1x
+%- 204	  	Mens Jr 8+
+%- 205	  	Womens Jr 2-
+%- 206	  	Womens Masters 4x
+%- 207	  	Mens Jr Novice 4+
+%- 208	  	Womens Jr Novice 8+
+%- 209	  	Mens Masters 2-
+%- 210	  	Mixed Masters 4x
+%- 211	  	Mens Jr Ltwt 4+
+%- 212	  	Womens Masters 8+
+%- 213	  	Mens Jr 2-
+%- 214	  	Mens Masters 4x
+%- 215	  	Womens Jr Ltwt 4+
+%- 216	  	Mens Jr Novice 8+
+%- 217	  	Womens Masters 1x
+%- 218	  	Mixed Adaptive 4x
+%- 219	  	Womens Jr Novice 4+
+%- 220	  	Mixed Masters 8+
+%- 221	  	Mens Masters 2x
+%- 222	  	Womens Jr 4+
+%- 223	  	Mens Jr Ltwt 8+
+%- 224	  	Womens Masters 2x
+%- 225	  	Mixed Adaptive 2x
+%- 226	  	Mens Jr 4+
+%- 227	  	Womens Jr Ltwt 8+
+%- 228	  	Mens Masters 8+
+%- 229	  	Mixed Masters 2x
+%- 230	  	Womens Masters 4+
+%- 231	  	Womens Jr 8+
 % Advanced crew wants one quad, any quad, for race 201
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
