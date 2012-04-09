@@ -111,9 +111,14 @@ crew(intermediate_a).
 crew(intermediate_b).
 crew(intermediate_c).
 crew(intermediate_d).
-crew(matt).
-crew(wade).
+crew(connie).
 crew(jeff).
+crew(ken).
+crew(mari).
+crew(matt).
+crew(sarah).
+crew(sue).
+crew(wade).
 
 % --- List the races
 racenum(NUM) :- NUM=101..116.   % Saturday.
@@ -161,29 +166,36 @@ request(203, wade, dunya).
 %- 209	  	Mens Masters 2-
 %- 210	  	Mixed Masters 4x
 1{ request(210, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
-1{ request(210, advanced_b, BOAT) : lt_or_mid_quad(BOAT) }1.
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
 %- 213	  	Mens Jr 2-
 %- 214	  	Mens Masters 4x
 1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
 1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
-1{ request(214, intermediate_b, BOAT) : hv_or_mid_quad(BOAT) }1.
 %- 215	  	Womens Jr Ltwt 4+
 %- 216	  	Mens Jr Novice 8+
 %- 217	  	Womens Masters 1x
+1{ request(217, connie, BOAT) : lightweight_single(BOAT) }1.
+1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
 %- 218	  	Mixed Adaptive 4x
 %- 219	  	Womens Jr Novice 4+
 %- 220	  	Mixed Masters 8+
+1{ request(220, advanced, BOAT) : eight(BOAT) }1.
 %- 221	  	Mens Masters 2x
 %- 222	  	Womens Jr 4+
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
+1{ request(224, sarah, BOAT) : midweight_double(BOAT) }1.  % & veronica
+1{ request(224, mari, BOAT) : lightweight_double(BOAT) }1. % & feesh
+
 %- 225	  	Mixed Adaptive 2x
 %- 226	  	Mens Jr 4+
 %- 227	  	Womens Jr Ltwt 8+
 %- 228	  	Mens Masters 8+
 %- 229	  	Mixed Masters 2x
+1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie_h
+1{ request(229, ken, BOAT) : heavy_double(BOAT) }1.  % & connie_a
+:- reserve(229, ken, maas).  % No way that Ken gets the maas.
 %- 230	  	Womens Masters 4+
 %- 231	  	Womens Jr 8+
 
