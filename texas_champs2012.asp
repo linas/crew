@@ -102,12 +102,22 @@ adaptive_single(intrepid).
 % --- Describe crew types.
 crew(juniors).
 crew(advanced).
+crew(advanced_a).
+crew(advanced_b).
+crew(advanced_c).
+crew(advanced_d).
 crew(intermediate).
+crew(intermediate_a).
+crew(intermediate_b).
+crew(intermediate_c).
+crew(intermediate_d).
 crew(matt).
+crew(wade).
+crew(jeff).
 
 % --- List the races
-racenum(NUM) :- NUM=101..140.   % Saturday.
-racenum(NUM) :- NUM=201..229.   % Sunday.
+racenum(NUM) :- NUM=101..116.   % Saturday.
+racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % --- Specify minimum number of races between equipment reuse.
 center(4).
@@ -137,7 +147,12 @@ center(4).
 %- Sunday, Apr 29
 %- 201	  	Womens Masters 2-
 %- 202	  	Mens Masters 4+
+2{ request(202, intermediate, BOAT) : fourplus(BOAT) }2.
+
 %- 203	  	Mens Masters 1x
+request(203, wade, dunya).
+1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
+
 %- 204	  	Mens Jr 8+
 %- 205	  	Womens Jr 2-
 %- 206	  	Womens Masters 4x
@@ -145,10 +160,15 @@ center(4).
 %- 208	  	Womens Jr Novice 8+
 %- 209	  	Mens Masters 2-
 %- 210	  	Mixed Masters 4x
+1{ request(210, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+1{ request(210, advanced_b, BOAT) : lt_or_mid_quad(BOAT) }1.
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
 %- 213	  	Mens Jr 2-
 %- 214	  	Mens Masters 4x
+1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+1{ request(214, intermediate_b, BOAT) : hv_or_mid_quad(BOAT) }1.
 %- 215	  	Womens Jr Ltwt 4+
 %- 216	  	Mens Jr Novice 8+
 %- 217	  	Womens Masters 1x
@@ -166,17 +186,6 @@ center(4).
 %- 229	  	Mixed Masters 2x
 %- 230	  	Womens Masters 4+
 %- 231	  	Womens Jr 8+
-% Advanced crew wants one quad, any quad, for race 201
-1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
-
-% Matt must have his black boat for this race.
-request(201, matt, black).
-
-% Intermediate crew wants one quad, mid or heavyweight quad, for race 201
-1{ request(202, intermediate, BOAT) : hv_or_mid_quad(BOAT) }1.
-
-% Juniors want 2 mid or lightweight quads for race 206
-2{ request(206, juniors, BOAT) : lt_or_mid_quad(BOAT) }2.
 
 
 %%% ========================================================== %%%
@@ -187,24 +196,24 @@ request(201, matt, black).
 %%% ========================================================== %%%
 
 % A boat is available if its not in use by any crew.
-available(RACE, BOAT) :- boat(BOAT), racenum(RACE), crew(CREW),
+available(RACE, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
                          not inuse(RACE, CREW, BOAT).
 
 % Reserve the boat if it is requested and available.
-reserve(RACE, CREW, BOAT) :- request(RACE, CREW, BOAT), 
+reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
+                             request(RACE, CREW, BOAT), 
                              available(RACE, BOAT).
 
 % A boat will be in use for the next CENTER races if it is reserved.
-inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              crew(CREW),
-                              boat(BOAT),
-                              racenum(RACE),
+inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
+                              reserve(RACE, CREW, BOAT), 
                               ONWATER = RACE + N,
                               N = 1..CENTER,
                               center(CENTER).
 
 % Cannot reserve a boat that is in use.
-:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT). 
+:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
 
 % Cannot request a boat if its in use.
 % This rule isn't needed right now, comment it out. 
@@ -212,7 +221,8 @@ inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 
 % Two different crews cannot reserve same boat.
 :- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
-   CREW != OTHER_CREW.
+   CREW != OTHER_CREW,
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
 
 % ----------------------
 % Useful info.

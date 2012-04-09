@@ -116,6 +116,7 @@ center(4).
 :- request(RACE, juniors, black), racenum(RACE).
 
 % --- List boat requests.
+% XXX totally bogus data, ignore..... XXX
 % Advanced crew wants one quad, any quad, for race 201
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
