@@ -78,24 +78,24 @@ request(201, matt, black).
 %%% ========================================================== %%%
 
 % A boat is available if its not in use by any crew.
-available(RACE, BOAT) :- boat(BOAT), racenum(RACE), crew(CREW),
+available(RACE, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
                          not inuse(RACE, CREW, BOAT).
 
 % Reserve the boat if it is requested and available.
-reserve(RACE, CREW, BOAT) :- request(RACE, CREW, BOAT), 
+reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
+                             request(RACE, CREW, BOAT), 
                              available(RACE, BOAT).
 
 % A boat will be in use for the next CENTER races if it is reserved.
-inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              crew(CREW),
-                              boat(BOAT),
-                              racenum(RACE),
+inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
+                              reserve(RACE, CREW, BOAT), 
                               ONWATER = RACE + N,
                               N = 1..CENTER,
                               center(CENTER).
 
 % Cannot reserve a boat that is in use.
-:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT). 
+:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
 
 % Cannot request a boat if its in use.
 % This rule isn't needed right now, comment it out. 
@@ -103,7 +103,8 @@ inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 
 % Two different crews cannot reserve same boat.
 :- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
-   CREW != OTHER_CREW.
+   CREW != OTHER_CREW,
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
 
 % ----------------------
 % Useful info.
