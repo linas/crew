@@ -161,7 +161,7 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 % This rule isn't needed right now, comment it out. 
 % :- request(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT).
 
-% Two different crews cannot reserve same boat.
+% Two different crews cannot reserve same boat for teh same race.
 :- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
    CREW != OTHER_CREW,
    racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
@@ -178,6 +178,10 @@ hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT),
 hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
                        reserve(RACE+CENTER+1, OTHER_CREW, BOAT),
                        center(CENTER).
+
+% Minimize the number of boats that are hot-seated.
+#minimize [hotseat(RACE, BOAT)].
+
 
 #hide.
 #show reserve/3.

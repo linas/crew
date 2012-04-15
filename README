@@ -21,26 +21,51 @@ command line:
 
 The output should resemble the following:
    Answer: 1
-   reserve(206,juniors,orange) reserve(206,juniors,green)
+   reserve(206,juniors,revere) reserve(206,juniors,orange)
+   reserve(202,intermediate,red) reserve(201,advanced,orange)
+   reserve(201,matt,black)
+   hotseat(206,orange) hurry_back(201,advanced,orange) 
+   Optimization: 1 
+   Answer: 2
+   reserve(206,juniors,revere) reserve(206,juniors,green)
    reserve(202,intermediate,red) reserve(201,advanced,orange)
    reserve(201,matt,black) 
-   hotseat(206,orange) hurry_back(201,advanced,orange)
-   SATISFIABLE
+   Optimization: 0 
+   OPTIMUM FOUND
 
-   Models      : 1+    
+The above states that two different reservations were found, labelled
+"Answer: 1" and "Answer: 2".  The first answer requires a hotseat of
+the orange quad; the second requires no hot-seating.
 
-The above states that the juniors get two quads for race 206: the
-heavyweight orange, and the midweight green.  The advanced crew 
-got orange for race 201, this will have to be hot-seated.  Matt
-gets the black quad for race 201.  And so on.
+In the first answer, the juniors get two quads for race 206: the
+heavyweight orange and the heavyweight revere.  Since the advanced
+crew got orange for race 201, this will have to be hot-seated.  Matt
+gets the black quad for race 201.  And so on.  The "hurry_back"
+note is printed for convenience: it reminds the crew in race 201
+that they need to hurry back to the hotseat dock.
 
-It also says that the advanced crew in race 201 should hurry back
-to the dock, and that the orange quad will be hotseated for race 206.
+The line "Optimization: 1" states that the answer above required one
+hot-seat.  One can do better, since there are plenty of quads to
+go around.  The second answer requires no hot-seating, and indeed,
+that's what it claims when it says: "Optimization: 0"
 
-The line that says "Models      : 1+" says that there is more than
-one possible set of boat assignments.  Enter 'clingo 4 example.asp'
-to see four of them... but ther won't be four; the example only 
-has two possible assignments.
+In the above, only one optimal boat assignment was printed. In fact,
+there may be more.  To print all of them:
+
+   clingo --opt-all example.asp
+
+For the example given, there are in fact 6 different reservations that
+don't require hot seating.  Thus, if one wishes, one can now get pickier
+with boat assignments: one may edit the example, and request specific
+boats for specific crews, or disallow certain crews from using certain
+boats, etc.  Doing so may result in more and more hotseats being required,
+or there mayb no answers at all.  In the last case, the program will
+print 
+
+   UNSATISFIABLE
+
+All that one can do at this point is scratch equipment requests, until
+a usable rservation is found.
 
 
 Running
