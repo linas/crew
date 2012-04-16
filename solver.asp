@@ -56,8 +56,9 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 
 % True if boat will be hotseated at the dock.
 hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
-                       reserve(RACE-CENTER-1, OTHER_CREW, BOAT),
-                       center(CENTER).
+                       reserve(RACE-CENTER-M, OTHER_CREW, BOAT),
+                       center(CENTER),
+                       M=1..HOTS, hotseat_warn(HOTS).
 
 % True if crew should hurry back because boat is needed.
 % Currently, not used for anything, except as a printout for the

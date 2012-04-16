@@ -46,7 +46,12 @@ racenum(NUM) :- NUM=101..116.   % Saturday.
 racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % --- Specify minimum number of races between equipment reuse.
+% In this case, the boat cannot be reserved for the next 4 races.
 center(4).
+% Print a hotseat warning if there is just 1 center to get the boat
+% back to the dock.  Change to 2 if you want more hotseat warning 
+% printed.
+hotseat_warn(1).
 
 % --- Restrictions.
 % Juniors are never allowed to take out the black quad.
