@@ -70,11 +70,15 @@ a usable rservation is found.
 
 Running
 -------
- * Make a copy of example.asp, giving it some other name, say, for
-   example, 'head2012.asp'
+ * Make a copy of the 'trc_boats.asp' file, giving it some other name,
+   say, for example, 'club_boats.asp'.  Edit, as desired, describing
+   the various boats owned by the club.  New boat classes and boat
+   types may be added (or removed) as desired; the 'trc_boats.asp' is
+   merely a more refined example of what one can do.
 
- * Edit head2012.asp
-   Describe boat classes, boats, crews, equipment requests.
+ * Make a copy of the 'texas-champs-2012.asp' file, calling it, say,
+   'head2012.asp'.  Edit this file, and describe the crews and the
+   equipment requests.
 
  * Run the software.  To list one possible set of boat assignments
    (if any):
@@ -88,6 +92,22 @@ Running
    assuming that there are any at all), enter this:
 
        clingo 4 head2012.asp
+
+ * Typically, ther may be thousands of different boat assignments.  In
+   this case, it is probably worth the effort to tighten up boat
+   requests, to give certain crews priority for certain boats; this way,
+   one can work towards getting everybody what they want.
+
+   If the program keeps printing "UNSATISFIABLE", then either: you need
+   to get more boats, e.g. borrow one, or deny one or more of the
+   requests, hopefully freeing things up.  In a very extreme case, try
+   reducing the time between races: but this is very dangerous, as it
+   may lead to hot-seating that must happen so quickly that people will
+   miss races.
+   
+   If everything looks OK, and you're still getting "UNSATISFIABLE",
+   then there's a bug somehwere in your boat lists and/or equipment
+   requests.  Review.
 
 
 That's all for now, folks!
