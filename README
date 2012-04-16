@@ -1,7 +1,7 @@
 
                    Regatta Equipment Scheduling
                    ----------------------------
-                   Version 0.01 -- Linas Vepstas
+                   Version 0.02 -- Linas Vepstas
 
 
 Pre-requisites
@@ -59,13 +59,13 @@ don't require hot seating.  Thus, if one wishes, one can now get pickier
 with boat assignments: one may edit the example, and request specific
 boats for specific crews, or disallow certain crews from using certain
 boats, etc.  Doing so may result in more and more hotseats being required,
-or there mayb no answers at all.  In the last case, the program will
+or there may be no answers at all.  In the last case, the program will
 print 
 
    UNSATISFIABLE
 
 All that one can do at this point is scratch equipment requests, until
-a usable rservation is found.
+a usable reservation is found.
 
 
 Running
