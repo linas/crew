@@ -31,10 +31,12 @@ reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
                              request(RACE, CREW, BOAT), 
                              available(RACE, BOAT).
 
-% A boat will be in use for the next CENTER races if it is reserved.
+% If a boat is reserved, then it will be in use at least CENTER races
+% beforehand. That is, the crew needs CENTER races to launch and
+% warmup before the race.
 inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
                               reserve(RACE, CREW, BOAT), 
-                              ONWATER = RACE + N,
+                              ONWATER = RACE - N,
                               N = 1..CENTER,
                               center(CENTER).
 
@@ -64,8 +66,9 @@ hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT),
 % Currently, not used for anything, except as a printout for the
 % convenience of the crews.
 hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                       reserve(RACE+CENTER+1, OTHER_CREW, BOAT),
-                       center(CENTER).
+                       reserve(RACE+CENTER+M, OTHER_CREW, BOAT),
+                       center(CENTER),
+                       M=1..HOTS, hotseat_warn(HOTS).
 
 % Minimize the number of boats that are hot-seated.
 #minimize [hotseat(RACE, BOAT)].
