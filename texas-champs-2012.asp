@@ -22,6 +22,13 @@
 
 % -- Special boats for this race.
 pair(borrowed_pair).
+fourplus(borrowed_four).
+
+boat(BOAT) :- double(BOAT).
+double(private_double).
+
+% No one is going to race the maas.
+:- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
 
 % --- Describe crew types.
 crew(juniors).
@@ -56,8 +63,8 @@ racenum(NUM) :- NUM=101..116.   % Saturday.
 racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % --- Specify minimum number of races between equipment reuse.
-% In this case, the boat cannot be reserved for the next 4 races.
-center(3).
+% In this case, the boat cannot be reserved for the previous 2 races.
+center(2).
 % Print a hotseat warning if there is just 1 center to get the boat
 % back to the dock.  Change to 2 if you want more hotseat warning 
 % printed.
@@ -118,29 +125,46 @@ request(210, connie_h, masters).  % connie, sue, jeff, linas
 request(210, novice, blue).
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
+1{request(212, intermediate, BOAT) : eight(BOAT) }1.
 %- 213	  	Mens Jr 2-
+request(213, juniors, 30).
 %- 214	  	Mens Masters 4x
-1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
-1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+% 1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+% 1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+request(214, matt, black).
+request(214, advanced, orange).
 %- 215	  	Womens Jr Ltwt 4+
+request(215, juniors_a, judie).
+request(215, juniors_b, borrowed_four).
 %- 216	  	Mens Jr Novice 8+
+request(216, juniors, sophie).
 %- 217	  	Womens Masters 1x
 1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
 1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
 %- 218	  	Mixed Adaptive 4x
 %- 219	  	Womens Jr Novice 4+
+3{ request(219, juniors, BOAT) : fourplus(BOAT) }3.
 %- 220	  	Mixed Masters 8+
-1{ request(220, advanced, BOAT) : eight(BOAT) }1.
+% 1{ request(220, advanced, BOAT) : eight(BOAT) }1.
+request(220, advanced, sophie).
 %- 221	  	Mens Masters 2x
-1{ request(221, linas, BOAT) : heavy_double(BOAT) }1. % linas and phil
+request(221, linas, private_double). % linas and phil
 1{ request(221, advanced_a, BOAT) : hv_or_mid_double(BOAT) }1. % ted
 1{ request(221, advanced_b, BOAT) : hv_or_mid_double(BOAT) }1. % ted
-1{ request(221, intermediate_a, BOAT) : hv_or_mid_double(BOAT) }1. % saloni
+% 1{ request(221, novice, BOAT) : any_double(BOAT) }1. % saloni
+request(221, novice, jakob). % saloni
+
 %- 222	  	Womens Jr 4+
+% XXXX this is a hotseat problem!!
+2{ request(222, juniors, BOAT) : fourplus(BOAT) }2.
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
-1{ request(224, sarah, BOAT) : midweight_double(BOAT) }1.  % & veronica
-1{ request(224, mari, BOAT) : lightweight_double(BOAT) }1. % & feesh
+% 1{ request(224, sarah, BOAT) : midweight_double(BOAT) }1.  % & veronica
+% 1{ request(224, mari, BOAT) : lightweight_double(BOAT) }1. % & feesh
+
+request(224, sarah, swinford).  % & veronica
+request(224, mari, thrash). % & feesh
+2{ request(224, intermediate, BOAT) : any_double(BOAT) }2.
 
 %- 225	  	Mixed Adaptive 2x
 %- 226	  	Mens Jr 4+
@@ -151,6 +175,7 @@ request(210, novice, blue).
 1{ request(229, ken, BOAT) : heavy_double(BOAT) }1.  % & connie_a
 :- reserve(229, ken, maas).  % No way that Ken gets the maas.
 %- 230	  	Womens Masters 4+
+2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
 %- 231	  	Womens Jr 8+
 
 
