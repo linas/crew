@@ -73,8 +73,16 @@ hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 % Minimize the number of boats that are hot-seated.
 #minimize [hotseat(RACE, BOAT)].
 
+% Look for a typo in the name of the boat, crew or race.
+% typos can screw everything up, so flag these.
+bad_boat_name(BOAT) :- request(RACE,CREW,BOAT), not boat(BOAT).
+bad_crew_name(CREW) :- request(RACE,CREW,BOAT), not crew(CREW).
+bad_race_num(RACE) :- request(RACE,CREW,BOAT), not racenum(RACE).
 
 #hide.
+#show bad_boat_name/1.
+#show bad_crew_name/1.
+#show bad_race_num/1.
 #show reserve/3.
 #show hotseat/2.
 #show hurry_back/3.
