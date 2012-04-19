@@ -18,10 +18,17 @@
 %
 
 % -- List of boat classes.
-#include " trc_boats.asp ".
+#include "trc_boats.asp".
+
+% -- Special boats for this race.
+pair(borrowed_pair).
 
 % --- Describe crew types.
 crew(juniors).
+crew(juniors_a).
+crew(juniors_b).
+crew(juniors_c).
+crew(juniors_d).
 crew(advanced).
 crew(advanced_a).
 crew(advanced_b).
@@ -32,9 +39,12 @@ crew(intermediate_a).
 crew(intermediate_b).
 crew(intermediate_c).
 crew(intermediate_d).
-crew(connie).
+crew(novice).
+crew(connie_a).
+crew(connie_h).
 crew(jeff).
 crew(ken).
+crew(linas).
 crew(mari).
 crew(matt).
 crew(sarah).
@@ -47,11 +57,11 @@ racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % --- Specify minimum number of races between equipment reuse.
 % In this case, the boat cannot be reserved for the next 4 races.
-center(4).
+center(3).
 % Print a hotseat warning if there is just 1 center to get the boat
 % back to the dock.  Change to 2 if you want more hotseat warning 
 % printed.
-hotseat_warn(1).
+hotseat_warn(2).
 
 % --- Restrictions.
 % Juniors are never allowed to take out the black quad.
@@ -78,20 +88,34 @@ hotseat_warn(1).
 %- Sunday, Apr 29
 %- 201	  	Womens Masters 2-
 %- 202	  	Mens Masters 4+
-2{ request(202, intermediate, BOAT) : fourplus(BOAT) }2.
+% 1{ request(202, intermediate, BOAT) : fourplus(BOAT) }1.
+request(202, intermediate, beverly).
 
 %- 203	  	Mens Masters 1x
 request(203, wade, dunya).
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
 
 %- 204	  	Mens Jr 8+
+request(204, juniors, sophie).
 %- 205	  	Womens Jr 2-
+request(205, juniors_a, thrash).
+request(205, juniors_b, 30).
+request(205, juniors_c, borrowed_pair).
 %- 206	  	Womens Masters 4x
+1{ request(206, advanced_a, BOAT) : lt_or_mid_quad(BOAT) }1.
+1{ request(206, advanced_b, BOAT) : lt_or_mid_quad(BOAT) }1.
+1{ request(206, advanced_c, BOAT) : lt_or_mid_quad(BOAT) }1.
+1{ request(206, intermediate, BOAT) : lt_or_mid_quad(BOAT) }1.
 %- 207	  	Mens Jr Novice 4+
+request(207, juniors, judie).
 %- 208	  	Womens Jr Novice 8+
+request(208, juniors, sophie).
 %- 209	  	Mens Masters 2-
 %- 210	  	Mixed Masters 4x
-1{ request(210, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
+% 1{ request(210, advanced_a, BOAT) : heavy_quad(BOAT) }1.
+request(210, connie_h, masters).  % connie, sue, jeff, linas
+3{ request(210, intermediate, BOAT) : any_quad(BOAT) }3.
+request(210, novice, blue).
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
 %- 213	  	Mens Jr 2-
@@ -101,13 +125,17 @@ request(203, wade, dunya).
 %- 215	  	Womens Jr Ltwt 4+
 %- 216	  	Mens Jr Novice 8+
 %- 217	  	Womens Masters 1x
-1{ request(217, connie, BOAT) : lightweight_single(BOAT) }1.
+1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
 1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
 %- 218	  	Mixed Adaptive 4x
 %- 219	  	Womens Jr Novice 4+
 %- 220	  	Mixed Masters 8+
 1{ request(220, advanced, BOAT) : eight(BOAT) }1.
 %- 221	  	Mens Masters 2x
+1{ request(221, linas, BOAT) : heavy_double(BOAT) }1. % linas and phil
+1{ request(221, advanced_a, BOAT) : hv_or_mid_double(BOAT) }1. % ted
+1{ request(221, advanced_b, BOAT) : hv_or_mid_double(BOAT) }1. % ted
+1{ request(221, intermediate_a, BOAT) : hv_or_mid_double(BOAT) }1. % saloni
 %- 222	  	Womens Jr 4+
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
@@ -130,4 +158,4 @@ request(203, wade, dunya).
 %% The actual scheduling algorithm.
 %%% ========================== %%%
 
-#include " solver.asp ".
+#include "solver.asp".
