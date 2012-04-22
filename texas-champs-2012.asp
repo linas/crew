@@ -120,6 +120,8 @@ prefer(203, oppliger, dunya, 1).
 
 %- 204	  	Mens Jr 8+
 request(204, juniors, sophie).
+oar_prefer(204, juniors, purple, 1).
+
 %- 205	  	Womens Jr 2-
 request(205, juniors_a, thrash).
 request(205, juniors_b, 30).
@@ -200,6 +202,7 @@ request(224, mari, thrash). % & feesh
 %%% ========================== %%%
 
 #include "solver.asp".
-#include "oar_solver.asp"
+#include "oar_solver.asp" .
 
 % Every boat reservation must have an oar reservation
+

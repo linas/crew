@@ -72,6 +72,9 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 
 % ----------------------
 % Preference indication.
+% XXX WARNING XXX rservation will seem to mysteriously fail if the
+% atom "prefer" does not occur at least once, somwhere in the race
+% description. This may come as a surprise: you've been warned.
 
 % choice must be a number, 1 to 4.
 choice(CHOICE) :- CHOICE=1..4.

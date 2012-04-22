@@ -62,6 +62,9 @@ oar_inuse(ONWATER, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
 
 % ----------------------
 % Preference indication.
+% XXX WARNING XXX rservation will seem to mysteriously fail if the
+% atom "oar_prefer" does not occur at least once, somwhere in the race
+% description. This may come as a surprise: you've been warned.
 
 % choice must be a number, 1 to 4.
 choice(CHOICE) :- CHOICE=1..4.
@@ -102,7 +105,6 @@ bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
 bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
 bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOICE).
 
-#hide.
 #show bad_oars_name/1.
 #show bad_crew_name/1.
 #show bad_race_num/1.
