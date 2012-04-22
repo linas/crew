@@ -13,12 +13,24 @@
 %
 
 % First, we're going to run the boat reservations.
-#include "example.asp".
+% #include "example.asp".
+#include "dbg.asp".
+
+% -- Describe oars
+sweep_oars(orange).
+
+scull_oars(purple_yellow).
+scull_oars(purple_red).
+scull_oars(red_green).
+scull_oars(red_yellow).
+scull_oars(blue_blue).
 
 % List oars requests.
+oar_prefer(201, matt, purple_yellow, 1).
 
 % Every boat reservation must have an oar reservation
-oar_request(RACE, CREW, OARS) :- reserve(RACE,CREW,BOAT), oars(OARS).
+oar_request(RACE, CREW, OARS) :- reserve(RACE,CREW,BOAT). 
+
 
 
 
