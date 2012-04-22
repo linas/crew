@@ -22,9 +22,8 @@ quad(BOAT) :- lightweight_quad(BOAT).
 
 % --- Generic boat classes. Can add new classes here, as desired.
 % For example, a "mid or heavy" class might be useful.
-any_quad(BOAT) :- heavy_quad(BOAT).
-any_quad(BOAT) :- midweight_quad(BOAT).
-any_quad(BOAT) :- lightweight_quad(BOAT).
+mid_or_lt_quad(BOAT) :- midweight_quad(BOAT).
+mid_or_lt_quad(BOAT) :- lightweight_quad(BOAT).
 
 % --- Describe the boats, according to boat class.
 heavy_quad(orange).
@@ -37,6 +36,11 @@ double(barks).
 double(gluten).
 single(director).
 single(cantu).
+
+pair(thrash).
+fourplus(beverley).
+fourminus(marty).
+eight(sophie).
 
 % --- Describe crew types.
 crew(juniors).
@@ -64,8 +68,9 @@ hotseat_warn(1).
 % For race 201, advanced crew wants one quad, any heavy-weight quad.
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
-% Matt must have his black boat for the same race. No if's, and's, but's.
-request(201, matt, black).
+% Matt must have his black boat for the same race. 
+% This is not a request, this is a reservation. No if's, and's or but's.
+reserve(201, matt, black).
 
 % For race 202, the intermediate crew is going to be picky: they 
 % want the green quad, and if they can't get it, then they want
@@ -74,8 +79,8 @@ prefer(202, intermediate, green, 1).
 prefer(202, intermediate, red, 2).
 prefer(202, intermediate, orange, 3).
 
-% For race 206, juniors want 2 quads, any two will do.
-2{ request(206, juniors, BOAT) : any_quad(BOAT) }2.
+% For race 206, juniors want 2 quads, any two mid or lightwieghts will do.
+2{ request(206, juniors, BOAT) : mid_or_lt_quad(BOAT) }2.
 
 
 %%% ========================== %%%
@@ -83,4 +88,3 @@ prefer(202, intermediate, orange, 3).
 %%% ========================== %%%
 
 #include "solver.asp".
-
