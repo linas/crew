@@ -79,6 +79,10 @@ prefer(202, intermediate, green, 1).
 prefer(202, intermediate, red, 2).
 prefer(202, intermediate, orange, 3).
 
+% CAUTION/WARNING: reservation will fail, unless the keyword "prefer" is
+% used at least once, somewhere, in the system.  It will fail even if
+% everything else seems to be just fine.  You've been warned!
+
 % For race 206, juniors want 2 quads, any two mid or lightwieghts will do.
 2{ request(206, juniors, BOAT) : mid_or_lt_quad(BOAT) }2.
 
