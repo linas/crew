@@ -83,7 +83,7 @@ choice(CHOICE) :- CHOICE=1..4.
 oar_hotseat(RACE, OARS) :- oar_reserve(RACE, CREW, OARS), 
                        oar_reserve(RACE-CENTER-M, OTHER_CREW, OARS),
                        center(CENTER),
-                       M=1..HOTS, oar_hotseat_warn(HOTS).
+                       M=1..HOTS, hotseat_warn(HOTS).
 
 % True if crew should hurry back because oars are needed.
 % Currently, not used for anything, except as a printout for the
@@ -91,7 +91,7 @@ oar_hotseat(RACE, OARS) :- oar_reserve(RACE, CREW, OARS),
 oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS), 
                        oar_reserve(RACE+CENTER+M, OTHER_CREW, OARS),
                        center(CENTER),
-                       M=1..HOTS, oar_hotseat_warn(HOTS).
+                       M=1..HOTS, hotseat_warn(HOTS).
 
 % Minimize the number of oars that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
