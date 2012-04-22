@@ -13,12 +13,13 @@
 %
 
 % -- List of oar types.  Can add new types here, if desired.
-oars(OARS) :- fatties(OARS).
-oars(OARS) :- black_grip(OARS).
-oars(OARS) :- fat_grip(OARS).
-oars(OARS) :- thin_grip(OARS).
-
+scull_oars(OARS) :- fatties(OARS).
+scull_oars(OARS) :- black_grip(OARS).
+scull_oars(OARS) :- fat_grip(OARS).
+scull_oars(OARS) :- thin_grip(OARS).
 
 % --- List of oars.
+sweep_oars(purple).
+
 fatties(purple_yellow).
 

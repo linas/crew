@@ -16,11 +16,9 @@
 %
 
 % -- List of boat classes.  Can add new boat classes here, as desired.
-boat(BOAT) :- heavy_quad(BOAT).
-boat(BOAT) :- midweight_quad(BOAT).
-boat(BOAT) :- lightweight_quad(BOAT).
-boat(BOAT) :- double(BOAT).
-boat(BOAT) :- single(BOAT).
+quad(BOAT) :- heavy_quad(BOAT).
+quad(BOAT) :- midweight_quad(BOAT).
+quad(BOAT) :- lightweight_quad(BOAT).
 
 % --- Generic boat classes. Can add new classes here, as desired.
 % For example, a "mid or heavy" class might be useful.
@@ -54,7 +52,7 @@ racenum(NUM) :- NUM=201..229.   % Sunday.
 % In this case, the boat cannot be reserved for the previous 4 races.
 center(4).
 % Print a hotseat warning if there is just 1 center to get the boat
-% back to the dock.  Change to 2 if you want more hotseat warning
+% back to the dock.  Change to 2 if you want more hotseat warnings
 % printed.
 hotseat_warn(1).
 

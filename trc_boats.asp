@@ -13,26 +13,21 @@
 %
 
 % -- List of boat classes.  Can add new boat classes here, if desired.
-boat(BOAT) :- eight(BOAT).
-boat(BOAT) :- fourplus(BOAT).
-boat(BOAT) :- fourminus(BOAT).
+quad(BOAT) :- heavy_quad(BOAT).
+quad(BOAT) :- midheavy_quad(BOAT).
+quad(BOAT) :- midweight_quad(BOAT).
+quad(BOAT) :- midlight_quad(BOAT).
+quad(BOAT) :- lightweight_quad(BOAT).
 
-boat(BOAT) :- heavy_quad(BOAT).
-boat(BOAT) :- midheavy_quad(BOAT).
-boat(BOAT) :- midweight_quad(BOAT).
-boat(BOAT) :- midlight_quad(BOAT).
-boat(BOAT) :- lightweight_quad(BOAT).
+double(BOAT) :- heavy_double(BOAT).
+double(BOAT) :- midweight_double(BOAT).
+double(BOAT) :- lightweight_double(BOAT).
 
-boat(BOAT) :- heavy_double(BOAT).
-boat(BOAT) :- midweight_double(BOAT).
-boat(BOAT) :- lightweight_double(BOAT).
-boat(BOAT) :- pair(BOAT).
-
-boat(BOAT) :- heavy_single(BOAT).
-boat(BOAT) :- midweight_single(BOAT).
-boat(BOAT) :- lightweight_single(BOAT).
-boat(BOAT) :- flyweight_single(BOAT).
-boat(BOAT) :- adaptive_single(BOAT).
+single(BOAT) :- heavy_single(BOAT).
+single(BOAT) :- midweight_single(BOAT).
+single(BOAT) :- lightweight_single(BOAT).
+single(BOAT) :- flyweight_single(BOAT).
+single(BOAT) :- adaptive_single(BOAT).
 
 % --- Generic boat classes.
 hv_or_mid_quad(BOAT) :- heavy_quad(BOAT).

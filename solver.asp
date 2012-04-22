@@ -15,6 +15,22 @@
 % The GNU GPLv3 applies.
 %
 
+% -- List of fundamental boat classes.  We must distinguish sweeps
+% from sculls, and quads, doubles, singles, etc.  in order to be
+% able to count the number of oars needed, for oar reservations.
+% That's why these are the "fundamental" types.
+boat(BOAT) :- sweep_boat(BOAT).
+boat(BOAT) :- scull_boat(BOAT).
+
+sweep_boat(BOAT) :- eight(BOAT).
+sweep_boat(BOAT) :- fourplus(BOAT).
+sweep_boat(BOAT) :- fourminus(BOAT).
+sweep_boat(BOAT) :- pair(BOAT).
+
+scull_boat(BOAT) :- quad(BOAT).
+scull_boat(BOAT) :- double(BOAT).
+scull_boat(BOAT) :- single(BOAT).
+
 %%% ========================================================== %%%
 %% The actual scheduling algorithm. Short and simple, huh?
 %% DO NOT MODIFY ANYTHING BELOW THIS LINE!

@@ -19,6 +19,7 @@
 
 % -- List of boat classes.
 #include "trc_boats.asp".
+#include "trc_oars.asp".
 
 % -- Special boats for this race.
 pair(borrowed_pair).
@@ -199,3 +200,6 @@ request(224, mari, thrash). % & feesh
 %%% ========================== %%%
 
 #include "solver.asp".
+#include "oar_solver.asp"
+
+% Every boat reservation must have an oar reservation

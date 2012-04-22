@@ -15,6 +15,10 @@
 % The GNU GPLv3 applies.
 %
 
+% Two fundamental oar classes; we need this for consistent reservations.
+oars(OARS) :- sweep_oars(OARS).
+oars(OARS) :- scull_oars(OARS).
+
 %%% ========================================================== %%%
 %% The actual scheduling algorithm. Short and simple, huh?
 %% DO NOT MODIFY ANYTHING BELOW THIS LINE!
