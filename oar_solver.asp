@@ -1,5 +1,5 @@
 %
-% regatta team equipment scheduling
+% regatta team oara scheduling
 %
 % The problem of scheduling equipment for a regatta is a constraint
 % problem -- two crews cannot use the same boat at the same time,
@@ -22,37 +22,39 @@
 %% you probably don't.)  Just write me with questions, requests.
 %%% ========================================================== %%%
 % Below follows the core available/request/reserve logic.
+% Everything below is very identical to the boat reservation logic,
+% except that we renamed boats->oars everywhere.
 
-% A boat is available if its not in use by any crew.
-available(RACE, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
-                         not inuse(RACE, CREW, BOAT).
+% Oars are available if not in use by any crew.
+available(RACE, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
+                         not inuse(RACE, CREW, OARS).
 
-% Reserve the boat if it is requested and available.
-reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
-                             request(RACE, CREW, BOAT), 
-                             available(RACE, BOAT).
+% Reserve the oars if they are requested and available.
+reserve(RACE, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
+                             request(RACE, CREW, OARS), 
+                             available(RACE, OARS).
 
-% If a boat is reserved, then it will be in use at least CENTER races
+% If oars are reserved, then they will be in use at least CENTER races
 % beforehand. That is, the crew needs CENTER races to launch and
 % warmup before the race.
-inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
-                              reserve(RACE, CREW, BOAT), 
+inuse(ONWATER, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
+                              reserve(RACE, CREW, OARS), 
                               ONWATER = RACE - N,
                               N = 1..CENTER,
                               center(CENTER).
 
-% Cannot reserve a boat that is in use.
-:- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
-   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
+% Cannot reserve oars that are in use.
+:- reserve(RACE, CREW, OARS), inuse(RACE, OTHER_CREW, OARS),
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), oars(OARS). 
 
-% Cannot request a boat if its in use.
+% Cannot request oars if they're in use.
 % This rule isn't needed right now, comment it out. 
-% :- request(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT).
+% :- request(RACE, CREW, OARS), inuse(RACE, OTHER_CREW, OARS).
 
-% Two different crews cannot reserve same boat for the same race.
-:- reserve(RACE, CREW, BOAT), reserve(RACE, OTHER_CREW, BOAT),
+% Two different crews cannot reserve same oars for the same race.
+:- reserve(RACE, CREW, OARS), reserve(RACE, OTHER_CREW, OARS),
    CREW != OTHER_CREW,
-   racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), oars(OARS). 
 
 % ----------------------
 % Preference indication.
@@ -60,44 +62,44 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 % choice must be a number, 1 to 4.
 choice(CHOICE) :- CHOICE=1..4.
 
-% Out of a list of desired boats, choose only one boat.
-1 #count {request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) } 1.
+% Out of a list of desired oars, choose only one set.
+1 #count {request(RACE, CREW, OARS) : prefer(RACE, CREW, OARS, CHOICE) } 1.
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@1 ].
+#minimize [request(RACE, CREW, OARS) : prefer(RACE, CREW, OARS, CHOICE) = CHOICE@1 ].
 
 % ----------------------
 % Useful info.
 
-% True if boat will be hotseated at the dock.
-hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
-                       reserve(RACE-CENTER-M, OTHER_CREW, BOAT),
+% True if oars will be hotseated at the dock.
+hotseat(RACE, OARS) :- reserve(RACE, CREW, OARS), 
+                       reserve(RACE-CENTER-M, OTHER_CREW, OARS),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
-% True if crew should hurry back because boat is needed.
+% True if crew should hurry back because oars are needed.
 % Currently, not used for anything, except as a printout for the
 % convenience of the crews.
-hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                       reserve(RACE+CENTER+M, OTHER_CREW, BOAT),
+hurry_back(RACE, CREW, OARS) :- reserve(RACE, CREW, OARS), 
+                       reserve(RACE+CENTER+M, OTHER_CREW, OARS),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
-% Minimize the number of boats that are hot-seated.
+% Minimize the number of oars that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
-% 10 times more important than honoring desired boats.
-#minimize [hotseat(RACE, BOAT) @10].
+% 10 times more important than honoring desired oars.
+#minimize [hotseat(RACE, OARS) @10].
 
-% Look for a typo in the name of the boat, crew or race.
+% Look for a typo in the name of the oars, crew or race.
 % Typos can screw everything up, so flag these.
-bad_boat_name(BOAT) :- request(RACE,CREW,BOAT), not boat(BOAT).
-bad_crew_name(CREW) :- request(RACE,CREW,BOAT), not crew(CREW).
-bad_race_num(RACE) :- request(RACE,CREW,BOAT), not racenum(RACE).
-bad_preference(CHOICE) :- prefer(RACE,CREW,BOAT,CHOICE), not choice(CHOICE).
+bad_oars_name(OARS) :- request(RACE,CREW,OARS), not oars(OARS).
+bad_crew_name(CREW) :- request(RACE,CREW,OARS), not crew(CREW).
+bad_race_num(RACE) :- request(RACE,CREW,OARS), not racenum(RACE).
+bad_preference(CHOICE) :- prefer(RACE,CREW,OARS,CHOICE), not choice(CHOICE).
 
 #hide.
-#show bad_boat_name/1.
+#show bad_oars_name/1.
 #show bad_crew_name/1.
 #show bad_race_num/1.
 #show bad_preference/1.
