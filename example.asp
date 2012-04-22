@@ -63,16 +63,20 @@ hotseat_warn(1).
 :- request(RACE, juniors, black).
 
 % List boat requests.
-% Advanced crew wants one quad, any heavy-weight quad, for race 201
+% For race 201, advanced crew wants one quad, any heavy-weight quad.
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
-% Matt must have his black boat for the same race.
+% Matt must have his black boat for the same race. No if's, and's, but's.
 request(201, matt, black).
 
-% Intermediate crew wants one quad, any quad, for race 201
-1{ request(202, intermediate, BOAT) : any_quad(BOAT) }1.
+% For race 202, the intermediate crew is going to be picky: they 
+% want the green quad, and if they can't get it, then they want
+% the red, and if they can't get that, they want the orange.
+prefer(202, intermediate, green, 1).
+prefer(202, intermediate, red, 2).
+prefer(202, intermediate, orange, 3).
 
-% Juniors want 2 quads for race 206
+% For race 206, juniors want 2 quads, any two will do.
 2{ request(206, juniors, BOAT) : any_quad(BOAT) }2.
 
 
@@ -80,5 +84,5 @@ request(201, matt, black).
 %% The actual scheduling algorithm.
 %%% ========================== %%%
 
-#include " solver.asp ".
+#include "solver.asp".
 

@@ -21,6 +21,7 @@
 %% (Unless you really, really know what you're doing, and
 %% you probably don't.)  Just write me with questions, requests.
 %%% ========================================================== %%%
+% Below follows the core available/request/reserve logic.
 
 % A boat is available if its not in use by any crew.
 available(RACE, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
@@ -54,6 +55,19 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
    racenum(RACE), crew(CREW), crew(OTHER_CREW), boat(BOAT). 
 
 % ----------------------
+% Preference indication.
+
+% choice must be a number, 1 to 4.
+choice(CHOICE) :- CHOICE=1..4.
+
+% Out of a list of desired boats, choose only one boat.
+1 #count {request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) } 1.
+
+% We're going to try to honour everyone's top preferences.
+% So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
+#minimize [request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@1 ].
+
+% ----------------------
 % Useful info.
 
 % True if boat will be hotseated at the dock.
@@ -71,18 +85,22 @@ hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
                        M=1..HOTS, hotseat_warn(HOTS).
 
 % Minimize the number of boats that are hot-seated.
-#minimize [hotseat(RACE, BOAT)].
+% The @10 just means that minimizing the number of hot-seats is
+% 10 times more important than honoring desired boats.
+#minimize [hotseat(RACE, BOAT) @10].
 
 % Look for a typo in the name of the boat, crew or race.
-% typos can screw everything up, so flag these.
+% Typos can screw everything up, so flag these.
 bad_boat_name(BOAT) :- request(RACE,CREW,BOAT), not boat(BOAT).
 bad_crew_name(CREW) :- request(RACE,CREW,BOAT), not crew(CREW).
 bad_race_num(RACE) :- request(RACE,CREW,BOAT), not racenum(RACE).
+bad_preference(CHOICE) :- prefer(RACE,CREW,BOAT,CHOICE), not choice(CHOICE).
 
 #hide.
 #show bad_boat_name/1.
 #show bad_crew_name/1.
 #show bad_race_num/1.
+#show bad_preference/1.
 #show reserve/3.
 #show hotseat/2.
 #show hurry_back/3.
