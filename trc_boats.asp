@@ -45,6 +45,7 @@ lt_or_mid_quad(BOAT) :- lightweight_quad(BOAT).
 any_quad(BOAT) :- hv_or_mid_quad(BOAT).
 any_quad(BOAT) :- lt_or_mid_quad(BOAT).
 
+% --------
 hv_or_mid_double(BOAT) :- heavy_double(BOAT).
 hv_or_mid_double(BOAT) :- midweight_double(BOAT).
 
@@ -53,6 +54,17 @@ lt_or_mid_double(BOAT) :- midweight_double(BOAT).
 
 any_double(BOAT) :- hv_or_mid_double(BOAT).
 any_double(BOAT) :- lt_or_mid_double(BOAT).
+
+% --------
+hv_or_mid_single(BOAT) :- heavy_single(BOAT).
+hv_or_mid_single(BOAT) :- midweight_single(BOAT).
+
+lt_or_mid_single(BOAT) :- lightweight_single(BOAT).
+lt_or_mid_single(BOAT) :- midweight_single(BOAT).
+
+any_single(BOAT) :- hv_or_mid_single(BOAT).
+any_single(BOAT) :- lt_or_mid_single(BOAT).
+any_single(BOAT) :- flyweight_single(BOAT).
 
 % --- Describe the boats, according to boat class.
 % Kaitlin is a heavy 8, Sophie a mid-weight.

@@ -30,7 +30,25 @@ double(private_double).
 % No one is going to race the maas.
 :- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
 
+% --- Name the rowers.
+rower(bolton).
+rower(connie_a).
+rower(connie_h).
+rower(cullicott).
+rower(ellis).
+rower(feicht).
+rower(gates).
+rower(jeff).
+rower(linas).
+rower(lynch).
+rower(mari).
+rower(matt).
+rower(oppliger).
+rower(sarah).
+rower(sue).
+
 % --- Describe crew types.
+crew(PERSON) :- rower(PERSON).
 crew(juniors).
 crew(juniors_a).
 crew(juniors_b).
@@ -47,16 +65,6 @@ crew(intermediate_b).
 crew(intermediate_c).
 crew(intermediate_d).
 crew(novice).
-crew(connie_a).
-crew(connie_h).
-crew(jeff).
-crew(ken).
-crew(linas).
-crew(mari).
-crew(matt).
-crew(sarah).
-crew(sue).
-crew(wade).
 
 % --- List the races
 racenum(NUM) :- NUM=101..116.   % Saturday.
@@ -99,8 +107,15 @@ hotseat_warn(2).
 request(202, intermediate, beverly).
 
 %- 203	  	Mens Masters 1x
-request(203, wade, dunya).
+% 1{ request(203, bolton, BOAT) : any_single(BOAT) }1.
+% Ellis has own, private boat, not assigning.
+% 1{ request(203, ellis, BOAT) : any_single(BOAT) }1.
+1{ request(203, feicht, BOAT) : any_single(BOAT) }1.
+1{ request(203, gates, BOAT) : heavy_single(BOAT) }1.
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
+% Lynch has own private boat, we're not assigning...
+% 1{ request(203, lynch, BOAT) : any_single(BOAT) }1.
+prefer(203, oppliger, dunya, 1).
 
 %- 204	  	Mens Jr 8+
 request(204, juniors, sophie).
@@ -172,8 +187,8 @@ request(224, mari, thrash). % & feesh
 %- 228	  	Mens Masters 8+
 %- 229	  	Mixed Masters 2x
 1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie_h
-1{ request(229, ken, BOAT) : heavy_double(BOAT) }1.  % & connie_a
-:- reserve(229, ken, maas).  % No way that Ken gets the maas.
+1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie_a
+:- reserve(229, gates, maas).  % No way that Ken gets the maas.
 %- 230	  	Womens Masters 4+
 2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
 %- 231	  	Womens Jr 8+
