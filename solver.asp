@@ -37,6 +37,11 @@ scull_boat(BOAT) :- single(BOAT).
 %% (Unless you really, really know what you're doing, and
 %% you probably don't.)  Just write me with questions, requests.
 %%% ========================================================== %%%
+
+% Some priority assignments:
+boat_hotseat_priority(10).  % top priority
+boat_choice_priority(8).  % 2nd highest priority
+
 % Below follows the core available/request/reserve logic.
 
 % A boat is available if its not in use by any crew.
@@ -84,7 +89,7 @@ choice(CHOICE) :- CHOICE=1..4.
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@1 ].
+#minimize [request(RACE, CREW, BOAT) : boat_choice_priority(BCP) : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@BCP ].
 
 % ----------------------
 % Useful info.
@@ -105,8 +110,9 @@ hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 
 % Minimize the number of boats that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
-% 10 times more important than honoring desired boats.
-#minimize [hotseat(RACE, BOAT) @10].
+% top priority -- higher priority than honoring desired boats.
+#minimize [hotseat(RACE, BOAT) @BHP : boat_hotseat_priority(BHP)].
+
 
 % Look for a typo in the name of the boat, crew or race.
 % Typos can screw everything up, so flag these.
