@@ -62,19 +62,42 @@ oar_inuse(ONWATER, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
 
 % ----------------------
 % Preference indication.
-% XXX WARNING XXX rservation will seem to mysteriously fail if the
-% atom "oar_prefer" does not occur at least once, somwhere in the race
-% description. This may come as a surprise: you've been warned.
 
 % choice must be a number, 1 to 4.
-choice(CHOICE) :- CHOICE=1..4.
+oar_choice(CHOICE) :- CHOICE=1..4.
 
-% Out of a list of desired oars, choose only one set.
-1 #count {oar_request(RACE, CREW, OARS) : oar_prefer(RACE, CREW, OARS, CHOICE) } 1.
+% The total universe of all possible oar assignments, to a given
+% crew and race.  In this universe, only one oar is ever assigned.
+1 { oar_universe(RACE, CREW, OARS) : oars(OARS) } 1 :-
+   crew(CREW), racenum(RACE).
 
-% We're going to try to honour everyone's top oar_preferences.
+% Out of a list of desired oars, choose only one set of oars.
+oar_request(RACE, CREW, OARS) :- oar_prefer(RACE, CREW, OARS, CHOICE),
+                                 oar_universe(RACE, CREW, OARS).
+
+% A crew got oars if it has a reservation.
+got_oars(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
+
+% We sure want every oar request to be granted. Must flag any crews
+% that got boats, but we can't find them oars.
+% This flag must be highly visible.
+oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
+                                       not got_oars(RACE, CREW).
+
+% The above rules do allow a situation where some crews can't get
+% a oar.  Thus, we have to maximize for number of reservations
+% granted.  This must be at the highest priority, higher than the
+% hot-seat avoidance priority.
+#minimize [oar_reservation_failure(RACE, CREW)
+                   : oar_reserve_priority(ORP)
+                   : racenum(RACE)
+                   : crew(CREW) @ORP ].
+
+% We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [oar_request(RACE, CREW, OARS) : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@1 ].
+#minimize [oar_request(RACE, CREW, OARS)
+                : oar_choice_priority(OCP)
+                : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@sOCP ].
 
 % ----------------------
 % Useful info.
