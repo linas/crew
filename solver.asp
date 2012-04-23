@@ -39,8 +39,9 @@ scull_boat(BOAT) :- single(BOAT).
 %%% ========================================================== %%%
 
 % Some priority assignments:
-boat_hotseat_priority(10).  % top priority
-boat_choice_priority(8).  % 2nd highest priority
+boat_reserve_priority(12). % top priority
+boat_hotseat_priority(10).  % 2nd priority
+boat_choice_priority(8).  % 3rd highest priority
 
 % Below follows the core available/request/reserve logic.
 
@@ -92,6 +93,15 @@ choice(CHOICE) :- CHOICE=1..4.
 % Out of a list of desired boats, choose only one boat.
 request(RACE, CREW, BOAT) :- prefer(RACE, CREW, BOAT, CHOICE),
                              boat_universe(RACE, CREW, BOAT).
+
+% The above rules do allow a situation where some crews can't get
+% a boat.  Thus, we have to maximize for number of reservations
+% granted.  This must be at the highest priority, higher than the
+% hot-seat avoidance priority.
+#maximize [reserve(RACE, CREW, BOAT) : boat_reserve_priority(BRP)
+                                     : racenum(RACE)
+                                     : crew(CREW)
+                                     : boat(BOAT) @BRP ].
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
