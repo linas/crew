@@ -40,8 +40,11 @@ scull_boat(BOAT) :- single(BOAT).
 
 % Some priority assignments:
 boat_reserve_priority(12). % top priority
-boat_hotseat_priority(10).  % 2nd priority
-boat_choice_priority(8).  % 3rd highest priority
+oar_reserve_priority(11).  % 2nd highest priority
+boat_hotseat_priority(10). % 3rd priority
+oar_hotseat_priority(9).   % 4th priority
+boat_choice_priority(8).
+oar_choice_priority(7).
 
 % Below follows the core available/request/reserve logic.
 
@@ -78,9 +81,6 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 
 % ----------------------
 % Preference indication.
-% XXX WARNING XXX rservation will seem to mysteriously fail if the
-% atom "prefer" does not occur at least once, somwhere in the race
-% description. This may come as a surprise: you've been warned.
 
 % choice must be a number, 1 to 4.
 choice(CHOICE) :- CHOICE=1..4.

@@ -114,6 +114,8 @@ Other reasons for getting "UNSATISFIABLE" are typos in the list of
 boats or oars.  Typos will confuse the program.  Review the data,
 pay close attention to the spelling.
 
+The program does try to find typos, it will print "bad_boat_name" or
+"bad_crew_name", etc. if it found some.
 
 That's all for now, folks!
 

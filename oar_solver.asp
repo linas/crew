@@ -25,9 +25,10 @@ oars(OARS) :- scull_oars(OARS).
 %% (Unless you really, really know what you're doing, and
 %% you probably don't.)  Just write me with questions, requests.
 %%% ========================================================== %%%
-% Below follows the core oavailable/request/reserve logic.
-% Everything below is very identical to the boat reservation logic,
-% except that we renamed boats->oars everywhere.
+% Below follows the core oar available/request/reserve logic.
+% Everything below is almost identical to the boat reservation logic,
+% except that we renamed boats->oars everywhere, and an oar reservation
+% failure is only declared when a boat has been assigned (but not oars).
 
 % Oars are available if not in use by any crew.
 oar_available(RACE, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
@@ -97,7 +98,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
 #minimize [oar_request(RACE, CREW, OARS)
                 : oar_choice_priority(OCP)
-                : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@sOCP ].
+                : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@OCP ].
 
 % ----------------------
 % Useful info.
@@ -119,7 +120,8 @@ oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS),
 % Minimize the number of oars that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
 % 10 times more important than honoring desired oars.
-#minimize [oar_hotseat(RACE, OARS) @10].
+#minimize [oar_hotseat(RACE, OARS) @OHP : oar_hotseat_priority(OHP)].
+
 
 % Look for a typo in the name of the oars, crew or race.
 % Typos can screw everything up, so flag these.
@@ -128,9 +130,8 @@ bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
 bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
 bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOICE).
 
+#show oar_reservation_failure/2.
 #show bad_oars_name/1.
-#show bad_crew_name/1.
-#show bad_race_num/1.
 #show bad_oar_preference/1.
 #show oar_reserve/3.
 #show oar_hotseat/2.
