@@ -84,8 +84,14 @@ inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 % choice must be a number, 1 to 4.
 choice(CHOICE) :- CHOICE=1..4.
 
+% The total universe of all possible boat assignments, to a given
+% crew and race.  In this universe, only one boat is ever assigned.
+1 { boat_universe(RACE, CREW, BOAT) : boat(BOAT) } 1 :-
+   crew(CREW), racenum(RACE).
+
 % Out of a list of desired boats, choose only one boat.
-1 #count {request(RACE, CREW, BOAT) : prefer(RACE, CREW, BOAT, CHOICE) } 1.
+request(RACE, CREW, BOAT) :- prefer(RACE, CREW, BOAT, CHOICE),
+                             boat_universe(RACE, CREW, BOAT).
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
