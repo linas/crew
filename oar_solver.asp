@@ -73,22 +73,23 @@ oar_inuse(ONWATER, CREW, OARS, PAIR) :- racenum(RACE), crew(CREW),
 
 % ----------------------
 % Preference indication.
-% XXXXXXXXXXXXXXXXXXXXXXXXXXXXxx all wrong right now....
 
 % choice must be a number, 1 to 4.
 oar_choice(CHOICE) :- CHOICE=1..4.
 
 % The total universe of all possible oar assignments, to a given
-% crew and race.  In this universe, only one oar is ever assigned.
-1 { oar_universe(RACE, CREW, OARS) : oarpair(OARS) } 1 :-
-   crew(CREW), racenum(RACE).
+% crew and race.  In this universe, 1,2,3 or 4 pairs of oars of
+% some given type may be assigned.  However, all must belong to
+% the same set.
+1 { oar_universe(RACE, CREW, OARS, PAIR) : oarpair(OARS, PAIR) } 4 :-
+   crew(CREW), racenum(RACE), oars(OARS).
 
-% Out of a list of desired oarpair, choose only one set of oarpair.
-oar_request(RACE, CREW, OARS) :- oar_prefer(RACE, CREW, OARS, CHOICE),
-                                 oar_universe(RACE, CREW, OARS).
+% Out of a list of desired oars, choose only one set of oars.
+oar_request(RACE, CREW, OARS, PAIR) :- oar_prefer(RACE, CREW, OARS, CHOICE),
+                                       oar_universe(RACE, CREW, OARS, PAIR).
 
-% A crew got oarpair if it has a reservation.
-got_oarpair(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
+% A crew got oars if it has a reservation.
+got_oarpair(RACE, CREW) :- oar_reserve(RACE, CREW, OARS, PAIR).
 
 % We sure want every oar request to be granted. Must flag any crews
 % that got boats, but we can't find them oarpair.
@@ -97,7 +98,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
                                        not got_oarpair(RACE, CREW).
 
 % The above rules do allow a situation where some crews can't get
-% a oar.  Thus, we have to maximize for number of reservations
+% oars.  Thus, we have to maximize for number of reservations
 % granted.  This must be at the highest priority, higher than the
 % hot-seat avoidance priority.
 #minimize [oar_reservation_failure(RACE, CREW)
@@ -107,7 +108,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [oar_request(RACE, CREW, OARS)
+#minimize [oar_request(RACE, CREW, OARS, PAIR)
                 : oar_choice_priority(OCP)
                 : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@OCP ].
 
@@ -116,38 +117,40 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 % If a crew did not express an oar choice, make a request for them,
 % ask for something, anything.
 expressed_oar_pref(RACE, CREW) :- oar_prefer(RACE, CREW, OARS, CHOICE).
-oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
+oar_request(RACE, CREW, OARS, PAIR) :- got_a_boat(RACE, CREW),
                                  not expressed_oar_pref(RACE, CREW),
-                                 oar_universe(RACE, CREW, OARS).
+                                 oar_universe(RACE, CREW, OARS, PAIR).
 
 % ----------------------
 % Useful info.
 
 % True if oarpair will be hotseated at the dock.
-oar_hotseat(RACE, OARS) :- oar_reserve(RACE, CREW, OARS), 
-                       oar_reserve(RACE-CENTER-M, OTHER_CREW, OARS),
+oar_hotseat(RACE, OARS) :- oar_reserve(RACE, CREW, OARS, PAIR), 
+                       oar_reserve(RACE-CENTER-M, OTHER_CREW, OARS, PAIR),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
 % True if crew should hurry back because oarpair are needed.
 % Currently, not used for anything, except as a printout for the
 % convenience of the crews.
-oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS), 
-                       oar_reserve(RACE+CENTER+M, OTHER_CREW, OARS),
+oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS, PAIR), 
+                       oar_reserve(RACE+CENTER+M, OTHER_CREW, OARS, PAIR),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
-% Minimize the number of oarpair that are hot-seated.
-% The @10 just means that minimizing the number of hot-seats is
-% 10 times more important than honoring desired oarpair.
+% Minimize the number of oars that are hot-seated.
 #minimize [oar_hotseat(RACE, OARS) @OHP : oar_hotseat_priority(OHP)].
 
 
 % Look for a typo in the name of the oarpair, crew or race.
 % Typos can screw everything up, so flag these.
-bad_oarpair_name(OARS) :- oar_request(RACE,CREW,OARS), not oarpair(OARS).
-bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
-bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
+bad_oar_name(OARS) :- oar_request(RACE,CREW,OARS,PAIR), not oars(OARS).
+bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS,PAIR), not crew(CREW).
+bad_race_num(RACE) :- oar_request(RACE,CREW,OARS,PAIR), not racenum(RACE).
+
+bad_oar_name(OARS) :- oar_prefer(RACE,CREW,OARS,CHOICE), not oars(OARS).
+bad_crew_name(CREW) :- oar_prefer(RACE,CREW,OARS,CHOICE), not crew(CREW).
+bad_race_num(RACE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not racenum(RACE).
 bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOICE).
 
 #show oar_reservation_failure/2.
