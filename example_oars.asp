@@ -16,13 +16,16 @@
 #include "example.asp".
 
 % -- Describe oars
-sweep_oars(orange).
+% There are 4 pairs of orange oars
+sweep_oars(orange, 4).
 
-scull_oars(purple_yellow).
-scull_oars(purple_red).
-scull_oars(red_green).
-scull_oars(red_yellow).
-scull_oars(blue_blue).
+% And 4 pairs of all the other oars, except blue_blue, of which we
+% have just 3 pairs (one pair is broken).
+scull_oars(purple_yellow, 4).
+scull_oars(purple_red, 4).
+scull_oars(red_green, 4).
+scull_oars(red_yellow, 4).
+scull_oars(blue_blue, 3).
 
 % List oars requests.
 oar_prefer(201, matt, purple_yellow, 1).

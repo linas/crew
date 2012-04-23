@@ -16,8 +16,12 @@
 %
 
 % Two fundamental oar classes; we need this for consistent reservations.
-oars(OARS) :- sweep_oars(OARS).
-oars(OARS) :- scull_oars(OARS).
+oars(OARS, COUNT) :- sweep_oars(OARS, COUNT).
+oars(OARS, COUNT) :- scull_oars(OARS, COUNT).
+
+% Enumerate all possible pairs of oars, given the declaration,
+% and the count of how many pairs there are.
+oarpair(OARS, PAIR) :- oars(OARS, COUNT), PAIR=1..COUNT.
 
 %%% ========================================================== %%%
 %% The actual scheduling algorithm. Short and simple, huh?
@@ -27,63 +31,70 @@ oars(OARS) :- scull_oars(OARS).
 %%% ========================================================== %%%
 % Below follows the core oar available/request/reserve logic.
 % Everything below is almost identical to the boat reservation logic,
-% except that we renamed boats->oars everywhere, and an oar reservation
+% except that we renamed boats->oarpair everywhere, and an oar reservation
 % failure is only declared when a boat has been assigned (but not oars).
+% oarpairs have two arguments, not one.
 
 % Oars are available if not in use by any crew.
-oar_available(RACE, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
-                         not oar_inuse(RACE, CREW, OARS).
+oar_available(RACE, OARS, PAIR) :- racenum(RACE), crew(CREW),
+                                   oarpair(OARS, PAIR),
+                                   not oar_inuse(RACE, CREW, OARS, PAIR).
 
-% Reserve the oars if they are requested and available.
-oar_reserve(RACE, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
-                             oar_request(RACE, CREW, OARS), 
-                             oar_available(RACE, OARS).
+% Reserve the oarpair if they are requested and available.
+oar_reserve(RACE, CREW, OARS, PAIR) :- racenum(RACE), crew(CREW),
+                                       oarpair(OARS, PAIR),
+                                       oar_request(RACE, CREW, OARS), 
+                                       oar_available(RACE, OARS, PAIR).
 
-% If oars are reserved, then they will be in use at least CENTER races
+% If oarpair are reserved, then they will be in use at least CENTER races
 % beforehand. That is, the crew needs CENTER races to launch and
 % warmup before the race.
-oar_inuse(ONWATER, CREW, OARS) :- racenum(RACE), crew(CREW), oars(OARS),
-                              oar_reserve(RACE, CREW, OARS), 
-                              ONWATER = RACE - N,
-                              N = 1..CENTER,
-                              center(CENTER).
+oar_inuse(ONWATER, CREW, OARS, PAIR) :- racenum(RACE), crew(CREW),
+                                        oarpair(OARS, PAIR),
+                                        oar_reserve(RACE, CREW, OARS, PAIR), 
+                                        ONWATER = RACE - N,
+                                        N = 1..CENTER,
+                                        center(CENTER).
 
 % Cannot reserve oars that are in use.
-:- oar_reserve(RACE, CREW, OARS), oar_inuse(RACE, OTHER_CREW, OARS),
-   racenum(RACE), crew(CREW), crew(OTHER_CREW), oars(OARS). 
+:- oar_reserve(RACE, CREW, OARS, PAIR),
+   oar_inuse(RACE, OTHER_CREW, OARS, PAIR),
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), oarpair(OARS, PAIR). 
 
 % Cannot request oars if they're in use.
 % This rule isn't needed right now, comment it out. 
-% :- oar_request(RACE, CREW, OARS), oar_inuse(RACE, OTHER_CREW, OARS).
+% :- oar_request(RACE, CREW, OARS), oar_inuse(RACE, OTHER_CREW, OARS, PAIR).
 
 % Two different crews cannot reserve same oars for the same race.
-:- oar_reserve(RACE, CREW, OARS), oar_reserve(RACE, OTHER_CREW, OARS),
+:- oar_reserve(RACE, CREW, OARS, PAIR), 
+   oar_reserve(RACE, OTHER_CREW, OARS, PAIR),
    CREW != OTHER_CREW,
-   racenum(RACE), crew(CREW), crew(OTHER_CREW), oars(OARS). 
+   racenum(RACE), crew(CREW), crew(OTHER_CREW), oarpair(OARS, PAIR). 
 
 % ----------------------
 % Preference indication.
+% XXXXXXXXXXXXXXXXXXXXXXXXXXXXxx all wrong right now....
 
 % choice must be a number, 1 to 4.
 oar_choice(CHOICE) :- CHOICE=1..4.
 
 % The total universe of all possible oar assignments, to a given
 % crew and race.  In this universe, only one oar is ever assigned.
-1 { oar_universe(RACE, CREW, OARS) : oars(OARS) } 1 :-
+1 { oar_universe(RACE, CREW, OARS) : oarpair(OARS) } 1 :-
    crew(CREW), racenum(RACE).
 
-% Out of a list of desired oars, choose only one set of oars.
+% Out of a list of desired oarpair, choose only one set of oarpair.
 oar_request(RACE, CREW, OARS) :- oar_prefer(RACE, CREW, OARS, CHOICE),
                                  oar_universe(RACE, CREW, OARS).
 
-% A crew got oars if it has a reservation.
-got_oars(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
+% A crew got oarpair if it has a reservation.
+got_oarpair(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
 
 % We sure want every oar request to be granted. Must flag any crews
-% that got boats, but we can't find them oars.
+% that got boats, but we can't find them oarpair.
 % This flag must be highly visible.
 oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
-                                       not got_oars(RACE, CREW).
+                                       not got_oarpair(RACE, CREW).
 
 % The above rules do allow a situation where some crews can't get
 % a oar.  Thus, we have to maximize for number of reservations
@@ -112,13 +123,13 @@ oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
 % ----------------------
 % Useful info.
 
-% True if oars will be hotseated at the dock.
+% True if oarpair will be hotseated at the dock.
 oar_hotseat(RACE, OARS) :- oar_reserve(RACE, CREW, OARS), 
                        oar_reserve(RACE-CENTER-M, OTHER_CREW, OARS),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
-% True if crew should hurry back because oars are needed.
+% True if crew should hurry back because oarpair are needed.
 % Currently, not used for anything, except as a printout for the
 % convenience of the crews.
 oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS), 
@@ -126,21 +137,21 @@ oar_hurry_back(RACE, CREW, OARS) :- oar_reserve(RACE, CREW, OARS),
                        center(CENTER),
                        M=1..HOTS, hotseat_warn(HOTS).
 
-% Minimize the number of oars that are hot-seated.
+% Minimize the number of oarpair that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
-% 10 times more important than honoring desired oars.
+% 10 times more important than honoring desired oarpair.
 #minimize [oar_hotseat(RACE, OARS) @OHP : oar_hotseat_priority(OHP)].
 
 
-% Look for a typo in the name of the oars, crew or race.
+% Look for a typo in the name of the oarpair, crew or race.
 % Typos can screw everything up, so flag these.
-bad_oars_name(OARS) :- oar_request(RACE,CREW,OARS), not oars(OARS).
+bad_oarpair_name(OARS) :- oar_request(RACE,CREW,OARS), not oarpair(OARS).
 bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
 bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
 bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOICE).
 
 #show oar_reservation_failure/2.
-#show bad_oars_name/1.
+#show bad_oarpair_name/1.
 #show bad_oar_preference/1.
 #show oar_reserve/3.
 #show oar_hotseat/2.
