@@ -93,17 +93,15 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
 % choice must be a number, 1 to 4.
 oar_choice(CHOICE) :- CHOICE=1..4.
 
-% The total universe of all possible oar assignments, to a given
-% crew and race.  In this universe, 1,2,3 or 4 pairs of oars of
-% some given type may be assigned.  However, all must belong to
-% the same set.
-1 { oar_universe(RACE, CREW, OARS, TYPE, PAIR) : oarpair(OARS, TYPE, PAIR) } COUNT :-
-   crew(CREW), racenum(RACE), oars(OARS, TYPE, COUNT).
+% The total universe of all possible oar-set assignments, to a given
+% crew and race.  This does not count how many, or the types.
+1 { oar_universe(RACE, CREW, OARS) : oars(OARS, TYPE, COUNT) } 1 :-
+   crew(CREW), racenum(RACE).
 
 % Out of a list of desired oars, choose only one set of oars.
 oar_request(RACE, CREW, OARS) :-
              oar_prefer(RACE, CREW, OARS, CHOICE),
-             oar_universe(RACE, CREW, OARS, TYPE, PAIR).
+             oar_universe(RACE, CREW, OARS).
 
 % A crew has a reservation if it has one or more oar pairs.
 oar_reserve(RACE, CREW, OARS) :-
@@ -140,7 +138,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 expressed_oar_pref(RACE, CREW) :- oar_prefer(RACE, CREW, OARS, CHOICE).
 oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
                                  not expressed_oar_pref(RACE, CREW),
-                                 oar_universe(RACE, CREW, OARS, TYPE, PAIR).
+                                 oar_universe(RACE, CREW, OARS).
 
 % ----------------------
 % Useful info.
