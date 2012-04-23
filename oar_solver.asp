@@ -105,8 +105,9 @@ oar_request(RACE, CREW, OARS) :-
              oar_prefer(RACE, CREW, OARS, CHOICE),
              oar_universe(RACE, CREW, OARS, TYPE, PAIR).
 
-% A crew has a rservation if it has one or more oar pairs.
-oar_reserve(RACE, CREW, OARS) :- oarpair_reserve(RACE, CREW, OARS, PAIR).
+% A crew has a reservation if it has one or more oar pairs.
+oar_reserve(RACE, CREW, OARS) :-
+             oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR).
 
 % A crew got oars if it has a reservation.
 got_oars(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
@@ -128,7 +129,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [oar_request(RACE, CREW, OARS, PAIR)
+#minimize [oar_request(RACE, CREW, OARS)
                 : oar_choice_priority(OCP)
                 : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@OCP ].
 
@@ -167,9 +168,9 @@ oar_hurry_back(RACE, CREW, OARS) :-
 % Look for a typo in the name of the oarpair, crew or race.
 % Typos can screw everything up, so flag these.
 % fixme, use some kind of aggregate.
-% bad_oar_count(OARS) :- oars(OARS,COUNT), not COUNT=1..8.
+% bad_oar_count(OARS) :- oars(OARS,TYPE,COUNT), not COUNT=1..8.
 
-oarname(OARS) :- oars(OARS,COUNT).
+oarname(OARS) :- oars(OARS, TYPE, COUNT).
 bad_oar_name(OARS) :- oar_request(RACE,CREW,OARS), not oarname(OARS).
 bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
 bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
@@ -183,7 +184,7 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show bad_oar_count/1.
 #show bad_oar_name/1.
 #show bad_oar_preference/1.
-#show oarpair_reserve/4.
+#show oarpair_reserve/5.
 % #show oar_reserve/3.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
