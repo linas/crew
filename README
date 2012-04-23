@@ -93,35 +93,26 @@ Running
    'head2012.asp'.  Edit this file, and describe the crews and the
    equipment requests.
 
- * Run the software.  To list one possible set of boat assignments
-   (if any):
+ * Run the software.  To list one possible set of boat assignments:
 
        clingo  head2102.asp
-
-   If its not possible to satisfy all the requests, the program will
-   print UNSATISFIABLE.
-
-   To list multiple different boat assignments (4, in this example,
-   assuming that there are any at all), enter this:
-
-       clingo 4 head2012.asp
 
  * Typically, ther may be thousands of different boat assignments.  In
    this case, it is probably worth the effort to tighten up boat
    requests, to give certain crews priority for certain boats; this way,
    one can work towards getting everybody what they want.
 
-   If the program keeps printing "UNSATISFIABLE", then either: you need
-   to get more boats, e.g. borrow one, or deny one or more of the
-   requests, hopefully freeing things up.  In a very extreme case, try
-   reducing the time between races: but this is dangerous, as it may
-   not give the next crew enough time to warm up.  If you reduce the
-   center, then raise the hotseat_warn time, so that crews will still
-   get adequate warnings of needing to hurry back to the dock, etc.
-   
-   If everything looks OK, and you're still getting "UNSATISFIABLE",
-   then there's a bug somehwere in your boat lists and/or equipment
-   requests.  Review.
+Errors
+------
+There shouldn't be any :-)
+
+If the program prints "UNSATISFIABLE", this is probably because no
+boat choice preferences were indicated.  The keyword "prefer" must be
+used at least once, somewhere, in the list of boat requests.
+
+Other reasons for getting "UNSATISFIABLE" are typos in the list of 
+boats or oars.  Typos will confuse the program.  Review the data,
+pay close attention to the spelling.
 
 
 That's all for now, folks!
