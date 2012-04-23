@@ -26,7 +26,7 @@ The output should resemble the following:
    reserve(201,advanced,revere)
    boat_reservation_failure(202,intermediate)
    boat_reservation_failure(203,intermediate) 
-   Optimization: 8 0 0 
+   Optimization: 2 0 0 
 
    Answer: 2
    reserve(201,matt,black)
@@ -35,44 +35,50 @@ The output should resemble the following:
    reserve(202,intermediate,green)
    boat_reservation_failure(203,intermediate)
    hotseat(206,orange) hurry_back(201,advanced,orange) 
-   Optimization: 7 1 1 
+   Optimization: 1 1 1 
    OPTIMUM FOUND
 
 
-
 The above states that two different reservations were found, labelled
-"Answer: 1" and "Answer: 2".  The first answer requires a hotseat of
-the orange quad; the second requires no hot-seating.
+"Answer: 1" and "Answer: 2".  In both cases, the intermediate crew 
+cannot get a boat for race 203, there are simply not enough boats.
+In the first answer, the intermediate crew can't get a boat for race
+202 also, whereas in the 2nd answer, there is a solution with a hot-seat
+of the orange quad; the second requires no hot-seating.  Lets review
+these in detail:
 
 In the first answer, the juniors get two quads for race 206: the
-heavyweight orange and the heavyweight revere.  Since the advanced
-crew got orange for race 201, this will have to be hot-seated.  Matt
-gets the black quad for race 201.  And so on.  The "hurry_back"
-note is printed for convenience: it reminds the crew in race 201
-that they need to hurry back to the hotseat dock.
+heavyweight orange and the midweight green. Matt gets the black boat
+for race 201, and the advanced crew gets the revere, also for race 201.
+The line "Optimization 2 0 0" states that there were 2 boat request
+failures (intermediate crew didn't get boats for races 202 and 203).
+The next 0 means there were no hot-seats in this solution, and the
+last 0 means all boat-choice requests were honored (i.e. everyone got
+their 1st choice of boating, except the crews that got none.)
 
-The line "Optimization: 1" states that the answer above required one
-hot-seat.  One can do better, since there are plenty of quads to
-go around.  The second answer requires no hot-seating, and indeed,
-that's what it claims when it says: "Optimization: 0"
+In the second answer, the intermediate crew finally does get a boat
+for race 202, but still looses in race 203.  The trick here is that
+"revere" will have to be hot-seated.  The "hurry_back" note is printed
+for convenience: it reminds the crew in race 201 that they need to
+hurry back to the hotseat dock.  The "hotseat" note reminds that
+race 206 will be hot-seating the boat that hurried back.
 
-In the above, only one optimal boat assignment was printed. In fact,
-there may be more.  To print all of them:
+The line "Optimization: 1 1 1" states that, this time, there was only
+1 reservation failure. It also states that there is 1 hot-seat required.
+Finally, it states that there is 1 crew that did not get their top
+choice of boat picks. Too bad.
 
-   clingo --opt-all example.asp
+The system will *always* try to seat as many crews as possible, even
+if this requires lots of hotseats, and if some crews don't get the 
+boats they wanted.  The "best" answer is always printed last.
 
-For the example given, there are in fact 6 different reservations that
-don't require hot seating.  Thus, if one wishes, one can now get pickier
-with boat assignments: one may edit the example, and request specific
-boats for specific crews, or disallow certain crews from using certain
-boats, etc.  Doing so may result in more and more hotseats being required,
-or there may be no answers at all.  In the last case, the program will
-print 
-
-   UNSATISFIABLE
-
-All that one can do at this point is scratch equipment requests, until
-a usable reservation is found.
+There may be thousands of different possible seatings.  These can be
+narrowed down by letting the crews get picky with what boats they want.
+One can also disallow certain crews from using certain boats, etc.
+Doing so may result in more and more hotseats being required.  
+It is also possible to make firm reservations that are always granted,
+no matter what enyone else wants.  However, doing this may result in
+some crews not getting to race.
 
 
 Running
