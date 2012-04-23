@@ -184,10 +184,10 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show bad_oar_count/1.
 #show bad_oar_name/1.
 #show bad_oar_preference/1.
-#show oarpair_reserve/5.
-% #show oar_reserve/3.
+% #show oarpair_reserve/5.
+#show oar_reserve/3.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
 % #show oar_request/3.
-% #show oar_inuse/2.
-% #show oar_available/2.
+% #show oarpair_inuse/5.
+% #show oarpair_available/4.
