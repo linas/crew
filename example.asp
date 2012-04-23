@@ -21,9 +21,9 @@ quad(BOAT) :- midweight_quad(BOAT).
 quad(BOAT) :- lightweight_quad(BOAT).
 
 % --- Generic boat classes. Can add new classes here, as desired.
-% For example, a "mid or heavy" class might be useful.
-mid_or_lt_quad(BOAT) :- midweight_quad(BOAT).
-mid_or_lt_quad(BOAT) :- lightweight_quad(BOAT).
+% For example, a "mid or light" class might be useful.
+mid_or_hv_quad(BOAT) :- midweight_quad(BOAT).
+mid_or_hv_quad(BOAT) :- heavy_quad(BOAT).
 
 % --- Describe the boats, according to boat class.
 heavy_quad(orange).
@@ -74,17 +74,23 @@ reserve(201, matt, black).
 
 % For race 202, the intermediate crew is going to be picky: they 
 % want the green quad, and if they can't get it, then they want
-% the red, and if they can't get that, they want the orange.
+% the orange, and if they can't get that, they want the black.
 prefer(202, intermediate, green, 1).
-prefer(202, intermediate, red, 2).
-prefer(202, intermediate, orange, 3).
+prefer(202, intermediate, orange, 2).
+prefer(202, intermediate, black, 3).
 
 % CAUTION/WARNING: reservation will fail, unless the keyword "prefer" is
 % used at least once, somewhere, in the system.  It will fail even if
 % everything else seems to be just fine.  You've been warned!
 
-% For race 206, juniors want 2 quads, any two mid or lightwieghts will do.
-2{ request(206, juniors, BOAT) : mid_or_lt_quad(BOAT) }2.
+% For race 203, the intermediate crew wants the black boat. But of course
+% they can't have it, since matt is using it (see above). So, the request
+% below will result in a reservation failure.  This will be printed in
+% the output.
+prefer(203, intermediate, black, 1).
+
+% For race 206, juniors want 2 quads, any two mid or heavyweights will do.
+2{ request(206, juniors, BOAT) : mid_or_hv_quad(BOAT) }2.
 
 
 %%% ========================== %%%

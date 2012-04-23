@@ -21,17 +21,24 @@ command line:
 
 The output should resemble the following:
    Answer: 1
-   reserve(206,juniors,revere) reserve(206,juniors,orange)
-   reserve(202,intermediate,red) reserve(201,advanced,orange)
    reserve(201,matt,black)
-   hotseat(206,orange) hurry_back(201,advanced,orange) 
-   Optimization: 1 
+   reserve(206,juniors,green) reserve(206,juniors,orange)
+   reserve(201,advanced,revere)
+   boat_reservation_failure(202,intermediate)
+   boat_reservation_failure(203,intermediate) 
+   Optimization: 8 0 0 
+
    Answer: 2
-   reserve(206,juniors,revere) reserve(206,juniors,green)
-   reserve(202,intermediate,red) reserve(201,advanced,orange)
-   reserve(201,matt,black) 
-   Optimization: 0 
+   reserve(201,matt,black)
+   reserve(206,juniors,revere) reserve(206,juniors,orange)
+   reserve(201,advanced,orange)
+   reserve(202,intermediate,green)
+   boat_reservation_failure(203,intermediate)
+   hotseat(206,orange) hurry_back(201,advanced,orange) 
+   Optimization: 7 1 1 
    OPTIMUM FOUND
+
+
 
 The above states that two different reservations were found, labelled
 "Answer: 1" and "Answer: 2".  The first answer requires a hotseat of

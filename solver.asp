@@ -94,18 +94,34 @@ choice(CHOICE) :- CHOICE=1..4.
 request(RACE, CREW, BOAT) :- prefer(RACE, CREW, BOAT, CHOICE),
                              boat_universe(RACE, CREW, BOAT).
 
+% A crew wants to race in a race if they've expressed a boat preference.
+% or if they've requested a specific boat.
+want_to_race(RACE, CREW) :- prefer(RACE, CREW, BOAT, CHOICE).
+want_to_race(RACE, CREW) :- request(RACE, CREW, BOAT).
+
+% A crew got a boat if it has a reservation.
+got_a_boat(RACE, CREW) :- reserve(RACE, CREW, BOAT).
+
+% We sure want every boat request to be granted. Must flag any crews
+% that want to race a race, but we can't find them a boat.
+% This flag must be highly visible.
+boat_reservation_failure(RACE, CREW) :- want_to_race(RACE, CREW),
+                                        not got_a_boat(RACE, CREW).
+
 % The above rules do allow a situation where some crews can't get
 % a boat.  Thus, we have to maximize for number of reservations
 % granted.  This must be at the highest priority, higher than the
 % hot-seat avoidance priority.
-#maximize [reserve(RACE, CREW, BOAT) : boat_reserve_priority(BRP)
-                                     : racenum(RACE)
-                                     : crew(CREW)
-                                     : boat(BOAT) @BRP ].
+#minimize [boat_reservation_failure(RACE, CREW)
+                   : boat_reserve_priority(BRP)
+                   : racenum(RACE)
+                   : crew(CREW) @BRP ].
 
 % We're going to try to honour everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
-#minimize [request(RACE, CREW, BOAT) : boat_choice_priority(BCP) : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@BCP ].
+#minimize [request(RACE, CREW, BOAT)
+                : boat_choice_priority(BCP)
+                : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@BCP ].
 
 % ----------------------
 % Useful info.
@@ -138,6 +154,7 @@ bad_race_num(RACE) :- request(RACE,CREW,BOAT), not racenum(RACE).
 bad_preference(CHOICE) :- prefer(RACE,CREW,BOAT,CHOICE), not choice(CHOICE).
 
 #hide.
+#show boat_reservation_failure/2.
 #show bad_boat_name/1.
 #show bad_crew_name/1.
 #show bad_race_num/1.

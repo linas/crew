@@ -13,8 +13,7 @@
 %
 
 % First, we're going to run the boat reservations.
-% #include "example.asp".
-#include "dbg.asp".
+#include "example.asp".
 
 % -- Describe oars
 sweep_oars(orange).
@@ -27,12 +26,9 @@ scull_oars(blue_blue).
 
 % List oars requests.
 oar_prefer(201, matt, purple_yellow, 1).
-
-% Every boat reservation must have an oar reservation
-oar_request(RACE, CREW, OARS) :- reserve(RACE,CREW,BOAT). 
-
-
-
+oar_prefer(202, intermediate, red_yellow, 1).
+oar_prefer(206, juniors, red_green, 1).
+oar_prefer(206, juniors, blue_blue, 1).
 
 %%% ========================== %%%
 %% The actual scheduling algorithm.
