@@ -19,19 +19,25 @@
 % There are 4 pairs of orange oars
 sweep_oars(orange, 4).
 
-% And 4 pairs of all the other oars, except blue_blue, of which we
-% have just 3 pairs (one pair is broken).
+% There are 4 pairs of all the scull oars, except blue_blue, 
+% of which we have just 3 pairs (one pair is broken).
 scull_oars(purple_yellow, 4).
 scull_oars(purple_red, 4).
 scull_oars(red_green, 4).
 scull_oars(red_yellow, 4).
 scull_oars(blue_blue, 3).
 
-% List oars requests.
+% List oar request preferences.
 oar_prefer(201, matt, purple_yellow, 1).
 oar_prefer(202, intermediate, red_yellow, 1).
 oar_prefer(206, juniors, red_green, 1).
+
+% Below, the silly juniors ask for the blue-blue oars, but
+% they're rowing a quad! There aren't enough sets of blue-blue for
+% a quad!  I guess they didn't know... So their first oar preference 
+% is doomed to fail.
 oar_prefer(206, juniors, blue_blue, 1).
+oar_prefer(206, juniors, purple_red, 2).
 
 %%% ========================== %%%
 %% The actual scheduling algorithm.
