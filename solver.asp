@@ -150,7 +150,11 @@ hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 % Typos can screw everything up, so flag these.
 bad_boat_name(BOAT) :- request(RACE,CREW,BOAT), not boat(BOAT).
 bad_crew_name(CREW) :- request(RACE,CREW,BOAT), not crew(CREW).
-bad_race_num(RACE) :- request(RACE,CREW,BOAT), not racenum(RACE).
+bad_race_num(RACE)  :- request(RACE,CREW,BOAT), not racenum(RACE).
+
+bad_boat_name(BOAT) :- prefer(RACE,CREW,BOAT,CHOICE), not boat(BOAT).
+bad_crew_name(CREW) :- prefer(RACE,CREW,BOAT,CHOICE), not crew(CREW).
+bad_race_num(RACE)  :- prefer(RACE,CREW,BOAT,CHOICE), not racenum(RACE).
 bad_preference(CHOICE) :- prefer(RACE,CREW,BOAT,CHOICE), not choice(CHOICE).
 
 #hide.
