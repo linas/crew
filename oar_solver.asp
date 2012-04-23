@@ -101,6 +101,15 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
                 : oar_prefer(RACE, CREW, OARS, CHOICE) = CHOICE@OCP ].
 
 % ----------------------
+% Every boat reservation must have an oar reservation
+% If a crew did not express an oar choice, make a request for them,
+% ask for something, anything.
+expressed_oar_pref(RACE, CREW) :- oar_prefer(RACE, CREW, OARS, CHOICE).
+oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
+                                 not expressed_oar_pref(RACE, CREW),
+                                 oar_universe(RACE, CREW, OARS).
+
+% ----------------------
 % Useful info.
 
 % True if oars will be hotseated at the dock.

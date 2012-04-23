@@ -204,6 +204,3 @@ request(224, mari, thrash). % & feesh
 #include "solver.asp".
 #include "oar_solver.asp" .
 
-% Every boat reservation must have an oar reservation
-% oar_request(RACE, CREW, OARS) :- reserve(RACE,CREW,BOAT), oars(OARS).
-
