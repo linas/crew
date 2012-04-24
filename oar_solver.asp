@@ -210,6 +210,10 @@ oar_hurry_back(RACE, CREW, OARS) :-
 % Equipment list.  Stuff to take to the venue.
 take_oars_to_venue(OARS, TYPE) :- oar_reserve(RACE, CREW, OARS, TYPE).
 
+% XXX Caution: enabling this can chew up huge amounts of CPU time!
+% #minimize [take_oars_to_venue(OARS, TYPE)
+%                   : num_oars_priority(NOP) @NOP ].
+
 % ----------------------
 % Look for a typo in the name of the oarpair, crew or race.
 % Typos can screw everything up, so flag these.
