@@ -146,11 +146,11 @@ oar_request(RACE, CREW, OARS) :-
              oar_universe(RACE, CREW, OARS).
 
 % A crew has a reservation if it has one or more oar pairs.
-oar_reserve(RACE, CREW, OARS) :-
+oar_reserve(RACE, CREW, OARS, TYPE) :-
              oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR).
 
 % A crew got oars if it has a reservation.
-got_oars(RACE, CREW) :- oar_reserve(RACE, CREW, OARS).
+got_oars(RACE, CREW) :- oar_reserve(RACE, CREW, OARS, TYPE).
 
 % We sure want every oar request to be granted. Must flag any crews
 % that got boats, but we can't find them oarpair.
@@ -208,7 +208,7 @@ oar_hurry_back(RACE, CREW, OARS) :-
 
 % ----------------------
 % Equipment list.  Stuff to take to the venue.
-take_oars_to_venue(OARS) :- oar_reserve(RACE, CREW, OARS).
+take_oars_to_venue(OARS, TYPE) :- oar_reserve(RACE, CREW, OARS, TYPE).
 
 % ----------------------
 % Look for a typo in the name of the oarpair, crew or race.
@@ -234,10 +234,10 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 % #show got_four_oarpairs/4.
 % #show got_enough_oarpairs/4.
 % #show not_got_enough_oarpairs/4.
-#show oar_reserve/3.
+#show oar_reserve/4.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
-#show take_oars_to_venue/1.
+#show take_oars_to_venue/2.
 % #show oar_request/3.
 % #show oarpair_inuse/5.
 % #show oarpair_available/4.
