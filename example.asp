@@ -43,7 +43,8 @@ fourminus(marty).
 eight(sophie).
 
 % --- Describe crew types.
-crew(juniors).
+crew(juniors_a).
+crew(juniors_b).
 crew(advanced).
 crew(intermediate).
 crew(matt).
@@ -62,7 +63,8 @@ hotseat_warn(1).
 
 % --- Restrictions.
 % Juniors are never allowed to take out the black quad.
-:- request(RACE, juniors, black).
+:- request(RACE, juniors_a, black).
+:- request(RACE, juniors_b, black).
 
 % List boat requests.
 % For race 201, advanced crew wants one quad, any heavy-weight quad.
@@ -79,10 +81,6 @@ prefer(202, intermediate, green, 1).
 prefer(202, intermediate, orange, 2).
 prefer(202, intermediate, black, 3).
 
-% CAUTION/WARNING: reservation will fail, unless the keyword "prefer" is
-% used at least once, somewhere, in the system.  It will fail even if
-% everything else seems to be just fine.  You've been warned!
-
 % For race 203, the intermediate crew wants the black boat. But of course
 % they can't have it, since matt is using it (see above). So, the request
 % below will result in a reservation failure.  This will be printed in
@@ -90,7 +88,8 @@ prefer(202, intermediate, black, 3).
 prefer(203, intermediate, black, 1).
 
 % For race 206, juniors want 2 quads, any two mid or heavyweights will do.
-2{ request(206, juniors, BOAT) : mid_or_hv_quad(BOAT) }2.
+1{ request(206, juniors_a, BOAT) : mid_or_hv_quad(BOAT) }1.
+1{ request(206, juniors_b, BOAT) : mid_or_hv_quad(BOAT) }1.
 
 
 %%% ========================== %%%

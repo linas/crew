@@ -26,19 +26,20 @@ scull_oars(purple_red, 4).
 scull_oars(red_green, 4).
 scull_oars(red_yellow, 4).
 scull_oars(blue_blue, 3).
-scull_oars(blue_red, 4).
 
 % List oar request preferences.
+% Note that the advanced crew forgot to make any oar requests.
+% The juniors_a team also forgot to indicate an oar preference.
+% That's OK, they'll get assigned something anyway.
 oar_prefer(201, matt, purple_yellow, 1).
 oar_prefer(202, intermediate, red_yellow, 1).
-oar_prefer(206, juniors, red_green, 1).
 
-% Below, the silly juniors ask for the blue-blue oars, but
-% they're rowing a quad! There aren't enough sets of blue-blue for
-% a quad!  I guess they didn't know... So their first oar preference 
-% is doomed to fail.
-oar_prefer(206, juniors, blue_blue, 1).
-oar_prefer(206, juniors, purple_red, 2).
+% Below, the silly juniors ask for the blue-blue oars, but they're
+% rowing a quad! There aren't enough sets of blue-blue for a quad!
+% I guess they didn't know... So their first oar preference is doomed
+% to fail.  That's OK, they'll still get their second choice.
+oar_prefer(206, juniors_b, blue_blue, 1).
+oar_prefer(206, juniors_b, purple_red, 2).
 
 %%% ========================== %%%
 %% The actual scheduling algorithm.

@@ -64,6 +64,7 @@ oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
            PAIR = 1..COUNT.
 
 % Make sure that quads and eights get four pairs of oars, and not less.
+% Start by counting how many oarparis we actually got.
 got_four_oarpairs(RACE, CREW, OARS, TYPE) :- 
            oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
            oarpair_reserve(RACE, CREW, OARS, TYPE, PB), 
@@ -72,11 +73,13 @@ got_four_oarpairs(RACE, CREW, OARS, TYPE) :-
            PA != PB, PA != PC, PA != PD,
            PB != PC, PB != PD, PC != PD.
 
+% Doubles, fours need only two pairs of oars.
 got_two_oarpairs(RACE, CREW, OARS, TYPE) :- 
            oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
            oarpair_reserve(RACE, CREW, OARS, TYPE, PB), 
            PA != PB.
 
+% We got enough oar pairs if ... etc, depending on boat type.
 got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
            got_four_oarpairs(RACE, CREW, OARS, TYPE),
            oarpairs_needed(BOAT, TYPE, 4),
@@ -88,14 +91,17 @@ got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
            reserve(RACE, CREW, BOAT).
 
 got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
-           oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
            oarpairs_needed(BOAT, TYPE, 1),
            reserve(RACE, CREW, BOAT).
 
-%:- not got_enough_oarpairs(RACE, CREW, OARS, TYPE),
-%          racenum(RACE),
-%          crew(CREW),
-%          oar_type(OARS, TYPE).
+% Whoops, this is true if we got something, but did NOT get enough.
+not_got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
+           not got_enough_oarpairs(RACE, CREW, OARS, TYPE),
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR). 
+
+% Double-negative: must get enough.
+:- not_got_enough_oarpairs(RACE, CREW, OARS, TYPE).
 
 % If oarpair are reserved, then they will be in use at least CENTER races
 % beforehand. That is, the crew needs CENTER races to launch and
@@ -218,9 +224,10 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show bad_oar_count/1.
 #show bad_oar_name/1.
 #show bad_oar_preference/1.
-#show oarpair_reserve/5.
-#show got_four_oarpairs/4.
-#show got_enough_oarpairs/4.
+% #show oarpair_reserve/5.
+% #show got_four_oarpairs/4.
+% #show got_enough_oarpairs/4.
+% #show not_got_enough_oarpairs/4.
 #show oar_reserve/3.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
