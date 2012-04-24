@@ -26,6 +26,7 @@ scull_oars(purple_red, 4).
 scull_oars(red_green, 4).
 scull_oars(red_yellow, 4).
 scull_oars(blue_blue, 3).
+scull_oars(blue_red, 4).
 
 % List oar request preferences.
 oar_prefer(201, matt, purple_yellow, 1).

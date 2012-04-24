@@ -19,6 +19,8 @@
 oars(OARS, sweep, COUNT) :- sweep_oars(OARS, COUNT).
 oars(OARS, scull, COUNT) :- scull_oars(OARS, COUNT).
 
+oar_type(OARS, TYPE) :- oars(OARS, TYPE, COUNT).
+
 % Enumerate all possible pairs of oars, given the declaration,
 % and the count of how many pairs there are.
 oarpair(OARS, TYPE, PAIR) :- oars(OARS, TYPE, COUNT), PAIR=1..COUNT.
@@ -51,7 +53,7 @@ oarpair_available(RACE, OARS, TYPE, PAIR) :-
            oarpair(OARS, TYPE, PAIR),
            not oarpair_inuse(RACE, CREW, OARS, TYPE, PAIR).
 
-% Reserve the oarpair if they are requested and available.
+% Reserve oar pairs if they are requested and available.
 oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
            racenum(RACE), crew(CREW),
            oarpair(OARS, TYPE, PAIR),
@@ -60,6 +62,40 @@ oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
            reserve(RACE, CREW, BOAT),
            oarpairs_needed(BOAT, TYPE, COUNT),
            PAIR = 1..COUNT.
+
+% Make sure that quads and eights get four pairs of oars, and not less.
+got_four_oarpairs(RACE, CREW, OARS, TYPE) :- 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PB), 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PC), 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PD), 
+           PA != PB, PA != PC, PA != PD,
+           PB != PC, PB != PD, PC != PD.
+
+got_two_oarpairs(RACE, CREW, OARS, TYPE) :- 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PB), 
+           PA != PB.
+
+got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
+           got_four_oarpairs(RACE, CREW, OARS, TYPE),
+           oarpairs_needed(BOAT, TYPE, 4),
+           reserve(RACE, CREW, BOAT).
+
+got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
+           got_two_oarpairs(RACE, CREW, OARS, TYPE),
+           oarpairs_needed(BOAT, TYPE, 2),
+           reserve(RACE, CREW, BOAT).
+
+got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PA), 
+           oarpairs_needed(BOAT, TYPE, 1),
+           reserve(RACE, CREW, BOAT).
+
+%:- not got_enough_oarpairs(RACE, CREW, OARS, TYPE),
+%          racenum(RACE),
+%          crew(CREW),
+%          oar_type(OARS, TYPE).
 
 % If oarpair are reserved, then they will be in use at least CENTER races
 % beforehand. That is, the crew needs CENTER races to launch and
@@ -182,7 +218,9 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show bad_oar_count/1.
 #show bad_oar_name/1.
 #show bad_oar_preference/1.
-% #show oarpair_reserve/5.
+#show oarpair_reserve/5.
+#show got_four_oarpairs/4.
+#show got_enough_oarpairs/4.
 #show oar_reserve/3.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
