@@ -54,14 +54,80 @@ oarpair_available(RACE, OARS, TYPE, PAIR) :-
            not oarpair_inuse(RACE, CREW, OARS, TYPE, PAIR).
 
 % Reserve oar pairs if they are requested and available.
+% OK, the section commented out below works, but won't split up oar
+% sets for doubles and singles.  So we replace it by a more complex 
+% system for doubles, singles.
+%
+% oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+%            oarpair_available(RACE, OARS, TYPE, PAIR),
+%            oar_request(RACE, CREW, OARS), 
+%            reserve(RACE, CREW, BOAT),
+%            oarpairs_needed(BOAT, TYPE, COUNT),
+%            PAIR = 1..COUNT.
+
+% When there's a set of 4 needed, grab them all.
 oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           racenum(RACE), crew(CREW),
-           oarpair(OARS, TYPE, PAIR),
            oarpair_available(RACE, OARS, TYPE, PAIR),
            oar_request(RACE, CREW, OARS), 
            reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, COUNT),
-           PAIR = 1..COUNT.
+           oarpairs_needed(BOAT, TYPE, 4),
+           PAIR = 1..4.
+
+% When there's a set of 2 needed, and the first two are available,
+% grab them.
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 2),
+           PAIR = 1..2.
+
+% When the first 2 pairs of oars are taken, then grab the other two
+% out of the set.
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           not oarpair_available(RACE, OARS, TYPE, 1),
+           not oarpair_available(RACE, OARS, TYPE, 2),
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 2),
+           PAIR = 3..4.
+
+% singles
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 1),
+           PAIR = 1.
+
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           not oarpair_available(RACE, OARS, TYPE, 1),
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 1),
+           PAIR = 2.
+
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           not oarpair_available(RACE, OARS, TYPE, 1),
+           not oarpair_available(RACE, OARS, TYPE, 2),
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 1),
+           PAIR = 3.
+
+oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
+           not oarpair_available(RACE, OARS, TYPE, 1),
+           not oarpair_available(RACE, OARS, TYPE, 2),
+           not oarpair_available(RACE, OARS, TYPE, 3),
+           oarpair_available(RACE, OARS, TYPE, PAIR),
+           oar_request(RACE, CREW, OARS), 
+           reserve(RACE, CREW, BOAT),
+           oarpairs_needed(BOAT, TYPE, 1),
+           PAIR = 4.
+
 
 % Make sure that quads and eights get four pairs of oars, and not less.
 % Start by counting how many oarparis we actually got.
