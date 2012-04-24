@@ -183,7 +183,8 @@ oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
                                  oar_universe(RACE, CREW, OARS).
 
 % ----------------------
-% Useful info.
+% Hotseat notifications and minimization.
+% Basically, we try to find assignments with the fewest hot-seats.
 
 % True if oars will be hotseated at the dock.
 oar_hotseat(RACE, OARS) :-
@@ -205,6 +206,11 @@ oar_hurry_back(RACE, CREW, OARS) :-
 #minimize [oar_hotseat(RACE, OARS) @OHP : oar_hotseat_priority(OHP)].
 
 
+% ----------------------
+% Equipment list.  Stuff to take to the venue.
+take_oars_to_venue(OARS) :- oar_reserve(RACE, CREW, OARS).
+
+% ----------------------
 % Look for a typo in the name of the oarpair, crew or race.
 % Typos can screw everything up, so flag these.
 % fixme, use some kind of aggregate.
@@ -231,6 +237,7 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show oar_reserve/3.
 #show oar_hotseat/2.
 #show oar_hurry_back/3.
+#show take_oars_to_venue/1.
 % #show oar_request/3.
 % #show oarpair_inuse/5.
 % #show oarpair_available/4.

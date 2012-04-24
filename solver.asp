@@ -124,7 +124,8 @@ boat_reservation_failure(RACE, CREW) :- want_to_race(RACE, CREW),
                 : prefer(RACE, CREW, BOAT, CHOICE) = CHOICE@BCP ].
 
 % ----------------------
-% Useful info.
+% Hotseat notifications and minimization.
+% Basically, we try to find assignments with the fewest hot-seats.
 
 % True if boat will be hotseated at the dock.
 hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
@@ -146,6 +147,12 @@ hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 #minimize [hotseat(RACE, BOAT) @BHP : boat_hotseat_priority(BHP)].
 
 
+% ----------------------
+% Equipment list.  Stuff to take to the venue.
+take_to_venue(BOAT) :- reserve(RACE, CREW, BOAT).
+
+
+% ----------------------
 % Look for a typo in the name of the boat, crew or race.
 % Typos can screw everything up, so flag these.
 bad_boat_name(BOAT) :- request(RACE,CREW,BOAT), not boat(BOAT).
@@ -166,6 +173,7 @@ bad_preference(CHOICE) :- prefer(RACE,CREW,BOAT,CHOICE), not choice(CHOICE).
 #show reserve/3.
 #show hotseat/2.
 #show hurry_back/3.
+#show take_to_venue/1.
 % #show request/2.
 % #show inuse/2.
 % #show available/2.
