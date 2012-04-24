@@ -1,6 +1,9 @@
 
 -- add rower conflicts
--- add 1st,2nd,3rd choice requests
--- verify that boats requested by name are actually the correct class.
+-- verify that boats requested by name are actually the correct class
+   for that race (e.g. we're not entering doubles into quad races).
 
--- add oar support
+-- minimize number of boats used
+-- minimize number of oar-sets used.
+-- split up oar sets for doubles, singles.
+
