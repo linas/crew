@@ -5,5 +5,11 @@
 
 -- minimize number of boats used
 -- minimize number of oar-sets used.
+   Yikes! This is a real cpu-sucker!  Need to use incremental
+   clingo to solve boat assignments fully before tackling oars,
+   otherwise, it gets totally tangled in the oar assignments.
+
 -- split up oar sets for doubles, singles.
+   This is currently broken because the oar universe for preferences
+   doesn't know about how many are needed, for a given boat class.
 
