@@ -65,6 +65,10 @@ oarpair_available(RACE, OARS, TYPE, PAIR) :-
 %            oarpairs_needed(BOAT, TYPE, COUNT),
 %            PAIR = 1..COUNT.
 
+% XXX This is broken right now, because oar requests for singles fail 
+% to realize the sets can be split up, and so the requests never get made.
+% and so oar reservation failures happen. Yikes!  Fixme later.
+
 % When there's a set of 4 needed, grab them all.
 oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
            oarpair_available(RACE, OARS, TYPE, PAIR),
@@ -206,6 +210,10 @@ oar_choice(CHOICE) :- CHOICE=1..4.
 1 { oar_universe(RACE, CREW, OARS) : oars(OARS, TYPE, COUNT) } 1 :-
    crew(CREW), racenum(RACE).
 
+% XXX This is broken right now, because oar requests for singles fail 
+% to realize the sets can be split up, and so the requests never get made.
+% and so oar reservation failures happen. Yikes! Fixme later.
+
 % Out of a list of desired oars, choose only one set of oars.
 oar_request(RACE, CREW, OARS) :-
              oar_prefer(RACE, CREW, OARS, CHOICE),
@@ -311,3 +319,4 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 % #show oar_request/3.
 % #show oarpair_inuse/5.
 % #show oarpair_available/4.
+% #show oarpairs_needed/3.

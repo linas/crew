@@ -109,14 +109,24 @@ request(202, intermediate, beverly).
 
 %- 203	  	Mens Masters 1x
 % 1{ request(203, bolton, BOAT) : any_single(BOAT) }1.
+
 % Ellis has own, private boat, not assigning.
 % 1{ request(203, ellis, BOAT) : any_single(BOAT) }1.
+
 1{ request(203, feicht, BOAT) : any_single(BOAT) }1.
+% oar_prefer(203, feicht, yellow_purple, 1).
+
 1{ request(203, gates, BOAT) : heavy_single(BOAT) }1.
+% oar_prefer(203, gates, yellow_purple, 1).
+
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
+oar_prefer(203, jeff, yellow_purple, 1).
+
 % Lynch has own private boat, we're not assigning...
 % 1{ request(203, lynch, BOAT) : any_single(BOAT) }1.
+
 prefer(203, oppliger, dunya, 1).
+% oar_prefer(203, oppliger, yellow_purple, 1).
 
 %- 204	  	Mens Jr 8+
 request(204, juniors, sophie).
