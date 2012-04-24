@@ -73,7 +73,7 @@ racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % --- Specify minimum number of races between equipment reuse.
 % In this case, the boat cannot be reserved for the previous 2 races.
-center(2).
+center(3).
 % Print a hotseat warning if there is just 1 center to get the boat
 % back to the dock.  Change to 2 if you want more hotseat warning 
 % printed.
