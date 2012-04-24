@@ -12,6 +12,24 @@ although only clingo has been tested.
 
 See:  http://potassco.sourceforge.net/
 
+
+Look at the Example
+-------------------
+The file 'example.asp' contains a hand-written example showing boats,
+races, and crews, and boat requests for certain boats and certain races.
+Look at it.  Its supposed to be simple enough that you can understand it.
+Its supposed to be "realistic" enough to give you the idea on how to set
+up a real club, with real equipment.
+
+The file 'example_oars.asp' adds oar reservations to the basic example
+above.
+
+The files 'trc_boats.asp' and 'trc_oars.asp' are the real-life equipment
+lists for a real-life club.  The file 'texas-champs-2012.asp' is a
+real-life regatta, making use of the trc equipment.  It works (more or
+less, we're still debugging).
+
+
 Testing the Example
 -------------------
 Validate your clingo installation by running the following at the
@@ -79,6 +97,14 @@ Doing so may result in more and more hotseats being required.
 It is also possible to make firm reservations that are always granted,
 no matter what enyone else wants.  However, doing this may result in
 some crews not getting to race.
+
+
+Example with oar assignments
+----------------------------
+The file 'example_oars.asp' adds oar assignments to the basic example.
+To try it, run this command line:
+
+   clingo example_oars.asp
 
 
 Running
