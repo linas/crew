@@ -173,16 +173,19 @@ not_got_enough_oarpairs(RACE, CREW, OARS, TYPE) :-
 % Double-negative: must get enough.
 :- not_got_enough_oarpairs(RACE, CREW, OARS, TYPE).
 
-% If oarpair are reserved, then they will be in use at least CENTER races
-% beforehand. That is, the crew needs CENTER races to launch and
+% If oarpair is reserved, then it will be in use at least CENTER races
+% beforehand. That is, the crew needs CENTER-1 races to launch and
 % warmup before the race.
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
-           racenum(RACE), crew(CREW),
-           oarpair(OARS, TYPE, PAIR),
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
            ONWATER = RACE - N,
-           N = 1..CENTER,
+           N = 1..CENTER-1,
            center(CENTER).
+
+% Oars are on the water for race immediately after, too.
+oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
+           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
+           ONWATER = RACE + 1.
 
 % Cannot reserve oars that are in use.
 :- oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR),

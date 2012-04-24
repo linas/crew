@@ -60,13 +60,16 @@ reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
                              available(RACE, BOAT).
 
 % If a boat is reserved, then it will be in use at least CENTER races
-% beforehand. That is, the crew needs CENTER races to launch and
+% beforehand. That is, the crew needs CENTER-1 races to launch and
 % warmup before the race.
-inuse(ONWATER, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
-                              reserve(RACE, CREW, BOAT), 
+inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
                               ONWATER = RACE - N,
-                              N = 1..CENTER,
+                              N = 1..CENTER-1,
                               center(CENTER).
+
+% Its on the water for the next race, too.
+inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
+                              ONWATER = RACE +1.
 
 % Cannot reserve a boat that is in use.
 :- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
