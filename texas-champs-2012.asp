@@ -130,7 +130,7 @@ request(203, lynch, private_lynch).
 % oar_prefer(203, feicht, yellow_purple, 1).
 
 prefer(203, gates, dunya, 1).
-% oar_prefer(203, gates, yellow_purple, 1).
+oar_prefer(203, gates, blue_blue, 1).
 
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
 oar_prefer(203, jeff, yellow_purple, 1).
@@ -149,17 +149,33 @@ oar_prefer(204, juniors, purple, 1).
 
 %- 205	  	Womens Jr 2-
 request(205, juniors_a, thrash).
+oar_prefer(205, juniors_a, pair, 1).
+
 request(205, juniors_b, 30).
+oar_prefer(205, juniors_b, blue, 1).
+
 request(205, juniors_c, borrowed_pair).
+% oar_prefer(205, juniors_c, blue, 1).
+
 %- 206	  	Womens Masters 4x
 1{ request(206, advanced_a, BOAT) : lt_or_mid_quad(BOAT) }1.
 1{ request(206, advanced_b, BOAT) : lt_or_mid_quad(BOAT) }1.
 1{ request(206, advanced_c, BOAT) : lt_or_mid_quad(BOAT) }1.
 1{ request(206, intermediate, BOAT) : lt_or_mid_quad(BOAT) }1.
+
+
 %- 207	  	Mens Jr Novice 4+
-request(207, juniors, judie).
+% XXX got an oar hotseating problem here.
+request(207, juniors_a, judie).
+oar_prefer(207, juniors_a, wood, 1).
+
+request(207, juniors_b, judie).
+oar_prefer(207, juniors_b, orange, 1).
+
 %- 208	  	Womens Jr Novice 8+
 request(208, juniors, sophie).
+oar_prefer(208, juniors, purple, 1).
+
 %- 209	  	Mens Masters 2-
 %- 210	  	Mixed Masters 4x
 % 1{ request(210, advanced_a, BOAT) : heavy_quad(BOAT) }1.
@@ -176,8 +192,11 @@ request(210, novice, blue).
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
 1{request(212, intermediate, BOAT) : eight(BOAT) }1.
+
 %- 213	  	Mens Jr 2-
 request(213, juniors, 30).
+oar_prefer(213, juniors, pair, 1).
+
 %- 214	  	Mens Masters 4x
 % 1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
 % 1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
@@ -189,9 +208,15 @@ oar_request(214, advanced, purple_green).
 
 %- 215	  	Womens Jr Ltwt 4+
 request(215, juniors_a, judie).
+oar_prefer(215, juniors_a, blue, 1).
+
 request(215, juniors_b, borrowed_four).
+% oar_prefer(215, juniors_b, blue, 1).
+
 %- 216	  	Mens Jr Novice 8+
 request(216, juniors, sophie).
+oar_prefer(216, juniors, purple, 1).
+
 %- 217	  	Womens Masters 1x
 1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
 
@@ -201,22 +226,44 @@ oar_prefer(217, sue, private_oars_sue, 1).
 
 %- 218	  	Mixed Adaptive 4x
 %- 219	  	Womens Jr Novice 4+
-3{ request(219, juniors, BOAT) : fourplus(BOAT) }3.
+% 3{ request(219, juniors, BOAT) : fourplus(BOAT) }3.
+request(219, juniors_a, judie).
+oar_prefer(219, juniors_a, blue, 1).
+
+request(219, juniors_b, borrowed_four).
+% oar_prefer(219, juniors_b, blue, 1).
+
+request(219, juniors_c, beverley).
+oar_prefer(219, juniors_c, orange, 1).
+
 %- 220	  	Mixed Masters 8+
 % 1{ request(220, advanced, BOAT) : eight(BOAT) }1.
 request(220, advanced, sophie).
+oar_prefer(220, advanced, purple, 1).
+
 %- 221	  	Mens Masters 2x
 request(221, vepstas, private_double). % linas and phil
+
 request(221, knifton, empacher). % ken and matt
+oar_prefer(221, kinfton, blue_blue, 1).
+
 request(221, lynch, bass).  % robb and phil
+
 1{ request(221, advanced_a, BOAT) : hv_or_mid_double(BOAT) }1. % ted
-% 1{ request(221, advanced_b, BOAT) : hv_or_mid_double(BOAT) }1. % ted
+
 % 1{ request(221, novice, BOAT) : any_double(BOAT) }1. % saloni
 request(221, novice, jakob). % saloni
 
 %- 222	  	Womens Jr 4+
 % XXXX this is a hotseat problem!!
-2{ request(222, juniors, BOAT) : fourplus(BOAT) }2.
+% 2{ request(222, juniors, BOAT) : fourplus(BOAT) }2.
+
+request(222, juniors_a, judie).
+oar_prefer(222, juniors_a, blue, 1).
+
+request(222, juniors_b, borrowed_four).
+% oar_prefer(222, juniors_b, blue, 1).
+
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
 
@@ -243,8 +290,16 @@ prefer(229, gates, barksdale).  % with connie_a
 oar_prefer(229, gates, blue_blue, 1).
 
 %- 230	  	Womens Masters 4+
-2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
+% 2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
+request(230, intermediate_a, beverley).
+oar_prefer(230, intermediate_a, blue, 1).
+
+request(230, intermediate_b, borrowed_four).
+oar_prefer(230, intermediate_b, wood, 1).
+
 %- 231	  	Womens Jr 8+
+request(231, juniors, sophie).
+oar_prefer(231, juniors, purple, 1).
 
 
 %%% ========================== %%%
