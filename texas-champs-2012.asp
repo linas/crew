@@ -169,8 +169,9 @@ request(205, juniors_c, borrowed_pair).
 request(207, juniors_a, judie).
 oar_prefer(207, juniors_a, wood, 1).
 
-request(207, juniors_b, judie).
-oar_prefer(207, juniors_b, orange, 1).
+% XXX in fact, solver is failing on oars, here.XXX
+% request(207, juniors_b, judie).
+% oar_prefer(207, juniors_b, orange, 1).
 
 %- 208	  	Womens Jr Novice 8+
 request(208, juniors, sophie).
@@ -233,7 +234,7 @@ oar_prefer(219, juniors_a, blue, 1).
 request(219, juniors_b, borrowed_four).
 % oar_prefer(219, juniors_b, blue, 1).
 
-request(219, juniors_c, beverley).
+request(219, juniors_c, beverly).
 oar_prefer(219, juniors_c, orange, 1).
 
 %- 220	  	Mixed Masters 8+
@@ -245,7 +246,7 @@ oar_prefer(220, advanced, purple, 1).
 request(221, vepstas, private_double). % linas and phil
 
 request(221, knifton, empacher). % ken and matt
-oar_prefer(221, kinfton, blue_blue, 1).
+oar_prefer(221, knifton, blue_blue, 1).
 
 request(221, lynch, bass).  % robb and phil
 
@@ -291,7 +292,7 @@ oar_prefer(229, gates, blue_blue, 1).
 
 %- 230	  	Womens Masters 4+
 % 2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
-request(230, intermediate_a, beverley).
+request(230, intermediate_a, beverly).
 oar_prefer(230, intermediate_a, blue, 1).
 
 request(230, intermediate_b, borrowed_four).
