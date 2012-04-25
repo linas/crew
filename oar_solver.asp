@@ -268,7 +268,7 @@ oar_hotseat(RACE, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
           oarpair_reserve(RACE-CENTER-M, OTHER_CREW, OARS, TYPE, PAIR),
           center(CENTER),
-          M=1..HOTS, hotseat_warn(HOTS).
+          M=0..HOTS, hotseat_warn(HOTS).
 
 % True if crew should hurry back because oarpair are needed.
 % Currently, not used for anything, except as a printout for the
@@ -277,7 +277,7 @@ oar_hurry_back(RACE, CREW, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
           oarpair_reserve(RACE+CENTER+M, OTHER_CREW, OARS, TYPE, PAIR),
           center(CENTER),
-          M=1..HOTS, hotseat_warn(HOTS).
+          M=0..HOTS, hotseat_warn(HOTS).
 
 % Minimize the number of oars that are hot-seated.
 #minimize [oar_hotseat(RACE, OARS) @OHP : oar_hotseat_priority(OHP)].

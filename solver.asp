@@ -136,7 +136,7 @@ boat_reservation_failure(RACE, CREW) :- want_to_race(RACE, CREW),
 hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
                        reserve(RACE-CENTER-M, OTHER_CREW, BOAT),
                        center(CENTER),
-                       M=1..HOTS, hotseat_warn(HOTS).
+                       M=0..HOTS, hotseat_warn(HOTS).
 
 % True if crew should hurry back because boat is needed.
 % Currently, not used for anything, except as a printout for the
@@ -144,7 +144,7 @@ hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT),
 hurry_back(RACE, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
                        reserve(RACE+CENTER+M, OTHER_CREW, BOAT),
                        center(CENTER),
-                       M=1..HOTS, hotseat_warn(HOTS).
+                       M=0..HOTS, hotseat_warn(HOTS).
 
 % Minimize the number of boats that are hot-seated.
 % The @10 just means that minimizing the number of hot-seats is
