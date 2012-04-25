@@ -195,7 +195,7 @@ request(216, juniors, sophie).
 1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
 
 % 1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
-prefer(217, sue, sommers, 1).
+prefer(217, sue, somers, 1).
 oar_prefer(217, sue, private_oars_sue, 1).
 
 %- 218	  	Mixed Adaptive 4x
