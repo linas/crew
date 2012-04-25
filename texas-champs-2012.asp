@@ -32,6 +32,7 @@ single(private_bolton).
 single(private_cullicott).
 single(private_ellis).
 single(private_lynch).
+scull_oars(private_oars_sue, 1).
 
 % No one is going to race the maas.
 :- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
@@ -192,7 +193,11 @@ request(215, juniors_b, borrowed_four).
 request(216, juniors, sophie).
 %- 217	  	Womens Masters 1x
 1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
-1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
+
+% 1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
+prefer(217, sue, sommers, 1).
+oar_prefer(217, sue, private_oars_sue, 1).
+
 %- 218	  	Mixed Adaptive 4x
 %- 219	  	Womens Jr Novice 4+
 3{ request(219, juniors, BOAT) : fourplus(BOAT) }3.
@@ -236,7 +241,7 @@ request(224, intermediate_a, bass).
 
 % 1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie_a
 prefer(229, gates, barksdale).  % with connie_a
-% And the double oars, whatever that is...
+oar_prefer(229, gates, blue_blue, 1).
 
 %- 230	  	Womens Masters 4+
 2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
