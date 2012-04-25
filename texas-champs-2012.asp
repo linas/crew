@@ -26,8 +26,12 @@ pair(borrowed_pair).
 fourplus(borrowed_four).
 
 boat(BOAT) :- double(BOAT).
-double(private_double).
+double(private_double).  % Phil's from Dallas
 double(empacher).  % private
+single(private_bolton).
+single(private_cullicott).
+single(private_ellis).
+single(private_lynch).
 
 % No one is going to race the maas.
 :- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
@@ -113,12 +117,14 @@ hotseat_warn(2).
 request(202, intermediate, beverly).
 
 %- 203	  	Mens Masters 1x
-% 1{ request(203, bolton, BOAT) : any_single(BOAT) }1.
+request(203, bolton, private_bolton).
+request(203, cullicott, private_cullicott).
+request(203, ellis, private_ellis).
+request(203, lynch, private_lynch).
 
-% Ellis has own, private boat, not assigning.
-% 1{ request(203, ellis, BOAT) : any_single(BOAT) }1.
+1{ request(203, brennan, BOAT) : any_single(BOAT) }1.
 
-1{ request(203, feicht, BOAT) : any_single(BOAT) }1.
+1{ request(203, feicht, BOAT) : heavy_single(BOAT) }1.
 % oar_prefer(203, feicht, yellow_purple, 1).
 
 prefer(203, gates, dunya, 1).
@@ -127,11 +133,13 @@ prefer(203, gates, dunya, 1).
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
 oar_prefer(203, jeff, yellow_purple, 1).
 
-% Lynch has own private boat, we're not assigning...
-% 1{ request(203, lynch, BOAT) : any_single(BOAT) }1.
+1{ request(203, mast, BOAT) : midweight_single(BOAT) }1.
+1{ request(203, nicot, BOAT) : any_single(BOAT) }1.
 
 1{ request(203, oppliger, BOAT) : heavy_single(BOAT) }1.
 % oar_prefer(203, oppliger, yellow_purple, 1).
+
+1{ request(203, smith, BOAT) : any_single(BOAT) }1.
 
 %- 204	  	Mens Jr 8+
 request(204, juniors, sophie).
@@ -225,8 +233,11 @@ request(224, intermediate_a, bass).
 %- 228	  	Mens Masters 8+
 %- 229	  	Mixed Masters 2x
 1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie_h
-1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie_a
-:- reserve(229, gates, maas).  % No way that Ken gets the maas.
+
+% 1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie_a
+prefer(229, gates, barksdale).  % with connie_a
+% And the double oars, whatever that is...
+
 %- 230	  	Womens Masters 4+
 2{ request(230, intermediate, BOAT) : fourplus(BOAT) }2.
 %- 231	  	Womens Jr 8+
