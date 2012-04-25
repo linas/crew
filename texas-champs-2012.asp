@@ -27,26 +27,31 @@ fourplus(borrowed_four).
 
 boat(BOAT) :- double(BOAT).
 double(private_double).
+double(empacher).  % private
 
 % No one is going to race the maas.
 :- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
 
 % --- Name the rowers.
-rower(bolton).
-rower(connie_a).
-rower(connie_h).
-rower(cullicott).
-rower(ellis).
-rower(feicht).
-rower(gates).
+rower(brennan).   % Rober Brennan
+rower(bolton).    % Scott Bolton
+rower(connie_a).  % Connie Adams
+rower(connie_h).  % Connie Hicks
+rower(cullicott). % John Collicott
+rower(ellis).     % Phil Ellis
+rower(feicht).    % Doug Feicht
+rower(gates).     % Ken Gates
 rower(jeff).
-rower(linas).
-rower(lynch).
+rower(knifton).   % Matt Knifton
+rower(lynch).     % Robb Lynch
 rower(mari).
-rower(matt).
-rower(oppliger).
+rower(mast).      % Steve Mast  (Intermediate crew)
+rower(nicot).     % JP Nicot
+rower(oppliger).  % Wade Oppliger
 rower(sarah).
 rower(sue).
+rower(smith).     % Bill Smith  (Saloni's Crew).
+rower(vepstas).   % Linas Vepstas
 
 % --- Describe crew types.
 crew(PERSON) :- rower(PERSON).
@@ -116,7 +121,7 @@ request(202, intermediate, beverly).
 1{ request(203, feicht, BOAT) : any_single(BOAT) }1.
 % oar_prefer(203, feicht, yellow_purple, 1).
 
-1{ request(203, gates, BOAT) : heavy_single(BOAT) }1.
+prefer(203, gates, dunya, 1).
 % oar_prefer(203, gates, yellow_purple, 1).
 
 1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
@@ -125,7 +130,7 @@ oar_prefer(203, jeff, yellow_purple, 1).
 % Lynch has own private boat, we're not assigning...
 % 1{ request(203, lynch, BOAT) : any_single(BOAT) }1.
 
-prefer(203, oppliger, dunya, 1).
+1{ request(203, oppliger, BOAT) : heavy_single(BOAT) }1.
 % oar_prefer(203, oppliger, yellow_purple, 1).
 
 %- 204	  	Mens Jr 8+
@@ -149,8 +154,15 @@ request(208, juniors, sophie).
 %- 210	  	Mixed Masters 4x
 % 1{ request(210, advanced_a, BOAT) : heavy_quad(BOAT) }1.
 request(210, connie_h, masters).  % connie, sue, jeff, linas
-3{ request(210, intermediate, BOAT) : any_quad(BOAT) }3.
+oar_request(210, connie_h, purple_yellow, 1).
+
+% 3{ request(210, intermediate, BOAT) : any_quad(BOAT) }3.
+request(210, intermediate_a, orange).
+request(210, intermediate_b, mcdarmid).
+request(210, intermediate_c, green).
+
 request(210, novice, blue).
+
 %- 211	  	Mens Jr Ltwt 4+
 %- 212	  	Womens Masters 8+
 1{request(212, intermediate, BOAT) : eight(BOAT) }1.
@@ -159,8 +171,12 @@ request(213, juniors, 30).
 %- 214	  	Mens Masters 4x
 % 1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
 % 1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
-request(214, matt, black).
+request(214, knifton, black).
+oar_request(214, knifton, blue_blue).
+
 request(214, advanced, orange).
+oar_request(214, advanced, purple_green).
+
 %- 215	  	Womens Jr Ltwt 4+
 request(215, juniors_a, judie).
 request(215, juniors_b, borrowed_four).
@@ -176,9 +192,11 @@ request(216, juniors, sophie).
 % 1{ request(220, advanced, BOAT) : eight(BOAT) }1.
 request(220, advanced, sophie).
 %- 221	  	Mens Masters 2x
-request(221, linas, private_double). % linas and phil
+request(221, vepstas, private_double). % linas and phil
+request(221, knifton, empacher). % ken and matt
+request(221, lynch, bass).  % robb and phil
 1{ request(221, advanced_a, BOAT) : hv_or_mid_double(BOAT) }1. % ted
-1{ request(221, advanced_b, BOAT) : hv_or_mid_double(BOAT) }1. % ted
+% 1{ request(221, advanced_b, BOAT) : hv_or_mid_double(BOAT) }1. % ted
 % 1{ request(221, novice, BOAT) : any_double(BOAT) }1. % saloni
 request(221, novice, jakob). % saloni
 
@@ -191,8 +209,15 @@ request(221, novice, jakob). % saloni
 % 1{ request(224, mari, BOAT) : lightweight_double(BOAT) }1. % & feesh
 
 request(224, sarah, swinford).  % & veronica
+oar_prefer(224, sarah, red_red, 1).
+
 request(224, mari, thrash). % & feesh
-2{ request(224, intermediate, BOAT) : any_double(BOAT) }2.
+% oar_prefer(224, mari, red_red, 1).
+
+% the other double will be the 41 re-rigged
+% 2{ request(224, intermediate, BOAT) : any_double(BOAT) }2.
+1{ request(224, intermediate, BOAT) : any_double(BOAT) }1.
+request(224, intermediate_a, bass).
 
 %- 225	  	Mixed Adaptive 2x
 %- 226	  	Mens Jr 4+
