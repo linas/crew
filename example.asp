@@ -75,16 +75,20 @@ hotseat_warn(1).
 reserve(201, matt, black).
 
 % For race 202, the intermediate crew is going to be picky: they 
-% want the green quad, and if they can't get it, then they want
-% the orange, and if they can't get that, they want the black.
-prefer(202, intermediate, green, 1).
-prefer(202, intermediate, orange, 2).
-prefer(202, intermediate, black, 3).
+% want the black quad, and if they can't get it, then they want
+% the green, and if they can't get that, they want the orange.
+% Of course, they won't get it (because matt's got it, above),
+% but they can certainly ask for it... they'll get their second
+% choice.
+prefer(202, intermediate, black, 1).
+prefer(202, intermediate, green, 2).
+prefer(202, intermediate, orange, 3).
 
 % For race 203, the intermediate crew wants the black boat. But of course
 % they can't have it, since matt is using it (see above). So, the request
 % below will result in a reservation failure.  This will be printed in
-% the output.
+% the output.  The would get a boat, if they made a second & third choice,
+% but they didn't, so they won't.
 prefer(203, intermediate, black, 1).
 
 % For race 206, juniors want 2 quads, any two mid or heavyweights will do.
