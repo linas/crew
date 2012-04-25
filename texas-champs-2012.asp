@@ -55,6 +55,7 @@ rower(nicot).     % JP Nicot
 rower(oppliger).  % Wade Oppliger
 rower(sarah).
 rower(sue).
+rower(scheer).    % Veronica Scheer
 rower(smith).     % Bill Smith  (Saloni's Crew).
 rower(vepstas).   % Linas Vepstas
 
@@ -218,14 +219,12 @@ request(221, novice, jakob). % saloni
 2{ request(222, juniors, BOAT) : fourplus(BOAT) }2.
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
-% 1{ request(224, sarah, BOAT) : midweight_double(BOAT) }1.  % & veronica
-% 1{ request(224, mari, BOAT) : lightweight_double(BOAT) }1. % & feesh
 
 request(224, sarah, swinford).  % & veronica
 oar_prefer(224, sarah, red_red, 1).
 
-request(224, mari, thrash). % & feesh
-% oar_prefer(224, mari, red_red, 1).
+request(224, scheer, thrash). % & feesh
+% oar_prefer(224, scheer, red_red, 1).
 
 % the other double will be the 41 re-rigged
 % 2{ request(224, intermediate, BOAT) : any_double(BOAT) }2.
