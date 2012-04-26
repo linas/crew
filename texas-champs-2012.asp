@@ -169,9 +169,8 @@ oar_prefer(205, juniors_c, blue, 1).
 request(207, juniors_a, judie).
 oar_prefer(207, juniors_a, wood, 1).
 
-% XXX in fact, solver is failing on oars, here.XXX
-% request(207, juniors_b, judie).
-% oar_prefer(207, juniors_b, orange, 1).
+request(207, juniors_b, borrowed_four).
+oar_prefer(207, juniors_b, orange, 1).
 
 %- 208	  	Womens Jr Novice 8+
 request(208, juniors, sophie).
