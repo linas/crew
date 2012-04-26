@@ -38,14 +38,14 @@ scull_oars(private_oars_sue, 1).
 :- request(RACE, CREW, maas), racenum(RACE), crew(CREW).
 
 % --- Name the rowers.
-rower(brennan).   % Rober Brennan
+rower(adams).     % Connie Adams
 rower(bolton).    % Scott Bolton
-rower(connie_a).  % Connie Adams
-rower(connie_h).  % Connie Hicks
+rower(brennan).   % Rober Brennan
 rower(cullicott). % John Collicott
 rower(ellis).     % Phil Ellis
 rower(feicht).    % Doug Feicht
 rower(gates).     % Ken Gates
+rower(hicks).     % Connie Hicks
 rower(jeff).
 rower(knifton).   % Matt Knifton
 rower(lynch).     % Robb Lynch
@@ -58,6 +58,7 @@ rower(sue).
 rower(scheer).    % Veronica Scheer
 rower(smith).     % Bill Smith  (Saloni's Crew).
 rower(vepstas).   % Linas Vepstas
+rower(wolf).      % Bettina Wolf
 
 % --- Describe crew types.
 crew(PERSON) :- rower(PERSON).
@@ -159,10 +160,15 @@ oar_prefer(205, juniors_c, blue, 1).
 
 %- 206	  	Womens Masters 4x
 1{ request(206, advanced_a, BOAT) : lt_or_mid_quad(BOAT) }1.
-1{ request(206, advanced_b, BOAT) : lt_or_mid_quad(BOAT) }1.
-1{ request(206, advanced_c, BOAT) : lt_or_mid_quad(BOAT) }1.
 1{ request(206, intermediate, BOAT) : lt_or_mid_quad(BOAT) }1.
 
+% racenum(206.2).
+1{ request(206, wolf, BOAT) : lt_or_mid_quad(BOAT) }1.  % 206.2
+oar_prefer(206, wolf, purple_red, 1).
+
+% greyhounds
+prefer(206, hicks, blue, 1).
+oar_prefer(206, hicks, yellow_purple, 1).
 
 %- 207	  	Mens Jr Novice 4+
 % XXX got an oar hotseating problem here.
@@ -178,9 +184,8 @@ oar_prefer(208, juniors, purple, 1).
 
 %- 209	  	Mens Masters 2-
 %- 210	  	Mixed Masters 4x
-% 1{ request(210, advanced_a, BOAT) : heavy_quad(BOAT) }1.
-request(210, connie_h, masters).  % connie, sue, jeff, linas
-oar_request(210, connie_h, purple_yellow, 1).
+request(210, hicks, masters).  % connie, sue, jeff, linas
+oar_prefer(210, hicks, yellow_purple, 1).
 
 % 3{ request(210, intermediate, BOAT) : any_quad(BOAT) }3.
 request(210, intermediate_a, orange).
@@ -201,10 +206,10 @@ oar_prefer(213, juniors, pair, 1).
 % 1{ request(214, advanced_a, BOAT) : hv_or_mid_quad(BOAT) }1.
 % 1{ request(214, intermediate_a, BOAT) : hv_or_mid_quad(BOAT) }1.
 request(214, knifton, black).
-oar_request(214, knifton, blue_blue).
+oar_prefer(214, knifton, blue_blue, 1).
 
 request(214, advanced, orange).
-oar_request(214, advanced, purple_green).
+oar_prefer(214, advanced, purple_green, 1).
 
 %- 215	  	Womens Jr Ltwt 4+
 request(215, juniors_a, judie).
@@ -218,7 +223,7 @@ request(216, juniors, sophie).
 oar_prefer(216, juniors, purple, 1).
 
 %- 217	  	Womens Masters 1x
-1{ request(217, connie_h, BOAT) : lightweight_single(BOAT) }1.
+1{ request(217, hicks, BOAT) : lightweight_single(BOAT) }1.
 
 % 1{ request(217, sue, BOAT) : lightweight_single(BOAT) }1.
 prefer(217, sue, somers, 1).
@@ -283,10 +288,13 @@ request(224, intermediate_a, bass).
 %- 227	  	Womens Jr Ltwt 8+
 %- 228	  	Mens Masters 8+
 %- 229	  	Mixed Masters 2x
-1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie_h
+% 1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie h
+prefer(229, hicks, thrash, 1).
+prefer(229, hicks, swinford, 2).
+% oar_prefer(229, hicks, blue_purple, 1).  % no way, these are the novice oars.
 
-% 1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie_a
-prefer(229, gates, barksdale).  % with connie_a
+% 1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie a
+request(229, gates, barksdale).  % with adams
 oar_prefer(229, gates, blue_blue, 1).
 
 %- 230	  	Womens Masters 4+
