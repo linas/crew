@@ -35,6 +35,12 @@ oarpairs_needed(BOAT, scull, 4) :- quad(BOAT).
 oarpairs_needed(BOAT, scull, 2) :- double(BOAT).
 oarpairs_needed(BOAT, scull, 1) :- single(BOAT).
 
+% ----------------------
+% Preference indication.
+
+% choice must be a number, 1 to 4.
+oar_choice(CHOICE) :- CHOICE=1..4.
+
 %%% ========================================================== %%%
 %% The actual scheduling algorithm.
 %% DO NOT MODIFY ANYTHING BELOW THIS LINE!
@@ -81,11 +87,23 @@ oarset_request(RACE, CREW, OARS, SET) :-
    CREW != OTHER_CREW.
 
 % ----------------------
-% Below follows the core oar available/request/reserve logic.
-% Most of the below is similar to the boat reservation logic,
-% except that its considerably more complex, because we have to deal
-% with the problem of differing numbers of oars and oar types for
-% different boat types.
+% Convert oarset requests into oarpair requests.  Basically, just take
+% the oarset, and multiply by the number of oarpairs needed for a given
+% boat class.  This is the magic where sets of oars can be split up
+% between doubles, singles.
+
+% Note also: a request is not made unless a boat is reserved.
+
+oarpair_request(RACE, CREW, OARS, TYPE, PAIR) :-
+           reserve(RACE, CREW, BOAT),
+           oarset_request(RACE, CREW, OARS, SET),
+           oarpairs_needed(BOAT, TYPE, COUNT),
+           N = 1..COUNT,
+           PAIR = N + (SET-1)* COUNT. 
+
+% ----------------------
+% The core reservation/inuse logic. Vaguely resembles that used for the
+% boats, but has more arguments.
 
 % Oars are available if not in use by any crew.
 oarpair_available(RACE, OARS, TYPE, PAIR) :-
@@ -94,84 +112,14 @@ oarpair_available(RACE, OARS, TYPE, PAIR) :-
            not oarpair_inuse(RACE, CREW, OARS, TYPE, PAIR).
 
 % Reserve oar pairs if they are requested and available.
-% OK, the section commented out below works, but won't split up oar
-% sets for doubles and singles.  So we replace it by a more complex 
-% system for doubles, singles.
 %
-% oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-%            oarpair_available(RACE, OARS, TYPE, PAIR),
-%            oar_request(RACE, CREW, OARS), 
-%            reserve(RACE, CREW, BOAT),
-%            oarpairs_needed(BOAT, TYPE, COUNT),
-%            PAIR = 1..COUNT.
-
-% XXX This is broken right now, because oar requests for singles fail 
-% to realize the sets can be split up, and so the requests never get made.
-% and so oar reservation failures happen. Yikes!  Fixme later.
-
-% When there's a set of 4 needed, grab them all.
 oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 4),
-           PAIR = 1..4.
+            oarpair_available(RACE, OARS, TYPE, PAIR),
+            oarpair_request(RACE, CREW, OARS, TYPE, PAIR).
 
-% When there's a set of 2 needed, and the first two are available,
-% grab them.
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 2),
-           PAIR = 1..2.
-
-% When the first 2 pairs of oars are taken, then grab the other two
-% out of the set.
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           not oarpair_available(RACE, OARS, TYPE, 1),
-           not oarpair_available(RACE, OARS, TYPE, 2),
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 2),
-           PAIR = 3..4.
-
-% singles
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 1),
-           PAIR = 1.
-
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           not oarpair_available(RACE, OARS, TYPE, 1),
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 1),
-           PAIR = 2.
-
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           not oarpair_available(RACE, OARS, TYPE, 1),
-           not oarpair_available(RACE, OARS, TYPE, 2),
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 1),
-           PAIR = 3.
-
-oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
-           not oarpair_available(RACE, OARS, TYPE, 1),
-           not oarpair_available(RACE, OARS, TYPE, 2),
-           not oarpair_available(RACE, OARS, TYPE, 3),
-           oarpair_available(RACE, OARS, TYPE, PAIR),
-           oar_request(RACE, CREW, OARS), 
-           reserve(RACE, CREW, BOAT),
-           oarpairs_needed(BOAT, TYPE, 1),
-           PAIR = 4.
-
+% ---------------------------------
+% Second guess everything.  The above should be enough, I think, to
+% properly reserve oars. But, just in case ...
 
 % Make sure that quads and eights get four pairs of oars, and not less.
 % Start by counting how many oarparis we actually got.
@@ -241,12 +189,6 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
    oarpair_reserve(RACE, OTHER_CREW, OARS, TYPE, PAIR),
    CREW != OTHER_CREW,
    racenum(RACE), crew(CREW), crew(OTHER_CREW), oarpair(OARS, TYPE, PAIR). 
-
-% ----------------------
-% Preference indication.
-
-% choice must be a number, 1 to 4.
-oar_choice(CHOICE) :- CHOICE=1..4.
 
 % --------------------
 % minimize oar reservation conflicts.
@@ -357,3 +299,4 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 % #show set_universe/5.
 #show oarset_request/4.
 % #show oarsets_possible/3.
+#show oarpair_request/5.
