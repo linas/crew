@@ -41,6 +41,46 @@ oarpairs_needed(BOAT, scull, 1) :- single(BOAT).
 %% (Unless you really, really know what you're doing, and
 %% you probably don't.)  Just write me with questions, requests.
 %%% ========================================================== %%%
+% ----------------------
+% oarset logic
+%
+% The total possible number of matchings of sets of oars to boats.
+% The division is done so that out of a set of 4 pairs of oars, a
+% quad gets just one set, a double gets set 1 or 2, while singles
+% get set 1,2,3 or 4.  By contrast, if there are only three pairs of
+% oars, then the quads get zero, while doubles and singles can still
+% get a set.
+oarsets_possible(BOAT, OARS, NSETS) :-
+          oarpairs_needed(BOAT, TYPE, COUNT),
+          oars(OARS, TYPE, SETCOUNT),
+          NSETS = SETCOUNT/COUNT,
+          NSETS != 0.
+
+% The total universe of oar-set assignments. Any boat will only ever 
+% get one set of oars.  Out of a set of 4 pairs of oars, a quad will
+% get the whole set, a double can get set 1 or set 2, while singles
+% can get one and only one of the sets 1,2,3 or 4.
+% crew and racenum are "free variables", so an orset is generated for
+% every possible crew+race combination.
+1 { set_universe(RACE, CREW, BOAT, OARS, SET) :
+      SET=1..NSETS :
+      oars(OARS, TYPE, COUNT) :
+      oarsets_possible(BOAT, OARS, NSETS)
+ } 1 :-
+          crew(CREW), racenum(RACE).
+
+% Out of a list of desired oars, choose only one set of oars.
+oarset_request(RACE, CREW, OARS, SET) :-
+             oar_prefer(RACE, CREW, OARS, CHOICE),
+             set_universe(RACE, CREW, BOAT, OARS, SET).
+
+% Two different crews cannot make a request for the same oarset
+% for the same race.
+:- oarset_request(RACE, CREW, OARS, SET),
+   oarset_request(RACE, OTHER_CREW, OARS, SET),
+   CREW != OTHER_CREW.
+
+% ----------------------
 % Below follows the core oar available/request/reserve logic.
 % Most of the below is similar to the boat reservation logic,
 % except that its considerably more complex, because we have to deal
@@ -208,43 +248,8 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
 % choice must be a number, 1 to 4.
 oar_choice(CHOICE) :- CHOICE=1..4.
 
-% The total possible number of matchings of sets of oars to boats.
-% The division is done so that out of a set of 4 pairs of oars, a
-% quad gets just one set, a double gets set 1 or 2, while singles
-% get set 1,2,3 or 4.  By contrast, if there are only three pairs of
-% oars, then the quads get zero, while doubles and singles can still
-% get a set.
-oarsets_possible(BOAT, OARS, NSETS) :-
-          oarpairs_needed(BOAT, TYPE, COUNT),
-          oars(OARS, TYPE, SETCOUNT),
-          NSETS = SETCOUNT/COUNT,
-          NSETS != 0.
-
-% The total universe of oar-set assignments. Any boat will only ever 
-% get one set of oars.  Out of a set of 4 pairs of oars, a quad will
-% get the whole set, a double can get set 1 or set 2, while singles
-% can get one and only one of the sets 1,2,3 or 4.
-1 { set_universe(RACE, CREW, BOAT, OARS, SET) :
-      SET=1..NSETS :
-      oars(OARS, TYPE, COUNT) :
-      oarsets_possible(BOAT, OARS, NSETS)
- } 1 :-
-          crew(CREW), racenum(RACE).
-
-% XXX This is broken right now, because oar requests for singles fail 
-% to realize the sets can be split up, and so the requests never get made.
-% and so oar reservation failures happen. Yikes! Fixme later.
-
-% Out of a list of desired oars, choose only one set of oars.
-oarset_request(RACE, CREW, OARS, SET) :-
-             oar_prefer(RACE, CREW, OARS, CHOICE),
-             set_universe(RACE, CREW, BOAT, OARS, SET).
-
-% Two different crews cannot make a request for the same oarset
-% for the same race.
-:- oarset_request(RACE, CREW, OARS, SET),
-   oarset_request(RACE, OTHER_CREW, OARS, SET),
-   CREW != OTHER_CREW.
+% --------------------
+% minimize oar reservation conflicts.
 
 % A crew has a reservation if it has one or more oar pairs.
 oar_reserve(RACE, CREW, OARS, TYPE) :-
