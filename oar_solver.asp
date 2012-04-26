@@ -247,7 +247,9 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 % and is borken.  fixme later.
 oar_hotseat(RACE, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-          oarpair_reserve(RACE-CENTER-M, OTHER_CREW, OARS, TYPE, PAIR),
+          oarpair_reserve(OTHER_RACE, OTHER_CREW, OARS, TYPE, PAIR),
+          sched(SCH, RACE),
+          sched(SCH-CENTER-M, OTHER_RACE),
           center(CENTER),
           M=1..HOTS, hotseat_warn(HOTS).
 
@@ -256,7 +258,9 @@ oar_hotseat(RACE, OARS) :-
 % convenience of the crews.
 oar_hurry_back(RACE, CREW, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-          oarpair_reserve(RACE+CENTER+M, OTHER_CREW, OARS, TYPE, PAIR),
+          oarpair_reserve(OTHER_RACE, OTHER_CREW, OARS, TYPE, PAIR),
+          sched(SCH, RACE),
+          sched(SCH+CENTER+M, OTHER_RACE),
           center(CENTER),
           M=1..HOTS, hotseat_warn(HOTS).
 
