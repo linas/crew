@@ -291,7 +291,7 @@ request(224, intermediate_a, bass).
 % 1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie h
 prefer(229, hicks, thrash, 1).
 prefer(229, hicks, swinford, 2).
-% oar_prefer(229, hicks, blue_purple, 1).  % no way, these are the novice oars.
+oar_prefer(229, hicks, yellow_purple, 1).
 
 % 1{ request(229, gates, BOAT) : heavy_double(BOAT) }1.  % & connie a
 request(229, gates, barksdale).  % with adams
