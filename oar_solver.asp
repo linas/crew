@@ -87,6 +87,20 @@ oarset_request(RACE, CREW, OARS, SET) :-
    CREW != OTHER_CREW.
 
 % ----------------------
+% Every boat reservation must have an oar reservation.
+% If a crew did not express an oar choice, make a request for them,
+% ask for something, anything.
+expressed_oar_pref(RACE, CREW) :- oar_prefer(RACE, CREW, OARS, CHOICE).
+
+auto_oar_req(RACE, CREW) :-
+           got_a_boat(RACE, CREW),
+           not expressed_oar_pref(RACE, CREW).
+
+oarset_request(RACE, CREW, OARS, SET) :-
+           auto_oar_req(RACE, CREW),
+           set_universe(RACE, CREW, BOAT, OARS, SET).
+
+% ----------------------
 % Convert oarset requests into oarpair requests.  Basically, just take
 % the oarset, and multiply by the number of oarpairs needed for a given
 % boat class.  This is the magic where sets of oars can be split up
@@ -100,15 +114,6 @@ oarpair_request(RACE, CREW, OARS, TYPE, PAIR) :-
            oarpairs_needed(BOAT, TYPE, COUNT),
            N = 1..COUNT,
            PAIR = N + (SET-1)* COUNT. 
-
-% ----------------------
-% Every boat reservation must have an oar reservation
-% If a crew did not express an oar choice, make a request for them,
-% ask for something, anything.
-expressed_oar_pref(RACE, CREW) :- oar_prefer(RACE, CREW, OARS, CHOICE).
-oar_request(RACE, CREW, OARS) :- got_a_boat(RACE, CREW),
-                                 not expressed_oar_pref(RACE, CREW),
-                                 oar_universe(RACE, CREW, OARS).
 
 % ----------------------
 % The core reservation/inuse logic. Vaguely resembles that used for the
