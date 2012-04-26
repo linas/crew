@@ -208,19 +208,43 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
 % choice must be a number, 1 to 4.
 oar_choice(CHOICE) :- CHOICE=1..4.
 
-% The total universe of all possible oar-set assignments, to a given
-% crew and race.  This does not count how many, or the types.
-1 { oar_universe(RACE, CREW, OARS) : oars(OARS, TYPE, COUNT) } 1 :-
-   crew(CREW), racenum(RACE).
+% The total possible number of matchings of sets of oars to boats.
+% The division is done so that out of a set of 4 pairs of oars, a
+% quad gets just one set, a double gets set 1 or 2, while singles
+% get set 1,2,3 or 4.  By contrast, if there are only three pairs of
+% oars, then the quads get zero, while doubles and singles can still
+% get a set.
+oarsets_possible(BOAT, OARS, NSETS) :-
+          oarpairs_needed(BOAT, TYPE, COUNT),
+          oars(OARS, TYPE, SETCOUNT),
+          NSETS = SETCOUNT/COUNT,
+          NSETS != 0.
+
+% The total universe of oar-set assignments. Any boat will only ever 
+% get one set of oars.  Out of a set of 4 pairs of oars, a quad will
+% get the whole set, a double can get set 1 or set 2, while singles
+% can get one and only one of the sets 1,2,3 or 4.
+1 { set_universe(RACE, CREW, BOAT, OARS, SET) :
+      SET=1..NSETS :
+      oars(OARS, TYPE, COUNT) :
+      oarsets_possible(BOAT, OARS, NSETS)
+ } 1 :-
+          crew(CREW), racenum(RACE).
 
 % XXX This is broken right now, because oar requests for singles fail 
 % to realize the sets can be split up, and so the requests never get made.
 % and so oar reservation failures happen. Yikes! Fixme later.
 
 % Out of a list of desired oars, choose only one set of oars.
-oar_request(RACE, CREW, OARS) :-
+oarset_request(RACE, CREW, OARS, SET) :-
              oar_prefer(RACE, CREW, OARS, CHOICE),
-             oar_universe(RACE, CREW, OARS).
+             set_universe(RACE, CREW, BOAT, OARS, SET).
+
+% Two different crews cannot make a request for the same oarset
+% for the same race.
+:- oarset_request(RACE, CREW, OARS, SET),
+   oarset_request(RACE, OTHER_CREW, OARS, SET),
+   CREW != OTHER_CREW.
 
 % A crew has a reservation if it has one or more oar pairs.
 oar_reserve(RACE, CREW, OARS, TYPE) :-
@@ -325,3 +349,6 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 % #show oarpair_inuse/5.
 % #show oarpair_available/4.
 % #show oarpairs_needed/3.
+% #show set_universe/5.
+#show oarset_request/4.
+% #show oarsets_possible/3.
