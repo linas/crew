@@ -127,7 +127,7 @@ request(203, lynch, private_lynch).
 1{ request(203, brennan, BOAT) : any_single(BOAT) }1.
 
 1{ request(203, feicht, BOAT) : heavy_single(BOAT) }1.
-% oar_prefer(203, feicht, yellow_purple, 1).
+oar_prefer(203, feicht, yellow_purple, 1).
 
 prefer(203, gates, dunya, 1).
 oar_prefer(203, gates, blue_blue, 1).
@@ -139,7 +139,7 @@ oar_prefer(203, jeff, yellow_purple, 1).
 1{ request(203, nicot, BOAT) : any_single(BOAT) }1.
 
 1{ request(203, oppliger, BOAT) : heavy_single(BOAT) }1.
-% oar_prefer(203, oppliger, yellow_purple, 1).
+oar_prefer(203, oppliger, yellow_purple, 1).
 
 1{ request(203, smith, BOAT) : any_single(BOAT) }1.
 
@@ -155,7 +155,7 @@ request(205, juniors_b, 30).
 oar_prefer(205, juniors_b, blue, 1).
 
 request(205, juniors_c, borrowed_pair).
-% oar_prefer(205, juniors_c, blue, 1).
+oar_prefer(205, juniors_c, blue, 1).
 
 %- 206	  	Womens Masters 4x
 1{ request(206, advanced_a, BOAT) : lt_or_mid_quad(BOAT) }1.
@@ -212,7 +212,7 @@ request(215, juniors_a, judie).
 oar_prefer(215, juniors_a, blue, 1).
 
 request(215, juniors_b, borrowed_four).
-% oar_prefer(215, juniors_b, blue, 1).
+oar_prefer(215, juniors_b, blue, 1).
 
 %- 216	  	Mens Jr Novice 8+
 request(216, juniors, sophie).
@@ -232,7 +232,7 @@ request(219, juniors_a, judie).
 oar_prefer(219, juniors_a, blue, 1).
 
 request(219, juniors_b, borrowed_four).
-% oar_prefer(219, juniors_b, blue, 1).
+oar_prefer(219, juniors_b, blue, 1).
 
 request(219, juniors_c, beverly).
 oar_prefer(219, juniors_c, orange, 1).
@@ -263,7 +263,7 @@ request(222, juniors_a, judie).
 oar_prefer(222, juniors_a, blue, 1).
 
 request(222, juniors_b, borrowed_four).
-% oar_prefer(222, juniors_b, blue, 1).
+oar_prefer(222, juniors_b, blue, 1).
 
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
@@ -272,7 +272,7 @@ request(224, sarah, swinford).  % & veronica
 oar_prefer(224, sarah, red_red, 1).
 
 request(224, scheer, thrash). % & feesh
-% oar_prefer(224, scheer, red_red, 1).
+oar_prefer(224, scheer, red_red, 1).
 
 % the other double will be the 41 re-rigged
 % 2{ request(224, intermediate, BOAT) : any_double(BOAT) }2.
