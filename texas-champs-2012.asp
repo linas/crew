@@ -41,19 +41,19 @@ scull_oars(private_oars_sue, 1).
 rower(adams).     % Connie Adams
 rower(bolton).    % Scott Bolton
 rower(brennan).   % Rober Brennan
+rower(crawford).  % Jeff Crawford
 rower(cullicott). % John Collicott
+rower(daniels).   % Sarah Daniels
 rower(ellis).     % Phil Ellis
 rower(feicht).    % Doug Feicht
 rower(gates).     % Ken Gates
 rower(hicks).     % Connie Hicks
-rower(jeff).
 rower(knifton).   % Matt Knifton
 rower(lynch).     % Robb Lynch
 rower(mari).
 rower(mast).      % Steve Mast  (Intermediate crew)
 rower(nicot).     % JP Nicot
 rower(oppliger).  % Wade Oppliger
-rower(sarah).
 rower(sue).
 rower(scheer).    % Veronica Scheer
 rower(smith).     % Bill Smith  (Saloni's Crew).
@@ -80,8 +80,47 @@ crew(intermediate_d).
 crew(novice).
 
 % --- List the races
-racenum(NUM) :- NUM=101..116.   % Saturday.
-racenum(NUM) :- NUM=201..231.   % Sunday.
+% racenum(NUM) :- NUM=101..116.   % Saturday.
+% racenum(NUM) :- NUM=201..231.   % Sunday.
+
+% Wow. Yuck. There's gotta be an easier way!
+racenum(NUM) :- sched(CENTER, NUM).
+
+sched(501, 201).
+sched(502, 202).
+sched(503, 203.1).
+sched(504, 203.2).
+sched(505, 203.3).
+sched(506, 204).
+sched(507, 205).
+sched(508, 206.1).
+sched(509, 206.2).
+sched(510, 207).
+sched(511, 208).
+sched(512, 209).
+sched(513, 210.1).
+sched(514, 210.2).
+sched(515, 212).
+sched(516, 213).
+sched(517, 214).
+sched(518, 215).
+sched(519, 216).
+sched(520, 217.1).
+sched(521, 217.2).
+sched(522, 219).
+sched(523, 220.1).
+sched(524, 220.2).
+sched(525, 221.1).
+sched(526, 221.2).
+sched(527, 222).
+sched(528, 224.1).
+sched(529, 224.2).
+sched(530, 225).
+sched(531, 228).
+sched(532, 229).
+sched(533, 230.1).
+sched(534, 230.2).
+sched(535, 231).
 
 % --- Specify minimum number of races between equipment reuse.
 % In this case, the boat cannot be reserved for the previous 2 races.
@@ -120,29 +159,31 @@ hotseat_warn(2).
 request(202, intermediate, beverly).
 
 %- 203	  	Mens Masters 1x
-request(203, bolton, private_bolton).
-request(203, cullicott, private_cullicott).
-request(203, ellis, private_ellis).
-request(203, lynch, private_lynch).
+request(203.1, bolton, private_bolton).
+request(203.2, cullicott, private_cullicott).
+1{ request(203.2, mast, BOAT) : midweight_single(BOAT) }1.
+1{ request(203.2, smith, BOAT) : any_single(BOAT) }1.
 
-1{ request(203, brennan, BOAT) : any_single(BOAT) }1.
+request(203.3, ellis, private_ellis).
+request(203.3, lynch, private_lynch).
 
-1{ request(203, feicht, BOAT) : heavy_single(BOAT) }1.
-oar_prefer(203, feicht, yellow_purple, 1).
+1{ request(203.3, brennan, BOAT) : any_single(BOAT) }1.
 
-prefer(203, gates, dunya, 1).
-oar_prefer(203, gates, blue_blue, 1).
+1{ request(203.3, feicht, BOAT) : heavy_single(BOAT) }1.
+oar_prefer(203.3, feicht, yellow_purple, 1).
 
-1{ request(203, jeff, BOAT) : lightweight_single(BOAT) }1.
-oar_prefer(203, jeff, yellow_purple, 1).
+prefer(203.3, gates, dunya, 1).
+oar_prefer(203.3, gates, blue_blue, 1).
 
-1{ request(203, mast, BOAT) : midweight_single(BOAT) }1.
-1{ request(203, nicot, BOAT) : any_single(BOAT) }1.
+1{ request(203.3, nicot, BOAT) : any_single(BOAT) }1.
 
-1{ request(203, oppliger, BOAT) : heavy_single(BOAT) }1.
-oar_prefer(203, oppliger, yellow_purple, 1).
+1{ request(203.3, oppliger, BOAT) : heavy_single(BOAT) }1.
+oar_prefer(203.3, oppliger, yellow_purple, 1).
 
-1{ request(203, smith, BOAT) : any_single(BOAT) }1.
+% XXX did jeff scratch?
+1{ request(203.3, crawford, BOAT) : lightweight_single(BOAT) }1.
+oar_prefer(203.3, crawford, yellow_purple, 1).
+
 
 %- 204	  	Mens Jr 8+
 request(204, juniors, sophie).
@@ -272,8 +313,8 @@ oar_prefer(222, juniors_b, blue, 1).
 %- 223	  	Mens Jr Ltwt 8+
 %- 224	  	Womens Masters 2x
 
-request(224, sarah, swinford).  % & veronica
-oar_prefer(224, sarah, red_red, 1).
+request(224, daniels, swinford).  % & veronica
+oar_prefer(224, daniels, red_red, 1).
 
 request(224, scheer, thrash). % & feesh
 oar_prefer(224, scheer, red_red, 1).
@@ -288,7 +329,7 @@ request(224, intermediate_a, bass).
 %- 227	  	Womens Jr Ltwt 8+
 %- 228	  	Mens Masters 8+
 %- 229	  	Mixed Masters 2x
-% 1{ request(229, jeff, BOAT) : midweight_double(BOAT) }1.  % & connie h
+% 1{ request(229, crawford, BOAT) : midweight_double(BOAT) }1.  % & connie h
 prefer(229, hicks, thrash, 1).
 prefer(229, hicks, swinford, 2).
 oar_prefer(229, hicks, yellow_purple, 1).
