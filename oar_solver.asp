@@ -279,9 +279,9 @@ take_oars_to_venue(OARS, TYPE) :- oar_reserve(RACE, CREW, OARS, TYPE).
 % bad_oar_count(OARS) :- oars(OARS,TYPE,COUNT), not COUNT=1..8.
 
 oarname(OARS) :- oars(OARS, TYPE, COUNT).
-bad_oar_name(OARS) :- oar_request(RACE,CREW,OARS), not oarname(OARS).
-bad_crew_name(CREW) :- oar_request(RACE,CREW,OARS), not crew(CREW).
-bad_race_num(RACE) :- oar_request(RACE,CREW,OARS), not racenum(RACE).
+bad_oar_name(OARS) :- oar_prefer(RACE,CREW,OARS,CH), not oarname(OARS).
+bad_crew_name(CREW) :- oar_prefer(RACE,CREW,OARS,CH), not crew(CREW).
+bad_race_num(RACE) :- oar_prefer(RACE,CREW,OARS,CH), not racenum(RACE).
 
 bad_oar_name(OARS) :- oar_prefer(RACE,CREW,OARS,CHOICE), not oarname(OARS).
 bad_crew_name(CREW) :- oar_prefer(RACE,CREW,OARS,CHOICE), not crew(CREW).
