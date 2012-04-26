@@ -145,7 +145,7 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
            sched(SCH, RACE),
-           sched(SCH+1, ONWATER),
+           sched(SCH+1, ONWATER).
 
 % Cannot reserve oars that are in use.
 :- oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR),

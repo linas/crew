@@ -63,7 +63,7 @@ reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 % beforehand. That is, the crew needs CENTER-1 races to launch and
 % warmup before the race.
 inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              sched(SCH, RACE)
+                              sched(SCH, RACE),
                               SCHMN = SCH - N,
                               sched(SCHMN, ONWATER),
                               N = 1..CENTER-1,
@@ -71,8 +71,8 @@ inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT),
 
 % Its on the water for the next race, too.
 inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              sched(SCH, RACE)
-                              sched(SCH+1, ONWATER),
+                              sched(SCH, RACE),
+                              sched(SCH+1, ONWATER).
 
 % Cannot reserve a boat that is in use.
 :- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
