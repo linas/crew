@@ -135,14 +135,17 @@ oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
 % warmup before the race.
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-           ONWATER = RACE - N,
+           sched(SCH, RACE),
+           SCHMN = SCH - N,
+           sched(SCHMN, ONWATER),
            N = 1..CENTER-1,
            center(CENTER).
 
 % Oars are on the water for race immediately after, too.
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-           ONWATER = RACE + 1.
+           sched(SCH, RACE),
+           sched(SCH+1, ONWATER),
 
 % Cannot reserve oars that are in use.
 :- oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR),
