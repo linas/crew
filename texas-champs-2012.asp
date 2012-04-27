@@ -85,43 +85,50 @@ crew(novice).
 % racenum(NUM) :- NUM=201..231.   % Sunday.
 
 % Wow. Yuck. There's gotta be an easier way!
-racenum(NUM) :- sched(CENTER, NUM).
+racenum(NUM) :- heat(CENTER, NUM).
 
-sched(501, r201).
-sched(502, r202).
-sched(503, r203h1).
-sched(504, r203h2).
-sched(505, r203h3).
-sched(506, r204).
-sched(507, r205).
-sched(508, r206h1).
-sched(509, r206h2).
-sched(510, r207).
-sched(511, r208).
-sched(512, r209).
-sched(513, r210h1).
-sched(514, r210h2).
-sched(515, r212).
-sched(516, r213).
-sched(517, r214).
-sched(518, r215).
-sched(519, r216).
-sched(520, r217h1).
-sched(521, r217h2).
-sched(522, r219).
-sched(523, r220h1).
-sched(524, r220h2).
-sched(525, r221h1).
-sched(526, r221h2).
-sched(527, r222).
-sched(528, r224h1).
-sched(529, r224h2).
-sched(530, r225).
-sched(531, r228).
-sched(532, r229).
-sched(533, r230h1).
-sched(534, r230h2).
-sched(535, r231).
+% Number on the left is just a linear ordering of the events,
+% including heats.  The numbers on the left must increase by one
+% (they indicate time; leave gaps for breaks!)  The numbers on
+% the right are race numbers, e.g. 202.1  unfortuantely, we can't
+% write it like that, so instead we write r202h1. Yuck.
+% unfortunately, there is no easy way of managine this list, yet.
+% Maybe we'll fix this someday...
+heat(501, r201).
+heat(502, r202).
+heat(503, r203h1).
+heat(504, r203h2).
+heat(505, r203h3).
+heat(506, r204).
+heat(507, r205).
+heat(508, r206h1).
+heat(509, r206h2).
+heat(510, r207).
+heat(511, r208).
+heat(512, r209).
+heat(513, r210h1).
+heat(514, r210h2).
+heat(515, r212).
+heat(516, r213).
+heat(517, r214).
+heat(518, r215).
+heat(519, r216).
+heat(520, r217h1).
+heat(521, r217h2).
+heat(522, r219).
+heat(523, r220h1).
+heat(524, r220h2).
+heat(525, r221h1).
+heat(526, r221h2).
+heat(527, r222).
+heat(528, r224h1).
+heat(529, r224h2).
+heat(530, r225).
+heat(531, r228).
+heat(532, r229).
+heat(533, r230h1).
+heat(534, r230h2).
+heat(535, r231).
 
 % --- Specify minimum number of races between equipment reuse.
 % In this case, the boat cannot be reserved for the previous 2 races.

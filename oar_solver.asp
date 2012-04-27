@@ -135,17 +135,17 @@ oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR) :-
 % warmup before the race.
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-           sched(SCH, RACE),
+           heat(SCH, RACE),
            SCHMN = SCH - N,
-           sched(SCHMN, ONWATER),
+           heat(SCHMN, ONWATER),
            N = 1..CENTER-1,
            center(CENTER).
 
 % Oars are on the water for race immediately after, too.
 oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
            oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
-           sched(SCH, RACE),
-           sched(SCH+1, ONWATER).
+           heat(SCH, RACE),
+           heat(SCH+1, ONWATER).
 
 % Cannot reserve oars that are in use.
 :- oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR),
@@ -251,8 +251,8 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
 oar_hotseat(RACE, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
           oarpair_reserve(OTHER_RACE, OTHER_CREW, OARS, TYPE, PAIR),
-          sched(SCH, RACE),
-          sched(SCH-CENTER-M, OTHER_RACE),
+          heat(SCH, RACE),
+          heat(SCH-CENTER-M, OTHER_RACE),
           center(CENTER),
           M=1..HOTS, hotseat_warn(HOTS).
 
@@ -262,8 +262,8 @@ oar_hotseat(RACE, OARS) :-
 oar_hurry_back(RACE, CREW, OARS) :-
           oarpair_reserve(RACE, CREW, OARS, TYPE, PAIR), 
           oarpair_reserve(OTHER_RACE, OTHER_CREW, OARS, TYPE, PAIR),
-          sched(SCH, RACE),
-          sched(SCH+CENTER+M, OTHER_RACE),
+          heat(SCH, RACE),
+          heat(SCH+CENTER+M, OTHER_RACE),
           center(CENTER),
           M=1..HOTS, hotseat_warn(HOTS).
 

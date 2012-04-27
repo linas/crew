@@ -63,16 +63,16 @@ reserve(RACE, CREW, BOAT) :- racenum(RACE), crew(CREW), boat(BOAT),
 % beforehand. That is, the crew needs CENTER-1 races to launch and
 % warmup before the race.
 inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              sched(SCH, RACE),
+                              heat(SCH, RACE),
                               SCHMN = SCH - N,
-                              sched(SCHMN, ONWATER),
+                              heat(SCHMN, ONWATER),
                               N = 1..CENTER-1,
                               center(CENTER).
 
 % Its on the water for the next race, too.
 inuse(ONWATER, CREW, BOAT) :- reserve(RACE, CREW, BOAT), 
-                              sched(SCH, RACE),
-                              sched(SCH+1, ONWATER).
+                              heat(SCH, RACE),
+                              heat(SCH+1, ONWATER).
 
 % Cannot reserve a boat that is in use.
 :- reserve(RACE, CREW, BOAT), inuse(RACE, OTHER_CREW, BOAT),
@@ -138,8 +138,8 @@ boat_reservation_failure(RACE, CREW) :- want_to_race(RACE, CREW),
 % True if boat will be hotseated at the dock.
 hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT), 
                        reserve(OTHER_RACE, OTHER_CREW, BOAT),
-                       sched(SCH, RACE),
-                       sched(SCH-CENTER-M, OTHER_RACE),
+                       heat(SCH, RACE),
+                       heat(SCH-CENTER-M, OTHER_RACE),
                        center(CENTER),
                        M=0..HOTS, hotseat_warn(HOTS).
 
@@ -149,8 +149,8 @@ hotseat(RACE, BOAT) :- reserve(RACE, CREW, BOAT),
 hurry_back(RACE, CREW, BOAT) :-
                        reserve(RACE, CREW, BOAT), 
                        reserve(OTHER_RACE, OTHER_CREW, BOAT),
-                       sched(SCH, RACE),
-                       sched(SCH+CENTER+M, OTHER_RACE),
+                       heat(SCH, RACE),
+                       heat(SCH+CENTER+M, OTHER_RACE),
                        center(CENTER),
                        M=0..HOTS, hotseat_warn(HOTS).
 
