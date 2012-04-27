@@ -239,7 +239,7 @@ oar_prefer("208", juniors, purple, 1).
 
 % 3{ request("210", intermediate, BOAT) : any_quad(BOAT) }3.
 request("210.1", morey, orange).
-request("210.1", nicot, mcdarmid).
+request("210.1", nicot, mcdiarmid).
 request("210.1", intermediate_c, green).
 
 request("210.2", vepstas, masters).  % connie, sue, jeff, linas

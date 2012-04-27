@@ -78,7 +78,7 @@ heavy_quad(orange).
 heavy_quad(black).
 midheavy_quad(parents).
 midheavy_quad(masters).
-midheavy_quad(mcdarmid).
+midheavy_quad(mcdiarmid).
 
 midweight_quad(yellow).
 midlight_quad(green).
