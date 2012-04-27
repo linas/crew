@@ -88,7 +88,7 @@ lightweight_quad(red).
 % Doubles
 heavy_double(maas).
 heavy_double(jakob).
-heavy_double(barksdale).
+heavy_double(barksdales).
 
 midweight_double(swinford).
 midweight_double(bass).
