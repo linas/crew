@@ -299,7 +299,6 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 #show bad_oar_count/1.
 #show bad_oar_name/1.
 #show bad_oar_preference/1.
-% #show oarpair_reserve/5.
 % #show got_four_oarpairs/4.
 % #show got_enough_oarpairs/4.
 % #show not_got_enough_oarpairs/4.
@@ -312,6 +311,7 @@ bad_oar_preference(CHOICE) :- oar_prefer(RACE,CREW,OARS,CHOICE), not choice(CHOI
 % #show oarpair_available/4.
 % #show oarpairs_needed/3.
 % #show set_universe/5.
-#show oarset_request/4.
 % #show oarsets_possible/3.
-#show oarpair_request/5.
+% #show oarset_request/4.
+% #show oarpair_request/5.
+% #show oarpair_reserve/5.
