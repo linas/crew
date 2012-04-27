@@ -1,4 +1,4 @@
-#!/usr/bin/env perl -w
+#!/usr/bin/env perl
 #
 # Convert solver satisfaction output to a comma-separated table.
 # The idea is that this csv can then be imported into a spreadsheet, or
