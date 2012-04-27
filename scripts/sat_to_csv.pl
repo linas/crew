@@ -1,4 +1,12 @@
-#!/usr/bin/perl -w
+#!/usr/bin/env perl -w
+#
+# Convert solver satisfaction output to a comma-separated table.
+# The idea is that this csv can then be imported into a spreadsheet, or
+# converted to html.
+#
+# Usage: cat trimmed_solver_out | sat_to_csv.pl > reservations.csv
+#
+# Author: Justin Morey April 2012
 
 
 while (<STDIN>) {
