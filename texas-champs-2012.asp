@@ -192,7 +192,7 @@ oar_prefer("203.3", gates, blue_blue, 1).
 1{ request("203.3", nicot, BOAT) : any_single(BOAT) }1.
 
 1{ request("203.3", oppliger, BOAT) : heavy_single(BOAT) }1.
-oar_prefer("203.3", oppliger, yellow_purple, 1).
+oar_prefer("203.3", oppliger, purple_green, 1).
 
 %- 204	  	Mens Jr 8+
 request("204", juniors, sophie).
