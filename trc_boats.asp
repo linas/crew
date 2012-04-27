@@ -28,6 +28,7 @@ single(BOAT) :- midweight_single(BOAT).
 single(BOAT) :- lightweight_single(BOAT).
 single(BOAT) :- flyweight_single(BOAT).
 single(BOAT) :- adaptive_single(BOAT).
+single(BOAT) :- club_racer(BOAT).
 
 % --- Generic boat classes.
 hv_or_mid_quad(BOAT) :- heavy_quad(BOAT).
@@ -110,4 +111,9 @@ lightweight_single(veronica).
 lightweight_single(unnamed).
 flyweight_single(fly).
 adaptive_single(intrepid).
+
+% Club racers.
+club_racer(rogers).
+club_racer(kryzinski).
+club_racer(hamilton).
 
