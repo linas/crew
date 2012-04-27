@@ -55,7 +55,7 @@ racenum(NUM) :- NUM=201..229.   % Sunday.
 
 % -- used for inserting heats into events.  See other examples
 % for details.
-heats(NUM, NUM) :- racenum(NUM).
+heat(NUM, NUM) :- racenum(NUM).
 
 % --- Specify minimum number of races between equipment reuse.
 % In this case, the boat cannot be reserved for the previous 4 races.
