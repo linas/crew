@@ -168,6 +168,9 @@ oarpair_inuse(ONWATER, CREW, OARS, TYPE, PAIR) :-
 % ---------------------------------
 % Second guess everything.  The above should be enough, I think, to
 % properly reserve oars. But, just in case ...
+% After a bit of experimentation, it seems that this improves
+% performance: the solver can find a solution faster, with this code
+% in place.
 
 % Make sure that quads and eights get four pairs of oars, and not less.
 % Start by counting how many oarparis we actually got.
