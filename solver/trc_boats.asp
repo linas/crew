@@ -6,7 +6,7 @@
 % of the #include directive, this listing can be reused for different
 % regattas.
 %
-% Initial version: Linas Vepstas April 2012 
+% Initial version: Linas Vepstas April 2012
 %
 % Copyright (c) 2012 Linas Vepstas
 % The GNU GPLv3 applies.
@@ -98,7 +98,7 @@ lightweight_double(thrash).
 pair(41).
 pair(30).
 
-% Singles. 
+% Singles.
 heavy_single(dunya).  % Actually its a superheavy.
 heavy_single(knifty).
 heavy_single(director).

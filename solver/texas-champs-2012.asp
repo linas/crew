@@ -11,7 +11,7 @@
 % implementing this via answer-set programming seems like the easiest,
 % most direct way to accomplish this.
 %
-% Initial version: Linas Vepstas April 2012 
+% Initial version: Linas Vepstas April 2012
 %
 % Copyright (c) 2012 Linas Vepstas
 % The GNU GPLv3 applies.
@@ -152,7 +152,7 @@ heat(540, "231").
 % In this case, the boat cannot be reserved for the previous 2 races.
 center(3).
 % Print a hotseat warning if there is just 1 center to get the boat
-% back to the dock.  Change to 2 if you want more hotseat warning 
+% back to the dock.  Change to 2 if you want more hotseat warning
 % printed.
 hotseat_warn(2).
 
@@ -416,4 +416,3 @@ oar_prefer("231", juniors, purple, 1).
 
 #include "solver.asp".
 #include "oar_solver.asp" .
-

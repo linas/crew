@@ -1,5 +1,5 @@
 %
-% regatta team oara scheduling
+% regatta team oar scheduling
 %
 % The problem of scheduling equipment for a regatta is a constraint
 % problem -- two crews cannot use the same boat at the same time,
@@ -237,7 +237,7 @@ oar_reservation_failure(RACE, CREW) :- got_a_boat(RACE, CREW),
                    : racenum(RACE)
                    : crew(CREW) @ORP ].
 
-% We're going to try to honour everyone's top preferences.
+% We're going to try to honor everyone's top preferences.
 % So CHOICE=1 is first choice, CHOICE=2 is second choice, etc.
 % XXX  disabled right now, enable later.
 % #minimize [oar_request(RACE, CREW, OARS)

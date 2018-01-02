@@ -6,7 +6,7 @@
 % of the #include directive, this listing can be reused for different
 % regattas.
 %
-% Initial version: Linas Vepstas April 2012 
+% Initial version: Linas Vepstas April 2012
 %
 % Copyright (c) 2012 Linas Vepstas
 % The GNU GPLv3 applies.

@@ -165,9 +165,9 @@ hurry_back(RACE, CREW, BOAT) :-
 take_to_venue(BOAT) :- reserve(RACE, CREW, BOAT).
 
 % This seems to make things run a bit slower... and yeilds nothing
-% noteworthy, since specific boats are being aasked for in almost
-% all cases, and so te below can't cut down on anything.
-% It seems to add 5% or so tot toal run time ...
+% noteworthy, since specific boats are being asked for in almost
+% all cases, and so the below can't cut down on anything.
+% It seems to add 5% or so total run time ...
 #minimize [take_to_venue(BOAT)
                    : num_boats_priority(NBP) @NBP ].
 

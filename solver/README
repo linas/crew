@@ -2,6 +2,7 @@
                    Regatta Equipment Scheduling
                    ----------------------------
                    Version 0.03 -- Linas Vepstas
+                           April 2012
 
 
 Pre-requisites
@@ -43,8 +44,8 @@ The output should resemble the following:
    reserve(206,juniors,green) reserve(206,juniors,orange)
    reserve(201,advanced,revere)
    boat_reservation_failure(202,intermediate)
-   boat_reservation_failure(203,intermediate) 
-   Optimization: 2 0 0 
+   boat_reservation_failure(203,intermediate)
+   Optimization: 2 0 0
 
    Answer: 2
    reserve(201,matt,black)
@@ -52,13 +53,13 @@ The output should resemble the following:
    reserve(201,advanced,orange)
    reserve(202,intermediate,green)
    boat_reservation_failure(203,intermediate)
-   hotseat(206,orange) hurry_back(201,advanced,orange) 
-   Optimization: 1 1 1 
+   hotseat(206,orange) hurry_back(201,advanced,orange)
+   Optimization: 1 1 1
    OPTIMUM FOUND
 
 
 The above states that two different reservations were found, labelled
-"Answer: 1" and "Answer: 2".  In both cases, the intermediate crew 
+"Answer: 1" and "Answer: 2".  In both cases, the intermediate crew
 cannot get a boat for race 203, there are simply not enough boats.
 In the first answer, the intermediate crew can't get a boat for race
 202 also, whereas in the 2nd answer, there is a solution with a hot-seat
@@ -87,13 +88,13 @@ Finally, it states that there is 1 crew that did not get their top
 choice of boat picks. Too bad.
 
 The system will *always* try to seat as many crews as possible, even
-if this requires lots of hotseats, and if some crews don't get the 
+if this requires lots of hotseats, and if some crews don't get the
 boats they wanted.  The "best" answer is always printed last.
 
 There may be thousands of different possible seatings.  These can be
 narrowed down by letting the crews get picky with what boats they want.
 One can also disallow certain crews from using certain boats, etc.
-Doing so may result in more and more hotseats being required.  
+Doing so may result in more and more hotseats being required.
 It is also possible to make firm reservations that are always granted,
 no matter what enyone else wants.  However, doing this may result in
 some crews not getting to race.
@@ -136,7 +137,7 @@ If the program prints "UNSATISFIABLE", this is probably because no
 boat choice preferences were indicated.  The keyword "prefer" must be
 used at least once, somewhere, in the list of boat requests.
 
-Other reasons for getting "UNSATISFIABLE" are typos in the list of 
+Other reasons for getting "UNSATISFIABLE" are typos in the list of
 boats or oars.  Typos will confuse the program.  Review the data,
 pay close attention to the spelling.
 

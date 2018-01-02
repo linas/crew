@@ -9,7 +9,7 @@
 % implementing this via answer-set programming seems like the easiest,
 % most direct way to accomplish this.
 %
-% Initial version: Linas Vepstas April 2012 
+% Initial version: Linas Vepstas April 2012
 %
 % Copyright (c) 2012 Linas Vepstas
 % The GNU GPLv3 applies.
@@ -53,7 +53,7 @@ crew(matt).
 racenum(NUM) :- NUM=101..140.   % Saturday.
 racenum(NUM) :- NUM=201..229.   % Sunday.
 
-% -- used for inserting heats into events.  See other examples
+% -- used for inserting heats into events.  See other examples.
 % for details.
 heat(NUM, NUM) :- racenum(NUM).
 
@@ -74,14 +74,14 @@ hotseat_warn(1).
 % For race 201, advanced crew wants one quad, any heavy-weight quad.
 1{ request(201, advanced, BOAT) : heavy_quad(BOAT) }1.
 
-% Matt must have his black boat for the same race. 
+% Matt must have his black boat for the same race.
 % This is not a request, this is a reservation. No if's, and's or but's.
 reserve(201, matt, black).
 
-% For race 202, the intermediate crew is going to be picky: they 
+% For race 202, the intermediate crew is going to be picky: they
 % want the black quad, and if they can't get it, then they want
 % the green, and if they can't get that, they want the orange.
-% Of course, they won't get it (because matt's got it, above),
+% Of course, they won't get it (because Matt's got it, above),
 % but they can certainly ask for it... they'll get their second
 % choice.
 prefer(202, intermediate, black, 1).

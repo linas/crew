@@ -6,7 +6,7 @@
 % includes a demo of oar reservations as well. This makes things more
 % complex all-around, but is a necessary evil.
 %
-% Initial version: Linas Vepstas April 2012 
+% Initial version: Linas Vepstas April 2012
 %
 % Copyright (c) 2012 Linas Vepstas
 % The GNU GPLv3 applies.
@@ -19,7 +19,7 @@
 % There are 4 pairs of orange oars
 sweep_oars(orange, 4).
 
-% There are 4 pairs of all the scull oars, except blue_blue, 
+% There are 4 pairs of all the scull oars, except blue_blue,
 % of which we have just 3 pairs (one pair is broken).
 scull_oars(purple_yellow, 4).
 scull_oars(purple_red, 4).
