@@ -28,9 +28,9 @@ and convert to CSV, suitable for import into a spreadsheet.
 
 What is planned:
 ----------------
--- Import of race and entry info from regattacentral.
--- Import of race and entry info from spreadsheets
--- Web interface for entering this info.
+*) Import of race and entry info from regattacentral.
+*) Import of race and entry info from spreadsheets
+*) Web interface for entering this info.
 
 and etc. -- kind of what you'd want and expect from something usable.
 
