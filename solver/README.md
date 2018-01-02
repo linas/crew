@@ -1,8 +1,7 @@
 
-                   Regatta Equipment Scheduling
-                   ----------------------------
-                   Version 0.03 -- Linas Vepstas
-                           April 2012
+Regatta Equipment Scheduling
+============================
+Version 0.03 -- Linas Vepstas -- April 2012
 
 
 Pre-requisites
@@ -145,4 +144,3 @@ The program does try to find typos, it will print "bad_boat_name" or
 "bad_crew_name", etc. if it found some.
 
 That's all for now, folks!
-

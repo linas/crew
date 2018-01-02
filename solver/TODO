@@ -12,4 +12,3 @@
 -- split up oar sets for doubles, singles.
    This is currently broken because the oar universe for preferences
    doesn't know about how many are needed, for a given boat class.
-

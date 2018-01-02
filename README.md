@@ -1,9 +1,7 @@
 
-                   Regatta Equipment Scheduling
-                   ----------------------------
-                   Version 0.03 -- Linas Vepstas
-                            April 2012
-
+Regatta Equipment Scheduling
+============================
+Version 0.03 -- Linas Vepstas -- April 2012
 
 Scheduling boats and oars for a rowing regatta is hard.  The goal of
 this project is to (eventually) simplify this.  Right now, this is just
